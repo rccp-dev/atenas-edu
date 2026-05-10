@@ -8,6 +8,7 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   href?: string;
+  type?: 'button' | 'submit' | 'reset'
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
 }
@@ -17,6 +18,7 @@ export const Button = ({
   children,
   onClick,
   href,
+  type = 'button',
   variant = 'primary',
   disabled = false,
 }: ButtonProps) => {
@@ -28,7 +30,7 @@ export const Button = ({
     secondary: 'bg-secondary text-light hover:bg-accent',
   };
 
-  const className = `${baseStyle} ${variants[variant]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`;
+  const className = `${baseStyle} ${variants[variant]} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`;
 
   if(href) {
     return (
