@@ -1,7 +1,5 @@
 import { lessonPlansMock } from "@/mocks/lessonPlans.mock";
 import { LessonPlan } from "@/types/lessonPlan";
-import { LessonPlanDTO } from "@/types/lessonPlan";
-
 
 /* 
     Service respobnsável por integração futura com database
@@ -9,7 +7,7 @@ import { LessonPlanDTO } from "@/types/lessonPlan";
 */
 
 export async function createLessonPlan(
-  data: LessonPlanDTO
+  data: Partial<LessonPlan>
 ) {
   console.log("CREATE:", data);
 }
