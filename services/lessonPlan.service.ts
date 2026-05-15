@@ -19,6 +19,10 @@ export async function getLessonPlans(): Promise<LessonPlan[]> {
 }
 
 export async function getLessonPlanById(id: string): Promise<LessonPlan | undefined> {
+        
+    console.log(id);
+    console.log(lessonPlansMock);
+    
     return lessonPlansMock.find(
         (plan) => plan.id === id
     );

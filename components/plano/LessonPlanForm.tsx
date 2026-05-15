@@ -1,17 +1,24 @@
 'use client';
 
 import { useState } from "react";
+import { LessonPlan } from "@/types/lessonPlan";
 import { createLessonPlan } from "@/services/lessonPlan.service";
 import { Subject } from "@/types/lessonPlan";
 import { Button } from "../ui/button";
 
-export default function LessonPlanForm() {
+interface LessonPlanFormProps {
+  initialData?: LessonPlan;
+}
 
-    const [title, setTitle] = useState("");
-    const [subjects, setSubjects] = useState<Subject[]>([]);    
-    /*const classrooms = await getClassrooms();*/  
-    const [description, setDescription] = useState("");
-    const [content, setContent] = useState("");
+export default function LessonPlanForm({
+    initialData,
+}: LessonPlanFormProps) {
+
+    const [title, setTitle] = useState(initialData?.title || "");
+    const [subjects, setSubjects] = useState(initialData?.subjects || []);    
+    /*const classrooms = await getClassrooms();*/ 
+    const [description, setDescription] = useState(initialData?.description || "");
+    const [content, setContent] = useState(initialData?.content || "");
 
     const subject_options: Subject[] = [
         "Literatura",

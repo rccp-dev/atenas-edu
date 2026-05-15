@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function PlanosPage() {
   const plans = await getLessonPlans();
+  console.log(plans);
 
   return (
     <main className="min-h-screen px-6 py-10">
