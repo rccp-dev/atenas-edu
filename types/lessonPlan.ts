@@ -1,7 +1,11 @@
+export const subject_options = [
+    "Literatura",
+    "Gramática",
+    "Redação",
+] as const;
+
 export type Subject =
-    | "Literatura"
-    | "Gramática"
-    | "Redação"
+    (typeof subject_options)[number];
 
 export interface LessonPlan {
     id: string;

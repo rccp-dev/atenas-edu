@@ -1,44 +1,32 @@
-import { notFound } from "next/navigation";
-import LessonPlanForm from "@/components/plano/LessonPlanForm";
+import LessonPlanView from "@/components/plano/LessonPlanView";
+import LessonPlanEdit from "@/components/plano/LessonPlanEdit";
 import { getLessonPlanById } from "@/services/lessonPlan.service";
+import { getClassroomById } from "@/services/classroom.service";
+import { notFound } from "next/navigation";
 
 interface PageProps {
     params: Promise<{
         id: string;
     }>;
+    searchParams?: {
+        mode?: "view" | "edit";
+    };
 }
 
-export default async function LessonPlanPage({
-    params,
-}: PageProps) {
+export default async function Page({params, searchParams}: PageProps) {
 
-    const { id } = await params;
+    const { id } = await params; 
+    const sp = await searchParams;
+ 
     const plan = await getLessonPlanById(id);
-
-    if(!plan) {
-        notFound();
-    }
-
-    return (
-
-        <main className="flex justify-center items-center min-h-screen px-4 py-10">
-            <section className="w-full max-w-4xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
-
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-foreground">
-                        Editar plano de aula
-                    </h1>
-
-                    <p className="mt-2 text-secondary">
-                        Atualize conteúdos, observações e planejamentos
-                    </p>
-                </div>
-
-                <LessonPlanForm initialData={plan} />
-
-            </section>
-        </main>
-
-    );
     
+    if (!plan) notFound();
+    
+    const mode = sp?.mode ?? "view";
+
+    if (mode === "edit") {
+        return <LessonPlanEdit plan={plan} />;
+    }
+    
+    return <LessonPlanView plan={plan} />;
 }

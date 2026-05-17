@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export default function Home() {
   return (
@@ -10,12 +10,6 @@ export default function Home() {
           <p className="text-4xl">Plataforma acadêmica</p>
           <p className="text-base p-5">Página inicial pública temporária da plataforma</p>
       </menu>
-
-      {/*Navegação temporária*/}
-      <div className='flex justify-center gap-5'>
-        <Button href='/login' variant='primary'>Login</Button>
-        <Button href='/planos' variant='primary'>Planos</Button>
-      </div>
 
     </div>
   );

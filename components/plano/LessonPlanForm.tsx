@@ -1,36 +1,39 @@
 'use client';
 
-import { useState } from "react";
-import { LessonPlan } from "@/types/lessonPlan";
+import { useEffect, useState } from "react";
+import { LessonPlan, Subject, subject_options } from "@/types/lessonPlan";
+import { Classroom } from "@/types/classroom";
 import { createLessonPlan } from "@/services/lessonPlan.service";
-import { Subject } from "@/types/lessonPlan";
-import { Button } from "../ui/button";
+import { getClassrooms } from "@/services/classroom.service";
+import { Button } from "../ui/Button";
 
 interface LessonPlanFormProps {
   initialData?: LessonPlan;
 }
 
-export default function LessonPlanForm({
-    initialData,
-}: LessonPlanFormProps) {
+export default function LessonPlanForm({initialData,}: LessonPlanFormProps) {
 
     const [title, setTitle] = useState(initialData?.title || "");
-    const [subjects, setSubjects] = useState(initialData?.subjects || []);    
-    /*const classrooms = await getClassrooms();*/ 
+    const [subjects, setSubjects] = useState(initialData?.subjects || []); 
+    const [classroomId, setClasrooomId] = useState(initialData?.classroomId || "");   
+    const [classrooms, setClasroooms] = useState<Classroom[]>([]);
     const [description, setDescription] = useState(initialData?.description || "");
     const [content, setContent] = useState(initialData?.content || "");
 
-    const subject_options: Subject[] = [
-        "Literatura",
-        "Gramática",
-        "Redação",
-    ];
+    useEffect(() => {
+        async function loadClassrooms() {
+            const data = await getClassrooms();
+            setClasroooms(data);
+        }
+
+        loadClassrooms();
+    }, []);
 
     async function handleSubmit() {
         await createLessonPlan({
             title,
             subjects,
-            /*classroom,*/
+            classroomId,
             description,
             content,
         });
@@ -60,6 +63,25 @@ export default function LessonPlanForm({
                     </option>
                 ))}
 
+                </select>
+
+                {/* Futuramente: permitir selecionar mais de uma turma */}
+                <select value={classroomId} className="rounded-xl border border-border bg-light p-4 outline-none"
+                    onChange={(e) =>
+                        setClasrooomId(e.target.value)
+                    }
+                >
+                    <option value="">
+                        Selecione uma turma
+                    </option>
+
+                    {classrooms.map(
+                        (classroom) => (
+                            <option key={classroom.id} value={classroom.id}>
+                                {classroom.nome}
+                            </option>
+                        )
+                    )}
                 </select>
             </div>
 

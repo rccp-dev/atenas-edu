@@ -1,5 +1,5 @@
-import { lessonPlansMock } from "@/mocks/lessonPlans.mock";
 import { LessonPlan } from "@/types/lessonPlan";
+import { lessonPlansMock } from "@/mocks/lessonPlans.mock";
 
 /* 
     Service respobnsável por integração futura com database

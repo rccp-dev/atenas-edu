@@ -1,6 +1,10 @@
-interface Turma {
-    id: number;
+export interface Classroom {
+    id: string;
     nome: string;
-    serie: string;
-    alunos: number;
+    ano: number;
+    identificador: string;
+    descricao?: string;
+    createdAt: string;
+    updatedAt?: string;
+    isDraft: boolean;
 }

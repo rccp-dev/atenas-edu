@@ -1,30 +1,32 @@
-import { TurmaCard } from "@/components/turma/TurmaCard";
-import { turmasMock } from "@/mocks/turma.mock";
-export default function Turmas() {
-    return(
-      <main className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-semibold">
-                    Turmas
-                </h1>
+import ClassroomList from "@/components/turma/ClassroomList";
+import { getClassrooms } from "@/services/classroom.service";
+import { Button } from "@/components/ui/Button";
 
-                <p className="text-sm">
-                    Gerencie suas turmas cadastradas.
-                </p>
-            </div>
+export default async function TurmasPage() {
 
-         <div className="grid gap-4 md:grid-cols-2">
-    {turmasMock.map((turma) => (
-        <TurmaCard
-            key={turma.id}
-            nome={turma.nome}
-            serie={turma.serie}
-            alunos={turma.alunos}
-        />
-    ))
-    }
-    </div> 
+    const classrooms = await getClassrooms();
+
+    return (
+        <main className="min-h-screen px-6 py-10">
+            <section className="mx-auto max-w-5xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
+                <div className="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold">
+                            Turmas
+                        </h1>
+
+                        <p className="mt-2 text-secondary">
+                            Gerencie suas turmas cadastradas.
+                        </p>
+                    </div>
+
+                    <Button href="/turmas/nova-turma">
+                        Nova turma
+                    </Button>
+                </div>
+
+                <ClassroomList classrooms={classrooms}/>
+            </section>
         </main>
-
     );
 }
