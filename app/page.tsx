@@ -14,7 +14,7 @@ export default function Home() {
       {/*Navegação temporária*/}
       <div className='flex justify-center gap-5'>
         <Button href='/login' variant='primary'>Login</Button>
-        <Button href='/atividade/default' variant='secondary'>Público</Button>
+        <Button href='/planos' variant='primary'>Planos</Button>
       </div>
 
     </div>
