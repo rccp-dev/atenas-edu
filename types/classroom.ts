@@ -4,5 +4,3 @@ interface Turma {
     serie: string;
     alunos: number;
 }
- 
- 
