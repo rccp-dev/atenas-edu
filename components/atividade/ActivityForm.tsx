@@ -69,11 +69,8 @@ export default function ActivityForm({ initialData }: Props) {
             description,
             classroomId,
             deadline,
-
             attachments,
-
             token: generateToken(),
-
             status: ["Atribuída"],
         });
 

@@ -1,4 +1,5 @@
 import { Submission } from "@/types/submission";
+import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById } from "@/services/classroom.service";
 import Link from "next/link";
@@ -10,24 +11,21 @@ interface Props {
 
 export default async function SubmissionCard({ submission }: Props) {
 
-    if (!submission.activityId) {
+    if (!submission.studentId || !submission.activityId || !submission.classroomId) {
         return null;
     }
-
-    if (!submission.classroomId) {
-        return null;
-    }
-
+    
+    const student = await getStudentById(submission.studentId);
     const classroom = await getClassroomById(submission.classroomId);
     const activity = await getActivityById(submission.activityId);
 
     return (
-        <Link href={`/entidade/${submission.id}`}>
+        <Link href={`/envios/${submission.id}`}>
             <Card>
                 <div className="flex items-center justify-between">
 
                     <h2 className="text-xl font-semibold">
-                        {submission.student_name || "Sem título"}
+                        {student?.name || "Sem nome do aluno"} - {activity?.title || "Sem título da atividade"}
                     </h2>
 
                     <span className="text-sm text-secondary">

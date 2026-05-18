@@ -10,12 +10,12 @@ export type Status =
 export interface Submission {
     id: string;
     activityId: string;
-    student_name: string;
+    studentId: string;
     classroomId: string;
     file_url: string;
     grade?: number;
     feedback?: string;
-    status: Status;
+    status: Status[];
     createdAt: string;
     submittedAt: string;
     isDraft: boolean;

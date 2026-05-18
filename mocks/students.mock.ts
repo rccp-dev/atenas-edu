@@ -8,7 +8,7 @@ export const studentsMock: Student[] = [
         name: "João Silva",
         enrollment: "2026001",
         classroomId: "1",
-        createdAt: "2026-01-15",
+        createdAt: "15/01/2026",
         isDraft: false
     },
     {
@@ -16,7 +16,7 @@ export const studentsMock: Student[] = [
         name: "Maria Oliveira",
         enrollment: "2026002",
         classroomId: "1",
-        createdAt: "2026-01-15",
+        createdAt: "15/01/2026",
         isDraft: false
     },
     {
@@ -24,7 +24,7 @@ export const studentsMock: Student[] = [
         name: "Pedro Santos",
         enrollment: "2026003",
         classroomId: "2",
-        createdAt: "2026-01-15",
+        createdAt: "15/01/2026",
         isDraft: false
     },
     {
@@ -32,7 +32,7 @@ export const studentsMock: Student[] = [
         name: "Ana Costa",
         enrollment: "2026004",
         classroomId: "2",
-        createdAt: "2026-01-15",
+        createdAt: "15/01/2026",
         isDraft: false
     }
 ]

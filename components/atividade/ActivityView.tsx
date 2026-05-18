@@ -16,9 +16,8 @@ export default async function ActivityView({ activity }: Props) {
         return null;
     }
 
-    const classroom = await getClassroomById(
-        activity.classroomId
-    );
+    const classroom = await getClassroomById(activity.classroomId);
+    const status = getActivityStatus(activity);
 
     return (
         <View>
@@ -46,7 +45,7 @@ export default async function ActivityView({ activity }: Props) {
 
                 <div>
                     <span className="text-secondary">Status:</span>
-                    {" "}{getActivityStatus(activity)}
+                    {" "}{status}
                 </div>
 
                 <div>

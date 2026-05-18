@@ -13,6 +13,12 @@ export async function getActivityById(id: string) {
   return activitiesMock.find((activity) => activity.id === id);
 }
 
+export async function getActivityByToken(token: string) {
+    return activitiesMock.find(
+        (a) => a.token === token
+    );
+}
+
 export function getActivityStatus(
     activity: Activity
 ) {

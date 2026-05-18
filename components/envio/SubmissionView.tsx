@@ -1,4 +1,5 @@
 import { Submission } from "@/types/submission";
+import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById } from "@/services/classroom.service";
 
@@ -11,10 +12,11 @@ interface Props {
 
 export default async function SubmissionView({ submission }: Props) {
 
-    if (!submission.activityId || !submission.classroomId) {
+    if (!submission.studentId || !submission.activityId || !submission.classroomId) {
         return null;
     }
 
+    const student = await getStudentById(submission.studentId);
     const activity = await getActivityById(submission.activityId);
     const classroom = await getClassroomById(submission.classroomId);
 
@@ -22,11 +24,11 @@ export default async function SubmissionView({ submission }: Props) {
         <View>
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-foreground">
-                    Envio: "{" "}{activity?.title}"
+                    Envio: "{activity?.title}"
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {submission.student_name} - {classroom?.name}
+                    {student?.name || "Sem nome do aluno"} - {classroom?.name}
                 </p>
                 
                 {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
@@ -35,7 +37,7 @@ export default async function SubmissionView({ submission }: Props) {
                 </div>
 
                 <div>
-                    <span className="text-secondary text-sm">Enviado em:</span>
+                    <span className="text-secondary">Enviado em:</span>
                     {" "}{submission.submittedAt}
                 </div>
 
@@ -43,8 +45,8 @@ export default async function SubmissionView({ submission }: Props) {
                     <span className="text-secondary">Download do envio:</span>
                     {" "}
                     {submission.file_url
-                        ? "https://atenas-edu.supabase.co/storage/v1/object/public/envios/" + submission.file_url
-                         : "Sem arquivo enviado"}
+                        ? `https://atenas-edu.supabase.co/storage/v1/object/public/envios/${submission.file_url}`
+                        : "Sem arquivo enviado"}
                 </div>
             </div>
 

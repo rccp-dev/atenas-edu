@@ -8,6 +8,7 @@ import { Classroom } from "@/types/classroom";
 
 import { createSubmission } from "@/services/submission.service";
 import { getClassrooms } from "@/services/classroom.service";
+import { getStudents } from "@/services/student.service";
 
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
@@ -16,21 +17,21 @@ import UploadBox from "@/components/envio/UploadBox";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
-    initialData?: Submission;
+    submission?: Submission;
 }
 
-export default function SubmissionForm({ initialData }: Props) {
+export default function SubmissionForm({ submission }: Props) {
 
-    const [student_name, setStudentName] = useState(
-        initialData?.student_name || ""
+    const [studentId, setStudentId] = useState(
+        submission?.studentId || ""
     );
 
     const [students, setStudents] = useState<
         Student[]
     >([]);
 
-    const [classroom, setClassroom] = useState(
-        initialData?.classroomId || ""
+    const [classroomId, setClassroomId] = useState(
+        submission?.classroomId || ""
     );
 
     const [classrooms, setClassrooms] = useState<
@@ -39,22 +40,30 @@ export default function SubmissionForm({ initialData }: Props) {
 
     useEffect(() => {
 
-        async function loadRelatedItems() {
+        async function loadStudents() {
+            const data = await getStudents();
+            setStudents(data);
+        }
+
+        async function loadClassrooms() {
             const data = await getClassrooms();
             setClassrooms(data);
         }
 
-        loadRelatedItems();
-
+        loadStudents();
+        loadClassrooms();
+        
     }, []);
 
     async function handleSubmit() {
 
         await createSubmission({
-            student_name,
-            classroom,
-            file_url,
-            status,
+            studentId,
+            classroomId,
+            // file_url,
+            status: ["Entregue"],
+            submittedAt: new Date().toISOString(),
+            isDraft: false
         });
 
     }
@@ -64,7 +73,7 @@ export default function SubmissionForm({ initialData }: Props) {
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Nome do aluno">
-                    <Select value={student_name} onChange={(e) => setStudentName(e.target.value)}>
+                    <Select value={studentId} onChange={(e) => setStudentId(e.target.value)}>
 
                         <option value="">Selecione seu nome</option>
 
@@ -78,7 +87,7 @@ export default function SubmissionForm({ initialData }: Props) {
                 </Field>
 
                 <Field label="Turma">
-                    <Select value={classroom} onChange={(e) => setClassroom(e.target.value)}>
+                    <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
 
                         <option value="">Selecione sua turma</option>
 

@@ -1,13 +1,35 @@
 import SubmissionForm from "@/components/envio/SubmissionForm";
+import SubmissionEdit from "@/components/envio/SubmissionEdit";
+import { getSubmissionById } from "@/services/submission.service";
+import { getActivityByToken } from "@/services/activity.service";  
+import { getActivityStatus } from "@/services/activity.service";
+import { notFound } from "next/navigation";
 
-interface Props {
-  params: Promise<{
-    token: string;
-  }>;
+interface PageProps {
+    params: Promise<{
+        token: string;
+    }>;
+    searchParams?: {
+        mode?: "view" | "edit";
+    };
 }
 
-export default async function NewEntityPage({ params }: Props) {
+export default async function NewEntityPage({ params, searchParams }: PageProps) {
+
   const { token } = await params;
+  const sp = await searchParams;
+  const submission = await getSubmissionById(token);
+
+  if (!token || !submission) return notFound();
+
+  const activity = await getActivityByToken(token);
+  if (!activity) return notFound();
+  const status = await getActivityStatus(activity);
+  const mode = sp?.mode ?? "new";
+
+  if (mode === "edit") {
+    return <SubmissionEdit submission={submission} />;
+  }
 
   return (
     <main className="flex justify-center items-center min-h-screen px-4 py-10">
@@ -18,7 +40,7 @@ export default async function NewEntityPage({ params }: Props) {
           <p className="mt-2 text-secondary">Preencha os dados necessários.</p>
         </div>
 
-        <SubmissionForm />
+        <SubmissionForm submission={submission} />
       </section>
     </main>
   );

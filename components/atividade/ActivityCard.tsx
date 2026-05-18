@@ -15,6 +15,7 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
     }
 
     const classroom = await getClassroomById(activity.classroomId);
+    const status = getActivityStatus(activity);
 
     return (
         <Link href={`/atividades/${activity.id}`}>
@@ -34,39 +35,26 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
                 <div>
                     {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
                     <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
-                        {getActivityStatus(activity)}
+                        {status}
                     </div>
 
                     <p className="text-secondary">
                         {classroom?.name}
                     </p>
 
-                    <div className="flex iitems-center gap-1">
-
-                        <span className="text-secondary">
-                            Prazo:
-                        </span>
-
-                        <p className="text-primary">
-                            {activity.deadline || "Sem prazo definido"}
-                        </p>
-
+                    <div>
+                        <span className="text-secondary">Prazo:</span>
+                        {" "}{activity.deadline || "Sem prazo definido"}
                     </div>
 
-                    <div className="flex iitems-center gap-1">
-
-                        <span className="text-secondary">
-                            Link de entrega:
-                        </span>
-
-                        <p className="text-primary">
-                            {activity.token ? (
-                                `atividade/${activity.token}`
-                            ) : (
-                                "Sem link de entrega"
-                            )}
-                        </p>
-
+                    <div>
+                        <span className="text-secondary">Link de entrega:</span>
+                        {" "}
+                        {activity.token ? (
+                            `atividade/${activity.token}`
+                        ) : (
+                            "Sem link de entrega"
+                        )}
                     </div>
                 </div>
             </Card>

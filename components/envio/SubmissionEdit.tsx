@@ -1,19 +1,20 @@
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
+import { getClassrooms } from "@/services/classroom.service";
 import { getClassroomById } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
+import Select from "@/components/ui/Select";
+import UploadBox from "./UploadBox";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
     submission: Submission;
 };
 
-export default async function Grading({ submission }: Props) {
+export default async function SubmissionEdit({ submission }: Props) {
 
     if(!submission.studentId || !submission.activityId || !submission.classroomId) {
         return null;
@@ -21,6 +22,7 @@ export default async function Grading({ submission }: Props) {
 
     const student = await getStudentById(submission.studentId);
     const activity = await getActivityById(submission.activityId);
+    const classrooms = await getClassrooms();
     const classroom = await getClassroomById(submission.classroomId);
 
     return (
@@ -28,7 +30,7 @@ export default async function Grading({ submission }: Props) {
 
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-foreground">
-                    Correção: "{activity?.title}"
+                    Editar envio: "{activity?.title}"
                 </h1>
 
                 <p className="mt-2 text-secondary">
@@ -39,32 +41,25 @@ export default async function Grading({ submission }: Props) {
                 <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
                     {submission.status}
                 </div>
-
-                <div>
-                    <span className="text-secondary">Enviado em:</span>
-                    {" "}{submission.submittedAt}
-                </div>
-
-                <div>
-                    <span className="text-secondary">Download do envio:</span>
-                    {" "}
-                    {submission.file_url
-                        ? `https://atenas-edu.supabase.co/storage/public/envios/${submission.file_url}`
-                        : "Sem arquivo enviado"}
-                </div>
             </div>
 
             <div className="flex flex-col gap-4">
 
-                <Field label="Nota">
-                    <Input type="number" step="0.1" min="0" max="10" defaultValue={submission.grade?.toString() || ""} />
+                <Field label="Turma">
+                    <Select defaultValue={submission.classroomId}>
+
+                        <option value="">Selecione uma turma</option>
+
+                        {classrooms.map((classroom) => (
+                            <option key={classroom.id} value={classroom.id}>
+                                {classroom.name}
+                            </option>
+                        ))}
+
+                    </Select>
                 </Field>
 
-                <Field label="Feedback">
-                    <Textarea
-                        defaultValue={submission.feedback}
-                    />
-                </Field>
+                <UploadBox />
 
             </div>
 
