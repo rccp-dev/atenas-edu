@@ -1,47 +1,57 @@
 'use client';
 
 import { useState } from "react";
+
+import Form from "@/components/ui/Form";
+import Field from "@/components/ui/Field";
+
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+
 import { Button } from "../ui/Button";
+import { createClassroom } from "@/services/classroom.service";
 
 export default function ClassroomForm() {
 
-    const [ano, setAno] = useState("");
-    const [identificador, setIdentificador] = useState("");
-    const [descricao, setDescricao] = useState("");
+    const [year, setYear] = useState<number>(0);
+    const [identifier, setIdentifier] = useState("");
+    const [description, setDescription] = useState("");
 
     async function handleSubmit() {
-        console.log({
-            ano,
-            identificador,
-            descricao,
+
+        await createClassroom({
+            year,
+            identifier,
+            description,
         });
+
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            {/* Nome da turma tem que ser criado automaticamente a partir do ano e do identificador */}
-            
-            <input value={ano} placeholder="Ano" className="rounded-xl border border-border bg-light p-4 outline-none"
-                onChange={(e) =>
-                    setAno(e.target.value)
-                }
-            />
+        <Form>
+            <div className="flex flex-col gap-4 w-sm">
+                {/* Nome da turma deve ser criado dinamicamente a partir do ano e série */}
 
-            <input value={identificador} placeholder="Série" className="rounded-xl border border-border bg-light p-4 outline-none"
-                onChange={(e) =>
-                    setIdentificador(e.target.value)
-                }
-            />
+                <Field label="Ano">
+                    <Input value={year} type="number" onChange={(e) => setYear(Number(e.target.value))} placeholder="Ano"/>
+                </Field>
 
-            <textarea value={descricao} placeholder="Descrição..." className="min-h-40 rounded-xl border border-border bg-light p-4 outline-none"
-                onChange={(e) =>
-                    setDescricao(e.target.value)
-                }
-            />
+                <Field label="Série">
+                    <Input value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Série"/>
+                </Field>
+
+            </div>
+
+            <Field label="Descrição">
+                <Textarea
+                    value={description} onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Descrição..." className="min-h-40"
+                />
+            </Field>
 
             <div className="w-24">
                 <Button type="submit" onClick={handleSubmit}>Salvar</Button>
             </div>
-        </div>
+        </Form>
     );
 }

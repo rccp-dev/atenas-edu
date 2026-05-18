@@ -1,10 +1,15 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { getClassrooms } from "@/services/classroom.service";
-import { getClassroomById } from "@/services/classroom.service";
 import { subject_options } from "@/types/lessonPlan";
+import { getClassrooms, getClassroomById } from "@/services/classroom.service";
+
+import Edit from "@/components/ui/Edit";
+import Field from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Textarea from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 
-type Props = {
+interface Props {
     plan: LessonPlan;
 };
 
@@ -18,51 +23,65 @@ export default async function LessonPlanEdit({ plan }: Props) {
     const classroom = await getClassroomById(plan.classroomId);
 
     return (
-        <main className="flex justify-center items-center min-h-screen px-4 py-10">
-            <section className="w-full max-w-4xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
-                <div className="mb-6">
-                    <h1 className="text-3xl font-bold text-foreground">
-                        Editar plano de aula
-                    </h1>
+        <Edit>
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold text-foreground">
+                    Editar plano de aula
+                </h1>
 
-                    <p className="mt-2 text-secondary">{classroom?.nome}</p>
-                </div>
+                <p className="mt-2 text-secondary">
+                    {classroom?.name}
+                </p>
+            </div>
 
-                <div className="flex flex-col gap-4">
-                    <input defaultValue={plan.title} className="text-lg rounded-xl border border-border bg-light p-4 outline-none"/>
+            <div className="flex flex-col gap-4">
+                
+                <Field label="Título">
+                    <Input defaultValue={plan.title}/>
+                </Field>
 
-                    <span className="text-xl text-secondary">Matérias:</span>
-                    <select multiple defaultValue={plan.subjects} className="rounded-xl border border-border bg-light p-4 outline-none">
-                        {subject_options.map((s) => (
-                            <option key={s} value={s}>
-                                {s}
+                <Field label="Matérias">
+                    <Select multiple defaultValue={plan.subjects}>
+
+                        <option value="">Selecione uma ou mais matérias</option>
+
+                        {subject_options.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
                             </option>
                         ))}
-                    </select>
-                        
-                    <span className="text-xl text-secondary">Turma:</span>
-                    <select defaultValue={plan.classroomId} className="rounded-xl border border-border bg-light p-4 outline-none">
+
+                    </Select>
+                </Field>
+
+                <Field label="Turma">
+                    <Select defaultValue={plan.classroomId}>
+
                         <option value="">Selecione uma turma</option>
 
                         {classrooms.map((classroom) => (
                             <option key={classroom.id} value={classroom.id}>
-                                {classroom.nome}
+                                {classroom.name}
                             </option>
                         ))}
-                    </select>
 
-                    <span className="text-xl text-secondary">Descrição:</span>
-                    <textarea defaultValue={plan.description} className="rounded-xl border border-border bg-light p-4 outline-none"/>
+                    </Select>
+                </Field>
 
-                    <span className="text-xl text-secondary">Conteúdo:</span>
-                    <textarea defaultValue={plan.content} className="min-h-50 rounded-xl border border-border bg-light p-4 outline-none"/>
-                </div>
+                <Field label="Descrição">
+                    <Textarea defaultValue={plan.description}/>
+                </Field>
 
-                <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">Voltar</Button>
-                    <Button>Salvar alterações</Button>
-                </div>
-            </section>
-        </main>
+                <Field label="Conteúdo">
+                    <Textarea defaultValue={plan.content} className="min-h-50"/>
+                </Field>
+
+            </div>
+
+            <div className="mt-8 flex gap-3">
+                <Button href="?mode=view">Voltar</Button>
+                <Button>Salvar alterações</Button>
+            </div>
+        </Edit>
     );
 }

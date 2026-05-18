@@ -1,0 +1,51 @@
+import { Student } from "@/types/student";
+import { getClassroomById } from "@/services/classroom.service";
+
+import View from "@/components/ui/View";
+import { Button } from "@/components/ui/Button";
+
+interface Props {
+    student: Student;
+};
+
+export default async function StudentView({ student }: Props) {
+
+    if (!student.classroomId) {
+        return null;
+    }
+
+    const classroom = await getClassroomById(student.classroomId);
+
+    return (
+        <View>
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold text-foreground">
+                    {student.name}
+                </h1>
+
+                <p className="mt-2 text-secondary">
+                    {student.enrollment}
+                </p>
+            </div>
+
+            <div className="space-y-4 text-sm text-foreground">
+                <div>
+                    <span className="text-secondary">Turma:</span>
+                    {" "}{classroom?.name}
+                </div>
+
+                <div>
+                    {student.content && (
+                        <p className="mt-3 text-sm">
+                            {student.content}
+                        </p>
+                    )}
+                </div>
+            </div>
+
+            <div className="mt-8">
+                <Button href="?mode=edit">Editar</Button>
+            </div>
+        </View>
+    );
+}

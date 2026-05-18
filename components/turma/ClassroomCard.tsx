@@ -2,21 +2,17 @@ import { Classroom } from "@/types/classroom";
 import Link from "next/link";
 
 interface ClassroomCardProps{
-    turma: Classroom;
+    classroom: Classroom;
  }
  
-export function ClassroomCard({turma}: ClassroomCardProps) {
+export async function ClassroomCard({classroom}: ClassroomCardProps) {
     return (
-        <Link href={`/turmas/${turma.id}`} className="rounded-2xl border border-border bg-background p-5 transition hover:bg-white">
+        <Link href={`/turmas/${classroom.id}`} className="rounded-2xl border border-border bg-background p-5 transition hover:bg-white">
             <h2 className="text-lg font-semibold">
-                {turma.nome}
+                {classroom.name}
             </h2>
 
-            {turma.descricao && (
-                <p className="mt-2 text-sm">
-                    {turma.descricao}
-                </p>
-            )}
+            <p className="mt-3 text-secondary">{classroom.description}</p>
         </Link>
     );
 }

@@ -1,0 +1,138 @@
+'use client';
+
+import { useEffect, useState } from "react";
+
+import { Activity } from "@/types/activity";
+import { Classroom } from "@/types/classroom";
+
+import { createActivity } from "@/services/activity.service";
+import { getClassrooms } from "@/services/classroom.service";
+
+import Form from "@/components/ui/Form";
+import Field from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Textarea from "@/components/ui/Textarea";
+import { Button } from "@/components/ui/Button";
+
+interface Props {
+    initialData?: Activity;
+}
+
+export default function ActivityForm({ initialData }: Props) {
+
+    const [title, setTitle] = useState(
+        initialData?.title || ""
+    );
+
+    const [description, setDescription] = useState(
+        initialData?.description || ""
+    );
+
+    const [deadline, setDeadline] = useState(
+        initialData?.deadline || ""
+    );
+
+    const [attachments, setAttachments] = useState<string[]>(
+        initialData?.attachments || []
+    );
+
+    const [classroomId, setClassroomId] = useState(
+        initialData?.classroomId || ""
+    );
+
+    const [classrooms, setClassrooms] = useState<
+        Classroom[]
+    >([]);
+
+    useEffect(() => {
+
+        async function loadClassrooms() {
+            const data = await getClassrooms();
+            setClassrooms(data);
+        }
+
+        loadClassrooms();
+
+    }, []);
+
+    function generateToken() {
+
+        return crypto.randomUUID();
+
+    }
+
+    async function handleSubmit() {
+
+        await createActivity({
+            title,
+            description,
+            classroomId,
+            deadline,
+
+            attachments,
+
+            public_token: generateToken(),
+
+            status: ["Atribuída"],
+        });
+
+    }
+
+    return (
+        <Form>
+            <div className="flex flex-col gap-4 w-sm">
+
+                <Field label="Título">
+                    <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Nova atividade..."/>
+                </Field>
+
+                <Field label="Turma">
+                    <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
+
+                        <option value="">Selecione uma turma</option>
+
+                        {classrooms.map((classroom) => (
+                            <option key={classroom.id} value={classroom.id}>
+                                {classroom.name}
+                            </option>
+                        ))}
+
+                    </Select>
+                </Field>
+
+                <Field label="Prazo">
+                    <Input 
+                        type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} 
+                        placeholder="Prazo de entrega"
+                    />
+                </Field>
+
+            </div>
+
+            <Field label="Descrição">
+                <Textarea 
+                    value={description} onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Descrição da atividade..."
+                />
+            </Field>
+
+            <Field label="Anexos">
+                <Textarea
+                    value={attachments.join("\n")} placeholder="Um link por linha..."
+                    onChange={(e) =>
+                        setAttachments(
+                            e.target.value
+                                .split("\n")
+                                .filter(Boolean)
+                        )
+                    }
+                />
+            </Field>
+
+            <div className="w-20">
+                <Button type="submit" onClick={handleSubmit}>Salvar</Button>
+            </div>
+        </Form>
+    );
+}

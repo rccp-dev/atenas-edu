@@ -1,18 +1,21 @@
 import { LessonPlan } from "@/types/lessonPlan";
 import LessonPlanCard from "./LessonPlanCard";
+import List from "@/components/ui/List";
 
-interface LessonPlanListProps {plans: LessonPlan[];}
+interface Props {
+    plan: LessonPlan[];
+}
 
-export default function LessonPlanList({plans,}: LessonPlanListProps) {
+export default function LessonPlanList({ plan }: Props) {
 
     return (
-        <div className="grid gap-4">
-            {plans.map((plan) => (
+        <List>
+            {plan.map((plan) => (
                 <LessonPlanCard
                     key={plan.id}
                     plan={plan}
                 />
             ))}
-        </div>
+        </List>
     );
 }

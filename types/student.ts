@@ -1,8 +1,8 @@
 export interface Student {
     id: string;
-    nome: string;
-    matricula: string;
-    conteudo?: string;
+    name: string;
+    enrollment: string;
+    content?: string;
     classroomId: string;
     createdAt: string;
     updatedAt?: string;

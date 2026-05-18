@@ -1,43 +1,51 @@
 import { Classroom } from "@/types/classroom";
+import { Student } from "@/types/student";
+
+import Edit from "@/components/ui/Edit";
+import Field from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 
-type Props = {
-    turma: Classroom;
-    students: any[];
+interface Props {
+    classroom: Classroom;
+    students: Student;
 };
 
-export default function ClassroomEdit({ turma }: Props) {
+export default function ClassroomEdit({ classroom }: Props) {
 
-  return (
-    <main className="flex justify-center items-center min-h-screen px-4 py-10">
-        <section className="w-full max-w-3xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    return (
+        <Edit>
             <div className="mb-6">
                 <h1 className="text-3xl font-bold">
                     Editar turma
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {turma.nome}
+                    {classroom.name}
                 </p>
             </div>
 
             <div className="flex flex-col gap-4">
-                <span className="text-xl text-secondary">Ano:</span>
-                <input defaultValue={turma.ano} className="rounded-xl border border-border bg-light p-4 outline-none"/>
 
-                <span className="text-xl text-secondary">Série:</span>
-                <input defaultValue={turma.identificador} className="rounded-xl border border-border bg-light p-4 outline-none"/>
+                <Field label="Ano">
+                    <Input defaultValue={classroom.year}/>
+                </Field>
 
-                <span className="text-xl text-secondary">Descrição:</span>
-                <textarea defaultValue={turma.descricao} className="rounded-xl border border-border bg-light p-4 outline-none"/>
+                <Field label="Série">
+                    <Input defaultValue={classroom.identifier}/>
+                </Field>
+
+                <Field label="Descrição">
+                    <Textarea defaultValue={classroom.description}/>
+                </Field>
+
             </div>
 
             <div className="mt-8 flex gap-3">
                 <Button href="?mode=view">Voltar</Button>
                 <Button>Salvar alterações</Button>
             </div>
-
-        </section>
-    </main>
-  );
+        </Edit>
+    );
 }

@@ -6,27 +6,26 @@ import ClassroomView from "@/components/turma/ClassroomView";
 import ClassroomEdit from "@/components/turma/ClassroomEdit";
 
 interface PageProps {
-    params: Promise<{ id: string }>;
-    searchParams?: {
-        mode?: "view" | "edit";
-    };
+  params: Promise<{ id: string }>;
+  searchParams?: {
+    mode?: "view" | "edit";
+  };
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
+  const { id } = await params;
+  const sp = await searchParams;
+  const turma = await getClassroomById(id);
 
-    const { id } = await params;
-    const sp = await searchParams;
-    const turma = await getClassroomById(id);
+  if (!turma) notFound();
 
-    if (!turma) notFound();
+  const students = await getStudentsByClassroomId(turma.id);
 
-    const students = await getStudentsByClassroomId(turma.id);
+  const mode = sp?.mode ?? "view";
 
-    const mode = sp?.mode ?? "view";
+  if (mode === "edit") {
+    return <ClassroomEdit classroom={turma} students={students} />;
+  }
 
-    if (mode === "edit") {
-        return <ClassroomEdit turma={turma} students={students} />;
-    }
-
-    return <ClassroomView turma={turma} students={students} />;
+  return <ClassroomView classroom={turma} students={students} />;
 }

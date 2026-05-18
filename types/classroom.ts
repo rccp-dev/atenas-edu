@@ -1,9 +1,9 @@
 export interface Classroom {
     id: string;
-    nome: string;
-    ano: number;
-    identificador: string;
-    descricao?: string;
+    name: string;
+    year: number;
+    identifier: string;
+    description?: string;
     createdAt: string;
     updatedAt?: string;
     isDraft: boolean;

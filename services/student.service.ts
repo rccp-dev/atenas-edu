@@ -16,6 +16,10 @@ export async function getStudents(): Promise<Student[]> {
     return studentsMock;
 }
 
+export async function getStudentById(id: string) {
+    return studentsMock.find((student) => student.id === id);
+}
+
 export async function getStudentsByClassroomId(classroomId: string) {
     return studentsMock.filter(
         (student) => student.classroomId === classroomId

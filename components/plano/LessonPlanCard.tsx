@@ -27,7 +27,7 @@ export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
                 </span>
             </div>
 
-            <p className="mt-3 text-secondary">{classroom?.nome}</p>
+            <p className="mt-3 text-secondary">{classroom?.name}</p>
 
             <p className="mt-3 text-secondary">{plan.description}</p>
 

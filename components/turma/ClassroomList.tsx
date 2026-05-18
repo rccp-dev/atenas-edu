@@ -1,21 +1,21 @@
 import { Classroom } from "@/types/classroom";
 import { ClassroomCard } from "./ClassroomCard";
+import List from "@/components/ui/List";
 
-interface ClassroomListProps {
-    classrooms: Classroom[];
+interface Props {
+    classroom: Classroom[];
 }
 
-export default function ClassroomList({classrooms,}: ClassroomListProps) {
+export default function ClassroomList({ classroom }: Props) {
 
     return (
-        <div className="grid gap-4 md:grid-cols-2">
-            {classrooms.map((classroom) => (
-
+        <List>
+            {classroom.map((classroom) => (
                 <ClassroomCard
                     key={classroom.id}
-                    turma={classroom}
+                    classroom={classroom}
                 />
             ))}
-        </div>
+        </List>
     );
 }
