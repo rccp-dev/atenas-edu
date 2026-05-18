@@ -21,7 +21,7 @@ export default async function SubmissionPage() {
           </div>
         </div>
 
-        <SubmissionList items={submissions} />
+        <SubmissionList submissions={submissions} />
       </section>
     </main>
   );

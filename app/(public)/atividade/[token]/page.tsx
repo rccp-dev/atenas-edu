@@ -2,12 +2,12 @@ import SubmissionForm from "@/components/envio/SubmissionForm";
 
 interface Props {
   params: Promise<{
-    public_token: string;
+    token: string;
   }>;
 }
 
 export default async function NewEntityPage({ params }: Props) {
-  const { public_token } = await params;
+  const { token } = await params;
 
   return (
     <main className="flex justify-center items-center min-h-screen px-4 py-10">

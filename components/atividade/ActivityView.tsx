@@ -52,8 +52,8 @@ export default async function ActivityView({ activity }: Props) {
                 <div>
                     <span className="text-secondary">Link público:</span>
                     {" "}
-                    {activity.public_token
-                        ? `atividade/${activity.public_token}`
+                    {activity.token
+                        ? `atividade/${activity.token}`
                         : "Sem link disponível"}
                 </div>
 

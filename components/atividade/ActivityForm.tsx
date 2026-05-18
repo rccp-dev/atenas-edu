@@ -72,7 +72,7 @@ export default function ActivityForm({ initialData }: Props) {
 
             attachments,
 
-            public_token: generateToken(),
+            token: generateToken(),
 
             status: ["Atribuída"],
         });

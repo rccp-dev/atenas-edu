@@ -60,8 +60,8 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
                         </span>
 
                         <p className="text-primary">
-                            {activity.public_token ? (
-                                `atividade/${activity.public_token}`
+                            {activity.token ? (
+                                `atividade/${activity.token}`
                             ) : (
                                 "Sem link de entrega"
                             )}

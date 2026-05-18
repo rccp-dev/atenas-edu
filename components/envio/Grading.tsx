@@ -2,16 +2,19 @@ import { Submission } from "@/types/submission";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById } from "@/services/classroom.service";
 
-import View from "@/components/ui/View";
+import Edit from "@/components/ui/Edit";
+import Field from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
     submission: Submission;
 };
 
-export default async function SubmissionView({ submission }: Props) {
+export default async function Grading({ submission }: Props) {
 
-    if (!submission.activityId || !submission.classroomId) {
+    if(!submission.activityId || !submission.classroomId) {
         return null;
     }
 
@@ -19,10 +22,11 @@ export default async function SubmissionView({ submission }: Props) {
     const classroom = await getClassroomById(submission.classroomId);
 
     return (
-        <View>
+        <Edit>
+
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-foreground">
-                    Envio: "{" "}{activity?.title}"
+                    Correção: "{" "}{activity?.title}"
                 </h1>
 
                 <p className="mt-2 text-secondary">
@@ -48,25 +52,26 @@ export default async function SubmissionView({ submission }: Props) {
                 </div>
             </div>
 
-            <div className="space-y-4 text-sm text-foreground">
+            <div className="flex flex-col gap-4">
 
-                <div>
-                    <span className="text-secondary">Nota:</span>
-                    {" "}{submission.grade?.toString() || "Não avaliado"}
-                </div>
+                <Field label="Nota">
+                    <Input type="number" step="0.1" min="0" max="10" defaultValue={submission.grade?.toString() || ""} />
+                </Field>
 
-                <div>
-                    <span className="text-secondary">Feedback:</span>
-                    <p className="mt-1 whitespace-pre-line">
-                        {" "}{submission.feedback || "Sem feedback fornecido"}
-                    </p>
-                </div>
+                <Field label="Feedback">
+                    <Textarea
+                        defaultValue={submission.feedback}
+                    />
+                </Field>
 
             </div>
 
-            <div className="mt-8">
-                <Button href="?mode=edit">Corrigir</Button>
+            <div className="mt-8 flex gap-3">
+                <Button href="?mode=view">Voltar</Button>
+                <Button>Salvar alterações</Button>
+                <Button>Enviar correção</Button>
             </div>
-        </View>
+
+        </Edit>
     );
 }

@@ -1,5 +1,5 @@
 import SubmissionView from "@/components/envio/SubmissionView";
-import SubmissionEdit from "@/components/envio/SubmissionEdit";
+import Grading from "@/components/envio/Grading";
 import { getSubmissionById } from "@/services/submission.service";
 import { notFound } from "next/navigation";
 
@@ -23,7 +23,7 @@ export default async function Page({params, searchParams}: PageProps) {
   const mode = sp?.mode ?? "view";
 
   if (mode === "edit") {
-    return <SubmissionEdit submission={submission} />;
+    return <Grading submission={submission} />;
   }
 
   return <SubmissionView submission={submission} />;

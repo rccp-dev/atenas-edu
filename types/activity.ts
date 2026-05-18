@@ -12,7 +12,7 @@ export interface Activity {
     title: string;
     description: string;
     deadline?: string;
-    public_token: string;
+    token: string;
     classroomId: string;
     attachments?: string[];
     status: Status[];
