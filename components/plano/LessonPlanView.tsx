@@ -2,7 +2,7 @@ import { LessonPlan } from "@/types/lessonPlan";
 import { getClassroomById } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     plan: LessonPlan;

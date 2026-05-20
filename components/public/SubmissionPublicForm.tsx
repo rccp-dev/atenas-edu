@@ -11,7 +11,7 @@ import { createSubmission } from "@/services/submission.service";
 
 import Form from "@/components/ui/Form";
 import UploadBox from "@/components/public/UploadBox";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     activity: Activity;

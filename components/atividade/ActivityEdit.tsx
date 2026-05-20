@@ -6,7 +6,7 @@ import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     activity: Activity;

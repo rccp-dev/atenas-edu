@@ -6,7 +6,7 @@ import { getStudents } from "@/services/student.service";
 
 import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     activity: Activity;

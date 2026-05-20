@@ -2,7 +2,7 @@ import { Classroom } from "@/types/classroom";
 import { Student } from "@/types/student";
 
 import View from "@/components/ui/View";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     classroom: Classroom;

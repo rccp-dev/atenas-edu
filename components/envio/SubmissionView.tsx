@@ -4,7 +4,7 @@ import { getActivityById } from "@/services/activity.service";
 import { getClassroomById } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     submission: Submission;

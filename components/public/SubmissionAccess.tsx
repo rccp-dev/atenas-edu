@@ -12,7 +12,7 @@ import { getStudents } from "@/services/student.service";
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Select from "@/components/ui/Select";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../ui/Button";
 
 interface Props {
     activity: Activity;
