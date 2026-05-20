@@ -25,7 +25,7 @@ export default async function TurmasPage() {
                     </Button>
                 </div>
 
-                <ClassroomList classrooms={classrooms}/>
+                <ClassroomList classroom={classrooms}/>
             </section>
         </main>
     );

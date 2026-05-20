@@ -19,18 +19,26 @@ export const studentsMock: Student[] = [
         createdAt: "15/01/2026",
         isDraft: false
     },
-    {
+        {
         id: "3",
-        name: "Pedro Santos",
+        name: "Marcos Silva",
         enrollment: "2026003",
-        classroomId: "2",
+        classroomId: "1",
         createdAt: "15/01/2026",
         isDraft: false
     },
     {
         id: "4",
-        name: "Ana Costa",
+        name: "Pedro Santos",
         enrollment: "2026004",
+        classroomId: "2",
+        createdAt: "15/01/2026",
+        isDraft: false
+    },
+    {
+        id: "5",
+        name: "Ana Costa",
+        enrollment: "2026005",
         classroomId: "2",
         createdAt: "15/01/2026",
         isDraft: false

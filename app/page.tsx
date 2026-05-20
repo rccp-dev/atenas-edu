@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/Button';
-
-export default function Home() {
+export default function HomePage() {
   return (
     <div className='flex flex-col mt-[25vh] max-h-screen w-full'>
 

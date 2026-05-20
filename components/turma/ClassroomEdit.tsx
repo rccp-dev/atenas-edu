@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/Button";
 
 interface Props {
     classroom: Classroom;
-    students: Student;
 };
 
 export default function ClassroomEdit({ classroom }: Props) {

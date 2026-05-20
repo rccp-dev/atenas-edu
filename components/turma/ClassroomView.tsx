@@ -33,7 +33,11 @@ export default function ClassroomView({ classroom, students }: Props) {
                 </h2>
 
                 <div className="space-y-3">
-                    {students.map((student) => (
+                    {students.filter(
+                                (student) => student.classroomId === classroom.id
+                            ).map((student) => (
+
+
                         <div key={student.id} className="rounded-2xl border border-border p-4">
 
                             <h3 className="font-medium">

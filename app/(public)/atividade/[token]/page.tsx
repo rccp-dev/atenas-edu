@@ -1,47 +1,31 @@
-import SubmissionForm from "@/components/envio/SubmissionForm";
-import SubmissionEdit from "@/components/envio/SubmissionEdit";
-import { getSubmissionById } from "@/services/submission.service";
-import { getActivityByToken } from "@/services/activity.service";  
-import { getActivityStatus } from "@/services/activity.service";
 import { notFound } from "next/navigation";
+import { getActivityByToken } from "@/services/activity.service";
+import { getClassroomById } from "@/services/classroom.service";
+import SubmissionAccess from "@/components/public/SubmissionAccess";
 
-interface PageProps {
+interface Props {
     params: Promise<{
         token: string;
     }>;
-    searchParams?: {
-        mode?: "view" | "edit";
-    };
 }
 
-export default async function NewEntityPage({ params, searchParams }: PageProps) {
+export default async function StudentLoginPage({ params }: Props) {
 
-  const { token } = await params;
-  const sp = await searchParams;
-  const submission = await getSubmissionById(token);
+    const { token } = await params;
+    const activity = await getActivityByToken(token);
 
-  if (!token || !submission) return notFound();
+    if (!activity) {
+        notFound();
+    }
 
-  const activity = await getActivityByToken(token);
-  if (!activity) return notFound();
-  const status = await getActivityStatus(activity);
-  const mode = sp?.mode ?? "new";
+    const classroom =
+        activity.classroomId
+            ? await getClassroomById(
+                activity.classroomId
+            )
+            : null;
 
-  if (mode === "edit") {
-    return <SubmissionEdit submission={submission} />;
-  }
-
-  return (
-    <main className="flex justify-center items-center min-h-screen px-4 py-10">
-      <section className="w-full max-w-4xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Enviar atividade</h1>
-
-          <p className="mt-2 text-secondary">Preencha os dados necessários.</p>
-        </div>
-
-        <SubmissionForm submission={submission} />
-      </section>
-    </main>
-  );
+    return (
+        <SubmissionAccess activity={activity} classroom={classroom}/>
+    );
 }

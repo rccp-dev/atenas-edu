@@ -10,10 +10,7 @@ export default function SubmissionList({ submissions }: Props) {
     return (
         <List>
             {submissions.map((submission) => (
-                <SubmissionCard
-                    key={submission.id}
-                    submission={submission}
-                />
+                <SubmissionCard key={submission.id} submission={submission}/>
             ))}
         </List>
     );

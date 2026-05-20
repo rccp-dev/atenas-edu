@@ -1,8 +1,10 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
-
+import { getSubmissionsByActivityId } from "@/services/submission.service";
 import { getClassroomById } from "@/services/classroom.service";
+import { getStudents } from "@/services/student.service";
 
+import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
 import { Button } from "@/components/ui/Button";
 
@@ -16,8 +18,18 @@ export default async function ActivityView({ activity }: Props) {
         return null;
     }
 
-    const classroom = await getClassroomById(activity.classroomId);
     const status = getActivityStatus(activity);
+    const classroom = await getClassroomById(activity.classroomId);
+    const submissions = await getSubmissionsByActivityId(activity.id);
+    
+    const students = await getStudents();
+
+    const student_lookup = Object.fromEntries(
+        students.map((student) => [
+            student.id,
+            student
+        ])
+    )
 
     return (
         <View>
@@ -61,11 +73,7 @@ export default async function ActivityView({ activity }: Props) {
 
                     <div className="mt-4 flex gap-2 flex-wrap">
                         {activity.attachments?.map((link) => (
-                            <a 
-                                key={link} href={link} target="_blank" 
-                                rel="noopener noreferrer"
-                                className="rounded-md bg-secondary px-2 py-1 text-sm text-light" 
-                           >
+                            <a key={link} href={link} target="_blank" rel="noopener noreferrer" className="rounded-md bg-secondary px-2 py-1 text-sm text-light">
                                 {link}
                             </a>
                         ))}
@@ -77,6 +85,8 @@ export default async function ActivityView({ activity }: Props) {
             <div className="mt-8">
                 <Button href="?mode=edit">Editar</Button>
             </div>
+
+            <ActivitySubmissionList submissions={submissions} student_lookup={student_lookup}/>
         </View>
     );
 }

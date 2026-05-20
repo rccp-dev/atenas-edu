@@ -16,29 +16,29 @@ import Textarea from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
-    initialData?: Activity;
+    activity?: Activity;
 }
 
-export default function ActivityForm({ initialData }: Props) {
+export default function ActivityForm({ activity }: Props) {
 
     const [title, setTitle] = useState(
-        initialData?.title || ""
+        activity?.title || ""
     );
 
     const [description, setDescription] = useState(
-        initialData?.description || ""
+        activity?.description || ""
     );
 
     const [deadline, setDeadline] = useState(
-        initialData?.deadline || ""
+        activity?.deadline || ""
     );
 
     const [attachments, setAttachments] = useState<string[]>(
-        initialData?.attachments || []
+        activity?.attachments || []
     );
 
     const [classroomId, setClassroomId] = useState(
-        initialData?.classroomId || ""
+        activity?.classroomId || ""
     );
 
     const [classrooms, setClassrooms] = useState<

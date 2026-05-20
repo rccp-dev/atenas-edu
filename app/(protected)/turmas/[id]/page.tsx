@@ -24,7 +24,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const mode = sp?.mode ?? "view";
 
   if (mode === "edit") {
-    return <ClassroomEdit classroom={turma} students={students} />;
+    return <ClassroomEdit classroom={turma} />;
   }
 
   return <ClassroomView classroom={turma} students={students} />;
