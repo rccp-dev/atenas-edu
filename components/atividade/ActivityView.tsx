@@ -1,12 +1,13 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
 import { getSubmissionsByActivityId } from "@/services/submission.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import { getStudents } from "@/services/student.service";
 
 import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
+import { notFound } from "next/navigation";
 
 interface Props {
     activity: Activity;
@@ -21,6 +22,12 @@ export default async function ActivityView({ activity }: Props) {
     const status = getActivityStatus(activity);
     const classroom = await getClassroomById(activity.classroomId);
     const submissions = await getSubmissionsByActivityId(activity.id);
+
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
     
     const students = await getStudents();
 
@@ -47,7 +54,7 @@ export default async function ActivityView({ activity }: Props) {
 
                 <div>
                     <span className="text-secondary">Turma:</span>
-                    {" "}{classroom?.name}
+                    {""}{classroomName}
                 </div>
 
                 <div>

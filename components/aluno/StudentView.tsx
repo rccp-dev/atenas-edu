@@ -1,5 +1,5 @@
 import { Student } from "@/types/student";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
@@ -16,6 +16,12 @@ export default async function StudentView({ student }: Props) {
 
     const classroom = await getClassroomById(student.classroomId);
 
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
+
     return (
         <View>
             <div className="mb-6">
@@ -31,7 +37,7 @@ export default async function StudentView({ student }: Props) {
             <div className="space-y-4 text-sm text-foreground">
                 <div>
                     <span className="text-secondary">Turma:</span>
-                    {" "}{classroom?.name}
+                    {" "}{classroomName}
                 </div>
 
                 <div>

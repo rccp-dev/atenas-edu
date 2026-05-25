@@ -6,7 +6,7 @@ import { Student } from "@/types/student";
 import { Classroom } from "@/types/classroom";
 
 import { createStudent } from "@/services/student.service";
-import { getClassrooms } from "@/services/classroom.service";
+import { getClassroomDisplayName, getClassrooms } from "@/services/classroom.service";
 
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
@@ -29,7 +29,7 @@ export default function StudentForm({ initialData }: Props) {
         initialData?.classroomId || ""
     );
 
-    const [relatedItems, setRelatedItems] = useState<
+    const [classroms, setClassrooms] = useState<
         Classroom[]
     >([]);
 
@@ -43,12 +43,12 @@ export default function StudentForm({ initialData }: Props) {
 
     useEffect(() => {
 
-        async function loadRelatedItems() {
+        async function loadClassrooms() {
             const data = await getClassrooms();
-            setRelatedItems(data);
+            setClassrooms(data);
         }
 
-        loadRelatedItems();
+        loadClassrooms();
 
     }, []);
 
@@ -76,9 +76,9 @@ export default function StudentForm({ initialData }: Props) {
 
                         <option value="">Selecione uma turma</option>
 
-                        {relatedItems.map((item) => (
-                            <option key={item.id} value={item.id}>
-                                {item.name}
+                        {classroms.map((classroom) => (
+                            <option key={classroom.id} value={classroom.id}>
+                                {getClassroomDisplayName(classroom)}
                             </option>
                         ))}
 

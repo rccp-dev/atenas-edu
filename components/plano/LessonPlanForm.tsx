@@ -6,7 +6,7 @@ import { LessonPlan, Subject, subject_options } from "@/types/lessonPlan";
 import { Classroom } from "@/types/classroom";
 
 import { createLessonPlan } from "@/services/lessonPlan.service";
-import { getClassrooms } from "@/services/classroom.service";
+import { getClassroomDisplayName, getClassrooms } from "@/services/classroom.service";
 
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
@@ -107,7 +107,7 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
                         {classrooms.map((classroom) => (
                             <option key={classroom.id} value={classroom.id}>
-                                {classroom.name}
+                                {getClassroomDisplayName(classroom)}
                             </option>
                         ))}
 

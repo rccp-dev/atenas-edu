@@ -6,7 +6,7 @@ import { Activity } from "@/types/activity";
 import { Classroom } from "@/types/classroom";
 
 import { createActivity } from "@/services/activity.service";
-import { getClassrooms } from "@/services/classroom.service";
+import { getClassroomDisplayName, getClassrooms } from "@/services/classroom.service";
 
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
@@ -91,7 +91,7 @@ export default function ActivityForm({ activity }: Props) {
 
                         {classrooms.map((classroom) => (
                             <option key={classroom.id} value={classroom.id}>
-                                {classroom.name}
+                                {getClassroomDisplayName(classroom)}
                             </option>
                         ))}
 

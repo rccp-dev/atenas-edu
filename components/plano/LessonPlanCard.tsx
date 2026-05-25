@@ -1,5 +1,5 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 
 interface LessonPlanCardProps {
@@ -14,6 +14,12 @@ export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
 
     const classroom = await getClassroomById(plan.classroomId);
 
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
+
     return (
         <Link href={`/planos/${plan.id}`} className="rounded-xl border border-border bg-background p-5 transition hover:bg-white">
             <div className="flex items-center justify-between">
@@ -27,7 +33,7 @@ export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
                 </span>
             </div>
 
-            <p className="mt-3 text-secondary">{classroom?.name}</p>
+            <p className="mt-3 text-secondary">{classroomName}</p>
 
             <p className="mt-3 text-secondary">{plan.description}</p>
 

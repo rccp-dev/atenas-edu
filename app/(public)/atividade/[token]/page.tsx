@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getActivityByToken } from "@/services/activity.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import SubmissionAccess from "@/components/public/SubmissionAccess";
 
 interface Props {
@@ -25,7 +25,13 @@ export default async function StudentLoginPage({ params }: Props) {
             )
             : null;
 
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
+
     return (
-        <SubmissionAccess activity={activity} classroom={classroom}/>
+        <SubmissionAccess activity={activity} classroomName={classroomName}/>
     );
 }

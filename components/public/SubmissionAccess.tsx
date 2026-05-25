@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 import { Activity } from "@/types/activity";
 import { Student } from "@/types/student";
-import { Classroom } from "@/types/classroom"
 
 import { getStudents } from "@/services/student.service";
 
@@ -16,10 +15,11 @@ import { Button } from "../ui/Button";
 
 interface Props {
     activity: Activity;
-    classroom?: Classroom | null;
+    classroomName: string;
 }
 
-export default function SubmissionAccess({ activity, classroom }: Props) {
+export default function SubmissionAccess({ activity, classroomName }: Props) {
+
 
     const router = useRouter();
     const [studentId, setStudentId] = useState("");
@@ -58,7 +58,7 @@ export default function SubmissionAccess({ activity, classroom }: Props) {
                             </h1>
 
                             <p className="mt-2 text-secondary">
-                                {classroom?.name}
+                                {classroomName}
                             </p>
                         </div>
 

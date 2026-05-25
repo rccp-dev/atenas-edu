@@ -1,5 +1,5 @@
 import { Activity } from "@/types/activity";
-import { getClassrooms, getClassroomById} from "@/services/classroom.service";
+import { getClassrooms, getClassroomById, getClassroomDisplayName} from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
@@ -21,6 +21,12 @@ export default async function ActivityEdit({ activity }: Props) {
     const classrooms = await getClassrooms();
     const classroom = await getClassroomById(activity.classroomId);
 
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
+
     return (
         <Edit>
             <div className="mb-6">
@@ -29,7 +35,7 @@ export default async function ActivityEdit({ activity }: Props) {
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {classroom?.name}
+                    {classroomName}
                 </p>
             </div>
 
@@ -46,7 +52,7 @@ export default async function ActivityEdit({ activity }: Props) {
 
                         {classrooms.map((classroom) => (
                             <option key={classroom.id} value={classroom.id}>
-                                {classroom.name}
+                                {getClassroomDisplayName(classroom)}
                             </option>
                         ))}
 

@@ -1,6 +1,6 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
@@ -16,6 +16,12 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
 
     const classroom = await getClassroomById(activity.classroomId);
     const status = getActivityStatus(activity);
+
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Link href={`/atividades/${activity.id}`}>
@@ -39,7 +45,7 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
                     </div>
 
                     <p className="text-secondary">
-                        {classroom?.name}
+                        {classroomName}
                     </p>
 
                     <div>
