@@ -12,14 +12,14 @@ interface Props {
 
 export default function ClassroomView({ classroom, students }: Props) {
 
-    const name = getClassroomDisplayName(classroom);
+    const classroom_name = getClassroomDisplayName(classroom);
 
     return (
         <View>
             <div className="space-y-2">
                 <div className="flex justify-between itemsc-center">
                     <h1 className="text-4xl font-bold">
-                        {name}
+                        {classroom_name}
                     </h1>
 
                     <Button href="?mode=edit">Editar</Button>

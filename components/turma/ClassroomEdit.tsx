@@ -13,7 +13,7 @@ interface Props {
 
 export default function ClassroomEdit({ classroom }: Props) {
 
-    const name = getClassroomDisplayName(classroom);
+    const classroom_name = getClassroomDisplayName(classroom);
 
     return (
         <Edit>
@@ -23,7 +23,7 @@ export default function ClassroomEdit({ classroom }: Props) {
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {name}
+                    {classroom_name}
                 </p>
             </div>
 

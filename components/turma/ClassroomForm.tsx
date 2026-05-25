@@ -30,7 +30,6 @@ export default function ClassroomForm() {
     return (
         <Form>
             <div className="flex flex-col gap-4 w-sm">
-                {/* Nome da turma deve ser criado dinamicamente a partir do ano e série */}
 
                 <Field label="Ano">
                     <Input value={year} type="number" onChange={(e) => setYear(Number(e.target.value))} placeholder="Ano"/>
