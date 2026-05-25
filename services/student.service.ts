@@ -1,37 +1,99 @@
 import { Student } from "@/types/student";
-import { studentsMock } from "@/mocks/students.mock";
+import { supabase } from "@/lib/supabase";
 
 /* 
-    Service respobnsável por integração futura com database
+    Service responsável por integração futura com database
     e busca, criação, edição e remoção de alunos
 */
 
 export async function createStudent(
   data: Partial<Student>
 ) {
-  console.log("CREATE:", data);
+
+  const {data: student, error} =
+  await supabase
+  .from("students")
+  .insert(data)
+  .select()
+  .single();
+
+  if(error){
+    throw error;
+  }
+
+  return student;
 }
 
 export async function getStudents(): Promise<Student[]> {
-    return studentsMock;
+    const {data, error} = 
+    await supabase
+    .from("students")
+    .select("*");
+
+    if(error) {
+        throw error;
+    }
+    return data || [];
 }
 
 export async function getStudentById(id: string) {
-    return studentsMock.find((student) => student.id === id);
+    const {data, error } =
+    await supabase
+    .from("students")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
 }
 
 export async function getStudentsByClassroomId(classroomId: string) {
-    return studentsMock.filter(
-        (student) => student.classroomId === classroomId
-    );
+    const {data, error } = 
+    await supabase
+    .from("students")
+    .select("*")
+    .eq("classroomId", classroomId);
+
+    if(error) {
+        throw error;
+    }
+
+    return data || [];
+
 }
 
 export async function updateStudent(id: string, data: Partial<Student>) {
     /* Futuramente: update no banco e validação de permissões */
-    console.log("UPDATE:", id, data);
+
+  const {data: student, error} =
+  await supabase
+  .from("students")
+  .update(data)
+  .eq("id" , id)
+  .select()
+  .single();
+
+  if(error){
+    throw error;
+  }
+
+  return student;
 }
 
 export async function deleteStudent(id: string) {
     /* Futuramente: soft delete no Supabase e verificação de permissão */
-    console.log("DELETE:", id);
+  const { error } =
+  await supabase
+  .from("students")
+  .delete()
+  .eq("id", id);
+
+  if(error){
+    throw error;
+  }
+
 }
