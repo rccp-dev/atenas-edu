@@ -24,9 +24,9 @@ export function getActivityStatus(
 ) {
 
     if (
-        activity.status?.includes("Entregue")
+        activity.status?.includes("Corrigida")
     ) {
-        return "Entregue";
+        return "Corrigida";
     }
 
     if (!activity.deadline) {

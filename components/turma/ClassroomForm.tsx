@@ -14,14 +14,14 @@ import { createClassroom } from "@/services/classroom.service";
 export default function ClassroomForm() {
 
     const [year, setYear] = useState<number>(0);
-    const [identifier, setIdentifier] = useState("");
+    const [grade, setGrade] = useState("");
     const [description, setDescription] = useState("");
 
     async function handleSubmit() {
 
         await createClassroom({
             year,
-            identifier,
+            grade,
             description,
         });
 
@@ -30,14 +30,13 @@ export default function ClassroomForm() {
     return (
         <Form>
             <div className="flex flex-col gap-4 w-sm">
-                {/* Nome da turma deve ser criado dinamicamente a partir do ano e série */}
 
                 <Field label="Ano">
                     <Input value={year} type="number" onChange={(e) => setYear(Number(e.target.value))} placeholder="Ano"/>
                 </Field>
 
                 <Field label="Série">
-                    <Input value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Série"/>
+                    <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="Série"/>
                 </Field>
 
             </div>

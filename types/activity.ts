@@ -1,7 +1,6 @@
 export const status_options = [
     "Atribuída",
-    "Encerrada",
-    "Entregue",
+    "Corrigida",
 ] as const;
 
 export type Status =

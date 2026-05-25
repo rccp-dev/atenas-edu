@@ -6,18 +6,16 @@ import { Classroom } from "@/types/classroom";
 export const classroomsMock: Classroom[] = [
     {
         id: "1",
-        name: "1º ano A",
         year: 1,
-        identifier: "A",
+        grade: "A",
         description: "Turma do 1º ano A de português",
         createdAt: "2026-01-01",
         isDraft: false
     },
     {
         id: "2",
-        name: "2º ano B",
         year: 2,
-        identifier: "B",
+        grade: "B",
         description: "Turma do 2º ano B de português",
         createdAt: "2026-01-01",
         isDraft: false
