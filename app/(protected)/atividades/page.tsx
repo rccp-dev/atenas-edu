@@ -2,6 +2,8 @@ import ActivityList from "@/components/atividade/ActivityList";
 import { getActivities } from "@/services/activity.service";
 import { Button } from "@/components/ui/Button";
 
+export const dynamic = "force-dynamic";
+
 export default async function ActivityPage() {
   const activities = await getActivities();
 

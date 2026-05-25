@@ -3,6 +3,8 @@ import { getActivityByToken } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import SubmissionAccess from "@/components/public/SubmissionAccess";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
     params: Promise<{
         token: string;

@@ -1,5 +1,7 @@
 import LessonPlanForm from '@/components/plano/LessonPlanForm'
 
+export const dynamic = "force-dynamic";
+
 export default function NovoPlanoPage() {
     return (
         <main className="flex justify-center items-center min-h-screen px-4 py-10">

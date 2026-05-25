@@ -5,6 +5,8 @@ import { getStudentsByClassroomId } from "@/services/student.service";
 import ClassroomView from "@/components/turma/ClassroomView";
 import ClassroomEdit from "@/components/turma/ClassroomEdit";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams?: {

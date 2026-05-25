@@ -9,6 +9,8 @@ import SubmissionPublicForm from "@/components/public/SubmissionPublicForm";
 import SubmissionPublicEdit from "@/components/public/SubmissionPublicEdit";
 import SubmissionPublicView from "@/components/public/SubmissionPublicView";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
     params: Promise<{
         token: string;

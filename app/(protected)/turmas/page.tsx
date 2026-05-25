@@ -2,6 +2,8 @@ import ClassroomList from "@/components/turma/ClassroomList";
 import { getClassrooms } from "@/services/classroom.service";
 import { Button } from "@/components/ui/Button";
 
+export const dynamic = "force-dynamic";
+
 export default async function TurmasPage() {
 
     const classrooms = await getClassrooms();

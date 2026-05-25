@@ -3,6 +3,8 @@ import LessonPlanEdit from "@/components/plano/LessonPlanEdit";
 import { getLessonPlanById } from "@/services/lessonPlan.service";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{
     id: string;
