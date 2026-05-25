@@ -4,7 +4,6 @@ import { getClassroomDisplayName } from "@/services/classroom.service";
 
 import Link from "next/link";
 import Card from "@/components/ui/Card";
-import { notFound } from "next/navigation";
 
 interface StudentCardProps {
     student: Student;
@@ -13,17 +12,17 @@ interface StudentCardProps {
 export default async function StudentCard({ student }: StudentCardProps) {
 
     if (!student.classroomId) {
-        return notFound();
+        return null;
     }
 
     const classroom = await getClassroomById(student.classroomId);
 
    
     if (!classroom) {
-        return notFound();
+        return null;
     }
 
-    const classroom_name = await getClassroomDisplayName(classroom);
+    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Link href={`/alunos/${student.id}`}>
@@ -38,7 +37,7 @@ export default async function StudentCard({ student }: StudentCardProps) {
                     </span>
                 </div>
 
-                <p className="mt-3 text-secondary">{classroom_name}</p>
+                <p className="mt-3 text-secondary">{classroomName}</p>
             </Card>
         </Link>
     );

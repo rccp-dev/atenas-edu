@@ -11,7 +11,7 @@ import { Classroom } from "@/types/classroom";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassrooms } from "@/services/classroom.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import UploadBox from "./UploadBox";
@@ -30,31 +30,24 @@ export default function SubmissionPublicEdit({ submission }: Props) {
     const [file, setFile] = useState<File | null>(null);
     const [student, setStudent] = useState<Student | null>(null);
     const [activity, setActivity] = useState<Activity | null>(null);
-    const [classroom, setClassroom] = useState<Classroom | null>(null);
-    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-
-    
+    const [classroomName, setClassroomName] = useState<string>("");
 
     useEffect(() => {
 
         async function loadData() {
 
-            const [
-                studentData,
-                activityData,
-                classroomsData,
-                classroomData
-            ] = await Promise.all([
+            const [studentData, activityData, classroom] = await Promise.all([
                 getStudentById(submission.studentId),
                 getActivityById(submission.activityId),
-                getClassrooms(),
-                getClassroomById(submission.classroomId)
+                getClassroomById(submission.classroomId),
             ]);
 
             setStudent(studentData ?? null);
             setActivity(activityData ?? null);
-            setClassrooms(classroomsData ?? null);
-            setClassroom(classroomData ?? null);
+
+            if (classroom) {
+                setClassroomName(getClassroomDisplayName(classroom));
+            }
         }
 
         loadData();
@@ -74,7 +67,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {student?.name} - {classroom?.name}
+                    {student?.name} - {classroomName}
                 </p>
                 
                 {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}

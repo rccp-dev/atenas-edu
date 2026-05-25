@@ -8,12 +8,12 @@ interface ClassroomCardProps{
  
 export async function ClassroomCard({classroom}: ClassroomCardProps) {
 
-    const classroom_name = getClassroomDisplayName(classroom);
+    const classroomName = getClassroomDisplayName(classroom);
 
     return (
         <Link href={`/turmas/${classroom.id}`} className="rounded-2xl border border-border bg-background p-5 transition hover:bg-white">
             <h2 className="text-lg font-semibold">
-                {classroom_name}
+                {classroomName}
             </h2>
 
             <p className="mt-3 text-secondary">{classroom.description}</p>

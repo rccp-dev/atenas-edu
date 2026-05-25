@@ -1,5 +1,5 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
@@ -15,6 +15,12 @@ export default async function LessonPlanView({ plan }: Props) {
     }
 
     const classroom = await getClassroomById(plan.classroomId);
+
+    if (!classroom) {
+        return null;
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <View>
@@ -35,7 +41,7 @@ export default async function LessonPlanView({ plan }: Props) {
                         Turma:
                     </span>
 
-                    {" "}{classroom?.name || "N/A"}
+                    {" "}{classroomName}
                 </div>
 
                 <div>

@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { notFound } from "next/navigation";
 
 import { Activity } from "@/types/activity";
 import { Student } from "@/types/student";
 import { Classroom } from "@/types/classroom";
+import { getClassroomDisplayName } from "@/services/classroom.service";
 
 import { createSubmission } from "@/services/submission.service";
 
@@ -26,6 +28,15 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
     }
 
     const [file, setFile] = useState<File | null>(null);
+    const [classroomName, setClassroomName] = useState<string>("");
+
+    useEffect(() => {
+        if (classroom) {
+            setClassroomName(getClassroomDisplayName(classroom));
+        } else {
+            return notFound();
+        }
+    }, [classroom]);
 
     async function handleSubmit() {
 
@@ -50,7 +61,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {classroom?.name}
+                    {classroomName}
                 </p>
             </div>
 

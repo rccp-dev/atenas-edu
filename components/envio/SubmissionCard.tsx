@@ -1,9 +1,10 @@
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
+import { notFound } from "next/navigation";
 
 interface Props {
     submission: Submission;
@@ -12,12 +13,18 @@ interface Props {
 export default async function SubmissionCard({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return null;
+        return notFound();
     }
     
     const student = await getStudentById(submission.studentId);
     const classroom = await getClassroomById(submission.classroomId);
     const activity = await getActivityById(submission.activityId);
+
+    if (!classroom) {
+        return notFound();
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Link href={`/envios/${submission.id}`}>
@@ -36,7 +43,7 @@ export default async function SubmissionCard({ submission }: Props) {
                 {/* Criar get para status da entrega */}
 
                 <p className="mt-3 text-secondary">
-                    {classroom?.name}
+                    {classroomName}
                 </p>
 
                 <p className="mt-3 text-secondary">

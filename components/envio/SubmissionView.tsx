@@ -1,10 +1,11 @@
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
-import { getClassroomById } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
+import { notFound } from "next/navigation";
 
 interface Props {
     submission: Submission;
@@ -13,12 +14,18 @@ interface Props {
 export default async function SubmissionView({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return null;
+        return notFound();
     }
 
     const student = await getStudentById(submission.studentId);
     const activity = await getActivityById(submission.activityId);
     const classroom = await getClassroomById(submission.classroomId);
+
+    if (!classroom) {
+        return notFound();
+    }
+
+    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <View>
@@ -28,7 +35,7 @@ export default async function SubmissionView({ submission }: Props) {
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {student?.name || "Sem nome do aluno"} - {classroom?.name}
+                    {student?.name || "Sem nome do aluno"} - {classroomName}
                 </p>
                 
                 {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
