@@ -1,5 +1,5 @@
 import { Classroom } from "@/types/classroom";
-import { Student } from "@/types/student";
+import { getClassroomDisplayName } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
@@ -13,6 +13,8 @@ interface Props {
 
 export default function ClassroomEdit({ classroom }: Props) {
 
+    const name = getClassroomDisplayName(classroom);
+
     return (
         <Edit>
             <div className="mb-6">
@@ -21,7 +23,7 @@ export default function ClassroomEdit({ classroom }: Props) {
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {classroom.name}
+                    {name}
                 </p>
             </div>
 
@@ -32,7 +34,7 @@ export default function ClassroomEdit({ classroom }: Props) {
                 </Field>
 
                 <Field label="Série">
-                    <Input defaultValue={classroom.identifier}/>
+                    <Input defaultValue={classroom.grade}/>
                 </Field>
 
                 <Field label="Descrição">

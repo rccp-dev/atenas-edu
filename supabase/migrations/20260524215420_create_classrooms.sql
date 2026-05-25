@@ -1,8 +1,7 @@
 CREATE TABLE classrooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name TEXT,
 
-    year NUMERIC(1,0) NOT NULL
+    year SMALLINT NOT NULL
     CHECK (year BETWEEN 1 AND 9),
 
     grade CHAR(1) NOT NULL

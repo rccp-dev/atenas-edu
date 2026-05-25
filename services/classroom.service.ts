@@ -12,6 +12,10 @@ export async function createClassroom(
   console.log("CREATE:", data);
 }
 
+export function getClassroomDisplayName(classroom: Classroom) {
+  return `${classroom.year}º Ano ${classroom.grade}`;
+}
+
 export async function getClassrooms(): Promise<Classroom[]> {
     return classroomsMock;
 }

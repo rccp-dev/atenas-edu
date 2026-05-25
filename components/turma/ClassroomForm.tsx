@@ -14,14 +14,14 @@ import { createClassroom } from "@/services/classroom.service";
 export default function ClassroomForm() {
 
     const [year, setYear] = useState<number>(0);
-    const [identifier, setIdentifier] = useState("");
+    const [grade, setGrade] = useState("");
     const [description, setDescription] = useState("");
 
     async function handleSubmit() {
 
         await createClassroom({
             year,
-            identifier,
+            grade,
             description,
         });
 
@@ -37,7 +37,7 @@ export default function ClassroomForm() {
                 </Field>
 
                 <Field label="Série">
-                    <Input value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Série"/>
+                    <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="Série"/>
                 </Field>
 
             </div>
