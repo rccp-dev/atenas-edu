@@ -1,5 +1,5 @@
 import { Submission } from "@/types/submission";
-import { supabase} from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export async function createSubmission(data: Partial<Submission>) {
   const { data: existing } =
