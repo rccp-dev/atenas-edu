@@ -1,22 +1,63 @@
 import { Activity } from "@/types/activity";
-import { activitiesMock } from "@/mocks/activities.mock";
+import { supabase } from "@/lib/supabase";
 
 export async function createActivity(data: Partial<Activity>) {
-  console.log("CREATE:", data);
+  const { data: activity, error } =
+    await supabase
+        .from("activities")
+        .insert(data)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return activity;
 }
 
 export async function getActivities(): Promise<Activity[]> {
-  return activitiesMock;
+  const { data, error } =
+    await supabase
+        .from("activities")
+        .select("*");
+        
+
+if (error) {
+    throw error;
+}
+
+return data || [];
 }
 
 export async function getActivityById(id: string) {
-  return activitiesMock.find((activity) => activity.id === id);
+    const { data, error } =
+    await supabase
+        .from("activities")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return data;
 }
 
 export async function getActivityByToken(token: string) {
-    return activitiesMock.find(
-        (a) => a.token === token
-    );
+   const { data, error } =
+    await supabase
+        .from("activities")
+        .select("*")
+        .eq("token", token)
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return data;
 }
 
 export function getActivityStatus(
@@ -51,9 +92,30 @@ export function getActivityStatus(
 }
 
 export async function updateActivity(id: string, data: Partial<Activity>) {
-  console.log("UPDATE:", id, data);
+  const { data: activity, error } =
+    await supabase
+        .from("activities")
+        .update(data)
+        .eq("id", id)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return activity;
 }
 
 export async function deleteActivity(id: string) {
-  console.log("DELETE:", id);
+  const { error } =
+    await supabase
+        .from("activities")
+        .delete()
+        .eq("id", id);
+if (error) {
+    throw error;
+}
+
+
 }

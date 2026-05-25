@@ -1,5 +1,5 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { lessonPlansMock } from "@/mocks/lessonPlans.mock";
+import { supabase } from "@/lib/supabase";
 
 /* 
     Service respobnsável por integração futura com database
@@ -9,31 +9,79 @@ import { lessonPlansMock } from "@/mocks/lessonPlans.mock";
 export async function createLessonPlan(
   data: Partial<LessonPlan>
 ) {
-  console.log("CREATE:", data);
+  const { data: lessonPlan, error } =
+    await supabase
+        .from("lesson_plans")
+        .insert(data)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return lessonPlan;
 }
 
 export async function getLessonPlans(): Promise<LessonPlan[]> {
 
     /* Futuramente: Supabase, autenticação, filtros e pagnação */
-    return lessonPlansMock;
+   const { data, error } =
+    await supabase
+        .from("lesson_plans")
+        .select("*")
+        
+
+if (error) {
+    throw error;
+}
+
+return data || [];
 }
 
 export async function getLessonPlanById(id: string): Promise<LessonPlan | undefined> {
         
-    console.log(id);
-    console.log(lessonPlansMock);
-    
-    return lessonPlansMock.find(
-        (plan) => plan.id === id
-    );
+    const { data, error } =
+    await supabase
+        .from("lesson_plans")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return data;
 }
 
 export async function updateLessonPlan(id: string, data: Partial<LessonPlan>) {
     /* Futuramente: update no banco e validação de permissões */
-    console.log("UPDATE:", id, data);
+    const { data: lessonPlan, error } =
+    await supabase
+        .from("lesson_plans")
+        .update(data)
+        .eq("id", id)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return lessonPlan;
 }
 
 export async function deleteLessonPlan(id: string) {
     /* Futuramente: soft delete no Supabase e verificação de permissão */
-    console.log("DELETE:", id);
+  const { error } =
+    await supabase
+        .from("lesson_plans")
+        .delete()
+        .eq("id", id);
+
+if (error) {
+    throw error;
+}
+
 }

@@ -1,44 +1,120 @@
 import { Submission } from "@/types/submission";
-import { submissionsMock } from "@/mocks/submissions.mock";
+import { supabase} from "@/lib/supabase";
 
 export async function createSubmission(data: Partial<Submission>) {
-  const existing = submissionsMock.find(
-    (s) => s.activityId === data.activityId && s.studentId === data.studentId,
-  );
+  const { data: existing } =
+    await supabase
+        .from("submissions")
+        .select("*")
+        .eq("activityId", data.activityId)
+        .eq("studentId", data.studentId)
+        .maybeSingle();
 
-  if (existing) {
+if (existing) {
     return existing;
-  }
-  console.log("CREATE:", data);
+}
+
+const { data: submission, error } =
+    await supabase
+        .from("submissions")
+        .insert(data)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return submission;
 }
 
 export async function getSubmissions(): Promise<Submission[]> {
-  return submissionsMock;
+ const { data, error } =
+    await supabase
+        .from("submissions")
+        .select("*");
+
+if (error) {
+    throw error;
+}
+
+return data || [];
 }
 
 export async function getSubmissionById(id: string) {
-  return submissionsMock.find((submission) => submission.id === id);
+  const { data, error } =
+    await supabase
+        .from("submissions")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return data;
 }
 
 export async function getSubmissionsByActivityId(activityId: string) {
-  return submissionsMock.filter((s) => s.activityId === activityId);
+  const { data, error } =
+    await supabase
+        .from("submissions")
+        .select("*")
+        .eq("activityId", activityId);
+
+if (error) {
+    throw error;
+}
+
+return data || [];
 }
 
 export async function getSubmissionByActivityAndStudent(
     activityId: string,
     studentId: string
 ) {
-    return submissionsMock.find(
-        (submission) =>
-            submission.activityId === activityId &&
-            submission.studentId === studentId
-    );
+    const { data, error } =
+    await supabase
+        .from("submissions")
+        .select("*")
+        .eq("activityId", activityId)
+        .eq("studentId", studentId)
+        .maybeSingle();
+
+
+if (error) {
+    throw error;
+}
+
+return data;
 }
 
 export async function updateSubmission(id: string, data: Partial<Submission>) {
-  console.log("UPDATE:", id, data);
+  const { data: submission, error } =
+    await supabase
+        .from("submissions")
+        .update(data)
+        .eq("id", id)
+        .select()
+        .single();
+
+if (error) {
+    throw error;
+}
+
+return submission;
 }
 
 export async function deleteSubmission(id: string) {
-  console.log("DELETE:", id);
+  const { error } =
+    await supabase
+        .from("submissions")
+        .delete()
+        .eq("id", id);
+
+if (error) {
+    throw error;
+}
+
 }
