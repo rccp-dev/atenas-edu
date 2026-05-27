@@ -58,13 +58,21 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
     async function handleSubmit() {
 
-        await createLessonPlan({
-            title,
-            subjects,
-            classroomId,
-            description,
-            content,
-        });
+        try {
+
+            await createLessonPlan({
+                title,
+                subjects,
+                classroomId,
+                description,
+                content,
+            });
+
+        } catch(error) {
+
+            console.error(error);
+
+        }
 
     }
 

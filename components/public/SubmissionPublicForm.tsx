@@ -40,15 +40,23 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
 
     async function handleSubmit() {
 
-        await createSubmission({
-            studentId: student.id,
-            classroomId: classroom.id,
-            activityId: activity.id,
-            file_url: file?.name || "",
-            /* Criar lógica para decidir entre "Entregue" e "Entregue com atraso" para status */
-            submittedAt: new Date().toISOString(),
-            isDraft: false
-        });
+        try {
+
+            await createSubmission({
+                studentId: student.id,
+                classroomId: classroom.id,
+                activityId: activity.id,
+                /* Puxar URL de file da UploadBox */
+                /* Criar lógica para decidir entre "Entregue" e "Entregue com atraso" para status */
+                submittedAt: new Date().toISOString(),
+                isDraft: false
+            });
+
+        } catch(error) {
+
+            console.error(error);
+            
+        }
 
     }
 

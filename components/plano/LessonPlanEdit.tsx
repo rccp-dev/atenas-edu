@@ -1,6 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { LessonPlan } from "@/types/lessonPlan";
 import { subject_options } from "@/types/lessonPlan";
+import { Classroom } from "@/types/classroom";
+
 import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+
+import { updateLessonPlan, deleteLessonPlan } from "@/services/lessonPlan.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
@@ -8,61 +15,135 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
+import { notFound } from "next/navigation";
 
 interface Props {
     plan: LessonPlan;
-};
+}
 
-export default async function LessonPlanEdit({ plan }: Props) {
+export default function LessonPlanEdit({ plan }: Props) {
 
-    if (!plan.classroomId) {
-        return null;
+    const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+    const [classroomName, setClassroomName] = useState("");
+
+    const [title, setTitle] = useState(plan.title);
+    const [subjects, setSubjects] = useState(plan.subjects);
+    const [classroomId, setClassroomId] = useState(plan.classroomId);
+    const [description, setDescription] = useState(plan.description);
+    const [content, setContent] = useState(plan.content);
+
+    useEffect(() => {
+
+        async function loadData() {
+
+            if (!plan.classroomId) {
+                notFound();
+                return;
+            }
+
+            const [classroomsData, classroomData] = await Promise.all([
+                getClassrooms(),
+                getClassroomById(plan.classroomId),
+            ]);
+
+            setClassrooms(classroomsData);
+
+            if (!classroomData) {
+                notFound();
+                return;
+            }
+
+            setClassroomName(
+                getClassroomDisplayName(classroomData)
+            );
+
+        }
+
+        loadData();
+
+    }, [plan.classroomId]);
+
+    async function handleUpdate() {
+
+        try {
+
+            setSaving(true);
+
+            await updateLessonPlan(plan.id, {
+                title,
+                subjects,
+                classroomId,
+                description,
+                content,
+            });
+
+        } finally {
+            setSaving(false);
+        }
+
     }
 
-    const classrooms = await getClassrooms();
-    const classroom = await getClassroomById(plan.classroomId);
+    async function handleDelete() {
 
-    if (!classroom) {
-        return null;
+        try {
+
+            setDeleting(true);
+
+            await deleteLessonPlan(plan.id);
+
+        } finally {
+            setDeleting(false);
+        }
+
     }
-
-    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Edit>
+
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-foreground">
                     Editar plano de aula
                 </h1>
 
                 <p className="mt-2 text-secondary">
-                    {classroomName}
+                    {classroomName || ""}
                 </p>
             </div>
 
             <div className="flex flex-col gap-4">
-                
+
                 <Field label="Título">
-                    <Input defaultValue={plan.title}/>
+                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Field>
 
                 <Field label="Matérias">
-                    <Select multiple defaultValue={plan.subjects}>
-
-                        <option value="">Selecione uma ou mais matérias</option>
-
+                    <Select
+                        multiple
+                        value={subjects}
+                        onChange={(e) => {
+                            const values = Array.from(
+                                e.target.selectedOptions,
+                                (opt) => opt.value as any
+                            );
+                            setSubjects(values);
+                        }}
+                    >
                         {subject_options.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
                         ))}
-
                     </Select>
                 </Field>
 
                 <Field label="Turma">
-                    <Select defaultValue={plan.classroomId}>
-
+                    <Select
+                        value={classroomId}
+                        onChange={(e) => setClassroomId(e.target.value)}
+                    >
                         <option value="">Selecione uma turma</option>
 
                         {classrooms.map((classroom) => (
@@ -70,24 +151,38 @@ export default async function LessonPlanEdit({ plan }: Props) {
                                 {getClassroomDisplayName(classroom)}
                             </option>
                         ))}
-
                     </Select>
                 </Field>
 
                 <Field label="Descrição">
-                    <Textarea defaultValue={plan.description}/>
+                    <Textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
                 </Field>
 
                 <Field label="Conteúdo">
-                    <Textarea defaultValue={plan.content} className="min-h-50"/>
+                    <Textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        className="min-h-50"
+                    />
                 </Field>
 
             </div>
 
             <div className="mt-8 flex gap-3">
                 <Button href="?mode=view">Voltar</Button>
-                <Button>Salvar alterações</Button>
+
+                <Button disabled={saving} onClick={handleUpdate}>
+                    {saving ? "Salvando..." : "Salvar alterações"}
+                </Button>
+
+                <Button disabled={deleting} onClick={handleDelete}>
+                    {deleting ? "Excluir" : "Excluir"}
+                </Button>
             </div>
+
         </Edit>
     );
 }

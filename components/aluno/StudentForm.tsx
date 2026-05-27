@@ -40,6 +40,9 @@ export default function StudentForm({ initialData }: Props) {
     const [content, setContent] = useState(
         initialData?.content || ""
     );
+    
+    const [loading, setLoading] =
+        useState(false);
 
     useEffect(() => {
 
@@ -54,13 +57,27 @@ export default function StudentForm({ initialData }: Props) {
 
     async function handleSubmit() {
 
-        await createStudent({
-            name,
-            classroomId,
-            enrollment,
-            content,
-        });
+        try {
 
+            setLoading(true);
+
+            await createStudent({
+                name,
+                classroomId,
+                enrollment,
+                content,
+            });
+
+        } catch(error) {
+
+            console.error(error)
+            
+        } finally {
+
+            setLoading(false);
+
+        }
+        
     }
 
     return (
@@ -102,7 +119,9 @@ export default function StudentForm({ initialData }: Props) {
             </Field>
 
             <div className="w-20">
-                <Button type="submit" onClick={handleSubmit}>Salvar</Button>
+                <Button disabled={loading} type="submit" onClick={handleSubmit}>
+                    {loading ? "Salvando..." : "Salvar"}
+                </Button>
             </div>
         </Form>
     );

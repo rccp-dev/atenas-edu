@@ -1,5 +1,10 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Student } from "@/types/student";
+import { Classroom } from "@/types/classroom";
 import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+import { updateStudent, deleteStudent } from "@/services/student.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
@@ -12,19 +17,88 @@ interface Props {
     student: Student;
 };
 
-export default async function StudentEdit({ student }: Props) {
+export default function StudentEdit({ student }: Props) {
 
-    if (!student.classroomId) {
-        return null;
+    const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+    const [classroomName, setClassroomName] = useState("");
+
+    const [name, setName] = useState(student.name);
+    const [enrollment, setEnrollment] = useState(student.enrollment);
+    const [classroomId, setClassroomId] = useState(student.classroomId);
+    const [content, setContent] = useState(student.content || "");
+
+    useEffect(() => {
+
+        async function loadData() {
+
+            try {
+
+                if (!student.classroomId) {
+                    return;
+                }
+
+                const [classroomsData, classroomData] = await Promise.all([
+                    getClassrooms(),
+                    getClassroomById(student.classroomId),
+                ]);
+
+                setClassrooms(classroomsData);
+
+                if (!classroomData) {
+                    return;
+                }
+
+                setClassroomName(
+                    getClassroomDisplayName(classroomData)
+                );
+
+            }
+
+        }
+
+        loadData();
+
+    }, [student.classroomId]);
+
+    async function handleUpdate() {
+
+        try {
+
+            setSaving(true);
+
+            await updateStudent(student.id, {
+                name,
+                enrollment,
+                classroomId,
+                content,
+            });
+
+        } finally {
+
+            setSaving(false);
+
+        }
+
     }
 
-    const classrooms = await getClassrooms();
-    const classroom = await getClassroomById(student.classroomId);
+    async function handleDelete() {
 
-    if (!classroom) {
-        return null;
+        try {
+
+            setDeleting(true);
+
+            await deleteStudent(student.id);
+
+        } finally {
+
+            setDeleting(false);
+
+        }
+
     }
-    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Edit>
@@ -41,15 +115,15 @@ export default async function StudentEdit({ student }: Props) {
             <div className="flex flex-col gap-4">
 
                 <Field label="Nome">
-                    <Input defaultValue={student.name}/>
+                    <Input value={name} onChange={(e) => setName(e.target.value)} />
                 </Field>
 
                 <Field label="Matrícula">
-                    <Input defaultValue={student.enrollment}/>
+                    <Input value={enrollment} onChange={(e) => setEnrollment(e.target.value)} />
                 </Field>
 
                 <Field label="Turma">
-                    <Select defaultValue={student.classroomId}                    >
+                    <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
 
                         <option value="">Selecione uma turma</option>
 
@@ -63,14 +137,21 @@ export default async function StudentEdit({ student }: Props) {
                 </Field>
 
                 <Field label="Conteúdo">
-                    <Textarea defaultValue={student.content} className="min-h-50"/>
+                    <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-50" />
                 </Field>
 
             </div>
 
             <div className="mt-8 flex gap-3">
                 <Button href="?mode=view">Voltar</Button>
-                <Button>Salvar alterações</Button>
+
+                <Button disabled={saving} onClick={handleUpdate}>
+                    {saving ? "Salvando..." : "Salvar alterações"}
+                </Button>
+
+                <Button disabled={deleting} onClick={handleDelete}>
+                    {deleting ? "Excluindo..." : "Excluir"}
+                </Button>
             </div>
         </Edit>
     );

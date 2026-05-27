@@ -1,7 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Submission } from "@/types/submission";
+import { Student } from "@/types/student";
+import { Activity } from "@/types/activity";
+import { Classroom } from "@/types/classroom";
+
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
+
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+
+import { updateSubmission } from "@/services/submission.service";
 
 import Edit from "@/components/ui/Edit";
 import Field from "@/components/ui/Field";
@@ -12,23 +22,96 @@ import { notFound } from "next/navigation";
 
 interface Props {
     submission: Submission;
-};
+}
 
-export default async function Grading({ submission }: Props) {
+export default function Grading({ submission }: Props) {
 
-    if(!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return notFound();
+    const [saving, setSaving] = useState(false);
+
+    const [student, setStudent] = useState<Student | null>(null);
+    const [activity, setActivity] = useState<Activity | null>(null);
+
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+    const [classroomName, setClassroomName] = useState("");
+
+    const [grade, setGrade] = useState(submission.grade?.toString() || "");
+    const [feedback, setFeedback] = useState(submission.feedback || "");
+
+    useEffect(() => {
+
+        async function loadData() {
+
+            if (!submission.studentId || !submission.activityId || !submission.classroomId) {
+                notFound();
+                return;
+            }
+
+            const [
+                studentData,
+                activityData,
+                classroomData
+            ] = await Promise.all([
+                getStudentById(submission.studentId),
+                getActivityById(submission.activityId),
+                getClassroomById(submission.classroomId),
+            ]);
+
+            setStudent(studentData);
+            setActivity(activityData);
+
+            if (!classroomData) {
+                notFound();
+                return;
+            }
+
+            setClassroomName(
+                getClassroomDisplayName(classroomData)
+            );
+
+        }
+
+        loadData();
+
+    }, [
+        submission.studentId,
+        submission.activityId,
+        submission.classroomId
+    ]);
+
+    async function handleUpdate() {
+
+        try {
+
+            setSaving(true);
+
+            await updateSubmission(submission.id, {
+                grade: grade ? Number(grade) : 0,
+                feedback,
+            });
+
+        } finally {
+            setSaving(false);
+        }
+
     }
 
-    const student = await getStudentById(submission.studentId);
-    const activity = await getActivityById(submission.activityId);
-    const classroom = await getClassroomById(submission.classroomId);
+    async function handleSubmitCorrection() {
 
-    if (!classroom) {
-        return notFound();
+        try {
+
+            setSaving(true);
+
+            await updateSubmission(submission.id, {
+                status: "Corrigida",
+                grade: grade ? Number(grade) : 0,
+                feedback,
+            });
+
+        } finally {
+            setSaving(false);
+        }
+
     }
-
-    const classroomName = await getClassroomDisplayName(classroom);
 
     return (
         <Edit>
@@ -41,8 +124,7 @@ export default async function Grading({ submission }: Props) {
                 <p className="mt-2 text-secondary">
                     {student?.name} - {classroomName}
                 </p>
-                
-                {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
+
                 <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
                     {submission.status}
                 </div>
@@ -56,7 +138,7 @@ export default async function Grading({ submission }: Props) {
                     <span className="text-secondary">Download do envio:</span>
                     {" "}
                     {submission.file_url
-                        ? `https://atenas-edu.supabase.co/storage/public/envios/${submission.file_url}`
+                        ? `https://atenas-edu.supabase.co/storage/v1/object/public/envios/${submission.file_url}`
                         : "Sem arquivo enviado"}
                 </div>
             </div>
@@ -64,21 +146,28 @@ export default async function Grading({ submission }: Props) {
             <div className="flex flex-col gap-4">
 
                 <Field label="Nota">
-                    <Input type="number" step="0.1" min="0" max="10" defaultValue={submission.grade?.toString() || ""} />
+                    <Input type="number" step="0.1" min="0" max="10" value={grade} onChange={(e) => setGrade(e.target.value)}/>
                 </Field>
 
                 <Field label="Feedback">
-                    <Textarea
-                        defaultValue={submission.feedback}
-                    />
+                    <Textarea value={feedback} onChange={(e) => setFeedback(e.target.value)}/>
                 </Field>
 
             </div>
 
             <div className="mt-8 flex gap-3">
                 <Button href="?mode=view">Voltar</Button>
-                <Button>Salvar alterações</Button>
-                <Button>Enviar correção</Button>
+
+                <Button
+                    disabled={saving}
+                    onClick={handleUpdate}
+                >
+                    {saving ? "Salvando..." : "Salvar alterações"}
+                </Button>
+
+                <Button disabled={saving} onClick={handleSubmitCorrection}>
+                    Enviar correção
+                </Button>
             </div>
 
         </Edit>

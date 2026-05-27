@@ -19,11 +19,19 @@ export default function ClassroomForm() {
 
     async function handleSubmit() {
 
-        await createClassroom({
-            grade,
-            section,
-            description,
-        });
+        try {
+
+            await createClassroom({
+                grade,
+                section,
+                description,
+            });
+
+        } catch(error) {
+
+            console.error(error);
+
+        }
 
     }
 
