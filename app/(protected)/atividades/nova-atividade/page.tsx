@@ -1,5 +1,7 @@
 import ActivityForm from '@/components/atividade/ActivityForm'
 
+export const dynamic = "force-dynamic";
+
 export default function NewActivityPage() {
   return (
     <main className="flex justify-center items-center min-h-screen px-4 py-10">

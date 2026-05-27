@@ -3,6 +3,8 @@ import ActivityEdit from "@/components/atividade/ActivityEdit";
 import { getActivityById } from "@/services/activity.service";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{
     id: string;

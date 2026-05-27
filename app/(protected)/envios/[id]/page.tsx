@@ -3,6 +3,8 @@ import Grading from "@/components/envio/Grading";
 import { getSubmissionById } from "@/services/submission.service";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
     params: Promise<{
         id: string;

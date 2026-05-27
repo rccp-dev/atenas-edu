@@ -2,6 +2,8 @@ import StudentList from "@/components/aluno/StudentList";
 import { getStudents } from "@/services/student.service";
 import { Button } from "@/components/ui/Button";
 
+export const dynamic = "force-dynamic";
+
 export default async function StudentPage() {
   const student  = await getStudents();
 

@@ -1,6 +1,8 @@
 import SubmissionList from "@/components/envio/SubmissionList";
 import { getSubmissions } from "@/services/submission.service";
 
+export const dynamic = "force-dynamic";
+
 export default async function SubmissionPage() {
   const submissions = await getSubmissions();
 

@@ -2,6 +2,8 @@ import LessonPlanList from "@/components/plano/LessonPlanList";
 import { getLessonPlans } from "@/services/lessonPlan.service";
 import { Button } from "@/components/ui/Button";
 
+export const dynamic = "force-dynamic";
+
 export default async function PlanosPage() {
 
     const plans = await getLessonPlans();

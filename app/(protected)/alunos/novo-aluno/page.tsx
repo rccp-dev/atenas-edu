@@ -1,5 +1,7 @@
 import StudentForm from '@/components/aluno/StudentForm'
 
+export const dynamic = "force-dynamic";
+
 export default function NewStudentPage() {
   return (
     <main className="flex justify-center items-center min-h-screen px-4 py-10">
