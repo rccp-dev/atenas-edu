@@ -1,7 +1,18 @@
-export default function ProtectedLayout({
-  children,
+import { redirect } from "next/navigation";
+import { getUser } from "@/lib/auth";
+
+export default async function ProtectedLayout({
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return <main>{children}</main>;
+
+    const user = await getUser();
+
+    if (!user) {
+        redirect("/login");
+    }
+
+    return children;
+
 }
