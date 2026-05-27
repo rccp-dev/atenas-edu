@@ -1,7 +1,7 @@
 export interface Classroom {
     id: string;
-    year: number;
-    grade: string;
+    grade: number;
+    section: string;
     description?: string;
     createdAt: string;
     updatedAt?: string;

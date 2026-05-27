@@ -6,11 +6,9 @@ import { notFound } from "next/navigation";
 import { Submission } from "@/types/submission";
 import { Student } from "@/types/student";
 import { Activity } from "@/types/activity";
-import { Classroom } from "@/types/classroom";
 
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
-import { getClassrooms } from "@/services/classroom.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";

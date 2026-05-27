@@ -71,7 +71,7 @@ export default function ActivityForm({ activity }: Props) {
             deadline,
             attachments,
             token: generateToken(),
-            status: ["Atribuída"],
+            status: "Atribuída",
         });
 
     }

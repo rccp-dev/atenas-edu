@@ -29,6 +29,35 @@ export async function getActivityById(id: string) {
     return data;
 }
 
+export function getActivityStatus(
+    activity: Activity
+) {
+
+    if (activity.status === "Corrigida") {
+        return "Corrigida";
+    }
+
+    if (activity.deadline) {
+
+        const now = new Date();
+
+        const deadline = new Date(
+            activity.deadline
+        );
+
+        if (
+            !isNaN(deadline.getTime()) &&
+            now > deadline
+        ) {
+            return "Em atraso";
+        }
+
+    }
+
+    return "Atribuída";
+
+}
+
 export async function createActivity(
     data: Partial<Activity>
 ) {

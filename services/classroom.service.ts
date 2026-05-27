@@ -29,6 +29,14 @@ export async function getClassroomById(id: string) {
     return data;
 }
 
+export function getClassroomDisplayName(
+    classroom: Classroom
+) {
+
+    return `${classroom.grade}º ano ${classroom.section}`;
+
+}
+
 export async function createClassroom(
     data: Partial<Classroom>
 ) {

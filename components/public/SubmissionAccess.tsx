@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { notFound, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Activity } from "@/types/activity";
 import { Student } from "@/types/student";

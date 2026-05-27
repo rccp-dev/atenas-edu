@@ -38,8 +38,8 @@ VALUES
 -- Classrooms
 
 INSERT INTO classrooms (
-    year,
     grade,
+    section,
     description,
     is_draft
 )

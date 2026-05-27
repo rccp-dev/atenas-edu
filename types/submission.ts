@@ -15,7 +15,7 @@ export interface Submission {
     file_url: string;
     grade?: number;
     feedback?: string;
-    status: Status[];
+    status: Status;
     createdAt: string;
     submittedAt: string;
     isDraft: boolean;
