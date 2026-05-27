@@ -33,3 +33,16 @@ export function proxy(
     return NextResponse.next();
 
 }
+
+export const config = {
+    matcher: [
+        "/agenda/:path*",
+        "/alunos/:path*",
+        "/atividades/:path*",
+        "/dashboard/:path*",
+        "/envios/:path*",
+        "/planos/:path*",
+        "/tarefas/:path*",
+        "/turmas/:path*"
+    ],
+};
