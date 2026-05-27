@@ -34,31 +34,27 @@ export default function StudentEdit({ student }: Props) {
 
         async function loadData() {
 
-            try {
-
-                if (!student.classroomId) {
-                    return;
-                }
-
-                const [classroomsData, classroomData] = await Promise.all([
-                    getClassrooms(),
-                    getClassroomById(student.classroomId),
-                ]);
-
-                setClassrooms(classroomsData);
-
-                if (!classroomData) {
-                    return;
-                }
-
-                setClassroomName(
-                    getClassroomDisplayName(classroomData)
-                );
-
+            if (!student.classroomId) {
+                return;
             }
 
-        }
+            const [classroomsData, classroomData] = await Promise.all([
+                getClassrooms(),
+                getClassroomById(student.classroomId),
+            ]);
 
+            setClassrooms(classroomsData);
+
+            if (!classroomData) {
+                return;
+            }
+
+            setClassroomName(
+                getClassroomDisplayName(classroomData)
+            );
+
+        }
+        
         loadData();
 
     }, [student.classroomId]);

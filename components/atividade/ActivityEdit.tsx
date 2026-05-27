@@ -38,28 +38,24 @@ export default function ActivityEdit({ activity }: Props) {
 
         async function loadData() {
 
-            try {
-
-                if (!activity.classroomId) {
-                    return;
-                }
-
-                const [classroomsData, classroomData] = await Promise.all([
-                    getClassrooms(),
-                    getClassroomById(activity.classroomId),
-                ]);
-
-                setClassrooms(classroomsData);
-
-                if (!classroomData) {
-                    return;
-                }
-
-                setClassroomName(
-                    getClassroomDisplayName(classroomData)
-                );
-
+            if (!activity.classroomId) {
+                return;
             }
+
+            const [classroomsData, classroomData] = await Promise.all([
+                getClassrooms(),
+                getClassroomById(activity.classroomId),
+            ]);
+
+            setClassrooms(classroomsData);
+
+            if (!classroomData) {
+                return;
+            }
+
+            setClassroomName(
+                getClassroomDisplayName(classroomData)
+            );
 
         }
 
