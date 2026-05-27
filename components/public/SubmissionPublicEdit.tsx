@@ -15,6 +15,8 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 
 import { updateSubmission } from "@/services/submission.service";
 
+import { uploadFile } from "@/lib/upload";
+
 import Edit from "@/components/ui/Edit";
 import UploadBox from "./UploadBox";
 import { Button } from "../ui/Button";
@@ -29,7 +31,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
         return notFound();
     }
 
-    const [fileUrl, setFileUrl] = useState<string | null>(null);
+    const [file, setFile] = useState<File | null>(null);
     const [student, setStudent] = useState<Student | null>(null);
     const [activity, setActivity] = useState<Activity | null>(null);
     const [classroomName, setClassroomName] = useState("");
@@ -68,9 +70,15 @@ export default function SubmissionPublicEdit({ submission }: Props) {
 
             setSaving(true);
 
+            let fileUrl: string | undefined;
+
+            if (file) {
+                fileUrl = await uploadFile(file);
+            }
+
             await updateSubmission(submission.id, {
-                file_url: fileUrl ?? undefined,
-            });
+            file_url: fileUrl,
+        });
 
         } finally {
             setSaving(false);
@@ -96,7 +104,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             </div>
 
             <div className="flex flex-col gap-4">
-                <UploadBox file={fileUrl} setFile={setFileUrl} />
+                <UploadBox file={file} setFile={setFile} />
             </div>
 
             <div className="mt-8 flex gap-3">
