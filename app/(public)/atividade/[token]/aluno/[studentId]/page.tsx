@@ -12,10 +12,10 @@ import SubmissionPublicView from "@/components/public/SubmissionPublicView";
 export const dynamic = "force-dynamic";
 
 interface Props {
-    params: Promise<{
+    params: {
         token: string;
         studentId: string;
-    }>;
+    };
 }
 
 export default async function SubmissionPublicPage({ params }: Props) {
@@ -32,11 +32,15 @@ export default async function SubmissionPublicPage({ params }: Props) {
     const submission = await getSubmissionByActivityAndStudent(activity.id, studentId);
     const classroom = await getClassroomById(student.classroomId);
 
+    if (submission && submission.activityId !== activity.id) {
+        notFound();
+    }
+
     if (!classroom) {
-        return notFound();
+        notFound();
     }
     
-    if (!submission || !classroom) {
+    if (!submission) {
 
         return (
             <main className="flex justify-center items-center min-h-screen px-4 py-10">

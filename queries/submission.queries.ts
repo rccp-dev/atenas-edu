@@ -16,7 +16,7 @@ export async function getSubmissionsByActivityId(activityId: string): Promise<Su
 
 }
 
-export async function getSubmissionByActivityAndStudent(activityId: string, studentId: string): Promise<Submission[]> {
+export async function getSubmissionByActivityAndStudent(activityId: string, studentId: string): Promise<Submission> {
 
     const { data, error } = await supabase
         .from("submissions")
@@ -29,6 +29,6 @@ export async function getSubmissionByActivityAndStudent(activityId: string, stud
         throw new Error(error.message);
     }
 
-    return data ?? [];
+    return data;
 
 }
