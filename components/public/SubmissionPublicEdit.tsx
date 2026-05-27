@@ -96,7 +96,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             </div>
 
             <div className="flex flex-col gap-4">
-                <UploadBox fileUrl={fileUrl} setFileUrl={setFileUrl} />
+                <UploadBox file={fileUrl} setFile={setFileUrl} />
             </div>
 
             <div className="mt-8 flex gap-3">
