@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getClassroomById } from "@/services/classroom.service";
-import { getStudentsByClassroomId } from "@/services/student.service";
+import { getStudentsByClassroomId } from "@/queries/student.queries";
 
 import ClassroomView from "@/components/turma/ClassroomView";
 import ClassroomEdit from "@/components/turma/ClassroomEdit";

@@ -1,13 +1,12 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
-import { getSubmissionsByActivityId } from "@/services/submission.service";
+import { getSubmissionsByActivityId } from "@/queries/submission.queries";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import { getStudents } from "@/services/student.service";
 
 import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
-import { notFound } from "next/navigation";
 
 interface Props {
     activity: Activity;

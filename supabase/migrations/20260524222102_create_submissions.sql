@@ -14,6 +14,7 @@ CREATE TABLE submissions (
         status IN (
             'Pendente',
             'Entregue',
+            'Entregue com atraso'
             'Corrigida'
         )
     ),

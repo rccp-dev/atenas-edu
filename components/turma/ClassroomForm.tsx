@@ -13,17 +13,25 @@ import { createClassroom } from "@/services/classroom.service";
 
 export default function ClassroomForm() {
 
-    const [year, setYear] = useState<number>(0);
-    const [grade, setGrade] = useState("");
+    const [grade, setGrade] = useState<number>(0);
+    const [section, setSection] = useState("");
     const [description, setDescription] = useState("");
 
     async function handleSubmit() {
 
-        await createClassroom({
-            year,
-            grade,
-            description,
-        });
+        try {
+
+            await createClassroom({
+                grade,
+                section,
+                description,
+            });
+
+        } catch(error) {
+
+            console.error(error);
+
+        }
 
     }
 
@@ -32,11 +40,11 @@ export default function ClassroomForm() {
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Ano">
-                    <Input value={year} type="number" onChange={(e) => setYear(Number(e.target.value))} placeholder="Ano"/>
+                    <Input value={grade} type="number" onChange={(e) => setGrade(Number(e.target.value))} placeholder="Ano"/>
                 </Field>
 
                 <Field label="Série">
-                    <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="Série"/>
+                    <Input value={section} onChange={(e) => setSection(e.target.value)} placeholder="Série"/>
                 </Field>
 
             </div>

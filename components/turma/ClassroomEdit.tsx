@@ -30,11 +30,11 @@ export default function ClassroomEdit({ classroom }: Props) {
             <div className="flex flex-col gap-4">
 
                 <Field label="Ano">
-                    <Input defaultValue={classroom.year}/>
+                    <Input defaultValue={classroom.grade}/>
                 </Field>
 
                 <Field label="Série">
-                    <Input defaultValue={classroom.grade}/>
+                    <Input defaultValue={classroom.section}/>
                 </Field>
 
                 <Field label="Descrição">

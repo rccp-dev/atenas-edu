@@ -14,7 +14,7 @@ export interface Activity {
     token: string;
     classroomId: string;
     attachments?: string[];
-    status: Status[];
+    status: Status;
     createdAt: string;
     updatedAt?: string;
     isDraft: boolean;

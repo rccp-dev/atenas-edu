@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getActivityByToken } from "@/services/activity.service";
-import { getSubmissionByActivityAndStudent } from "@/services/submission.service";
+import { getActivityByToken } from "@/queries/activity.queries";
+import { getSubmissionByActivityAndStudent } from "@/queries/submission.queries";
 import { getStudentById } from "@/services/student.service";
 import { getClassroomById } from "@/services/classroom.service";
 
@@ -12,10 +12,10 @@ import SubmissionPublicView from "@/components/public/SubmissionPublicView";
 export const dynamic = "force-dynamic";
 
 interface Props {
-    params: Promise<{
+    params: {
         token: string;
         studentId: string;
-    }>;
+    };
 }
 
 export default async function SubmissionPublicPage({ params }: Props) {
@@ -32,11 +32,15 @@ export default async function SubmissionPublicPage({ params }: Props) {
     const submission = await getSubmissionByActivityAndStudent(activity.id, studentId);
     const classroom = await getClassroomById(student.classroomId);
 
+    if (submission && submission.activityId !== activity.id) {
+        notFound();
+    }
+
     if (!classroom) {
-        return notFound();
+        notFound();
     }
     
-    if (!submission || !classroom) {
+    if (!submission) {
 
         return (
             <main className="flex justify-center items-center min-h-screen px-4 py-10">

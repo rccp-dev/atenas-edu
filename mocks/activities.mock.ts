@@ -9,7 +9,7 @@ export const activitiesMock: Activity[] = [
         token: "token1",
         classroomId: "1",
         attachments: ["https://example.com/attachment1", "https://example.com/attachment2"],
-        status: ["Atribuída"],
+        status: "Atribuída",
         createdAt: "2026-01-01",
         isDraft: false
     },
@@ -21,7 +21,7 @@ export const activitiesMock: Activity[] = [
         token: "token2",
         classroomId: "2",
         attachments: ["https://example.com/attachment3"],
-        status: ["Atribuída"],
+        status: "Atribuída",
         createdAt: "2026-01-01",
         isDraft: false
     }

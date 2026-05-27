@@ -64,15 +64,23 @@ export default function ActivityForm({ activity }: Props) {
 
     async function handleSubmit() {
 
-        await createActivity({
-            title,
-            description,
-            classroomId,
-            deadline,
-            attachments,
-            token: generateToken(),
-            status: ["Atribuída"],
-        });
+        try {
+
+            await createActivity({
+                title,
+                description,
+                classroomId,
+                deadline,
+                attachments,
+                token: generateToken(),
+                status: "Atribuída",
+            });
+
+        } catch(error) {
+            
+            console.error(error);
+            
+        }
 
     }
 
