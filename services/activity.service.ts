@@ -1,112 +1,73 @@
 import { Activity } from "@/types/activity";
-import { 
-    createActivityQuery,
-    getActivitiesQuery,
-    getActivityByIdQuery,
-    getActivityByTokenQuery,
-    updateActivityQuery,
-    deleteActivityQuery} from "@/queries/submission.query";
-
-export async function createActivity(data: Partial<Activity>) {
-  const { data: activity, error } =
-    await createActivityQuery(data);
-       
-
-if (error) {
-    throw error;
-}
-
-return activity;
-}
+import { supabase } from "@/lib/supabase";
 
 export async function getActivities(): Promise<Activity[]> {
-  const { data, error } =
-    await getActivitiesQuery();
-        
-        
 
-if (error) {
-    throw error;
-}
+    const { data, error } = await supabase
+        .from("activities")
+        .select("*");
 
-return data || [];
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data || [];
 }
 
 export async function getActivityById(id: string) {
-    const { data, error } =
-    await getActivityByIdQuery(id);
-        
 
-if (error) {
-    throw error;
+    const { data, error } = await supabase
+        .from("activities")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
 }
 
-return data;
-}
-
-export async function getActivityByToken(token: string) {
-   const { data, error } =
-    await getActivityByTokenQuery(token)
-        
-if (error) {
-    throw error;
-}
-
-return data;
-}
-
-export function getActivityStatus(
-    activity: Activity
+export async function createActivity(
+    data: Partial<Activity>
 ) {
 
-    if (
-        activity.status?.includes("Corrigida")
-    ) {
-        return "Corrigida";
+    const { error } = await supabase
+        .from("activities")
+        .insert(data);
+
+    if (error) {
+        throw new Error(error.message);
     }
 
-    if (!activity.deadline) {
-        return "Atribuída";
-    }
-
-    const now = new Date();
-
-    const deadline = new Date(
-        activity.deadline
-    );
-
-    if (!isNaN(deadline.getTime())) {
-
-        if (now > deadline) {
-            return "Encerrada";
-        }
-
-    }
-
-    return "Atribuída";
 }
 
-export async function updateActivity(id: string, data: Partial<Activity>) {
-  const { data: activity, error } =
-    await updateActivityQuery(
-        id,
-        data
-    );
-       
-if (error) {
-    throw error;
-}
+export async function updateActivity(
+    id: string,
+    data: Partial<Activity>
+) {
 
-return activity;
+    const { error } = await supabase
+        .from("activities")
+        .update(data)
+        .eq("id", id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
 }
 
 export async function deleteActivity(id: string) {
-  const { error } =
-    await deleteActivityQuery(id);
-       
-if (error) {
-    throw error;
-}
 
+    const { error } = await supabase
+        .from("activities")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
 
 }

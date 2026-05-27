@@ -1,85 +1,73 @@
 import { Classroom } from "@/types/classroom";
-import { 
-    createClassroomQuery,
-    getClassroomsQuery,
-    getClassroomByIdQuery,
-    updateClassroomQuery,
-    deleteClassroomQuery
-} from "@/queries/classroom.query";
-
-/* 
-    Service respobnsável por integração futura com database
-    e busca, criação, edição e remoção de turmas
-*/
-
-export async function createClassroom(
-  data: Partial<Classroom>
-) {
-  const { data: classroom, error } =
-    await createClassroomQuery(data);
-        
-
-if (error) {
-    throw error;
-}
-
-return classroom;
-}
-
-export function getClassroomDisplayName(classroom: Classroom) {
-  return `${classroom.year}º Ano ${classroom.grade};`
-}
+import { supabase } from "@/lib/supabase";
 
 export async function getClassrooms(): Promise<Classroom[]> {
-   const { data, error } =
-    await getClassroomsQuery();
-        
-        
 
-if (error) {
-    throw error;
-}
+    const { data, error } = await supabase
+        .from("classrooms")
+        .select("*");
 
-return data || [];
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data || [];
 }
 
 export async function getClassroomById(id: string) {
-    const { data, error } =
-    await getClassroomByIdQuery(id);
-        
 
-if (error) {
-    throw error;
+    const { data, error } = await supabase
+        .from("classrooms")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
 }
 
-return data;
+export async function createClassroom(
+    data: Partial<Classroom>
+) {
+
+    const { error } = await supabase
+        .from("classrooms")
+        .insert(data);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
 }
 
-export async function updateClassroom(id: string, data: Partial<Classroom>) {
-    /* Futuramente: update no banco e validação de permissões */
-    const { data: classroom, error } =
-    await updateClassroomQuery(
-        id,
-        data
-    )
-       
+export async function updateClassroom(
+    id: string,
+    data: Partial<Classroom>
+) {
 
-if (error) {
-    throw error;
-}
+    const { error } = await supabase
+        .from("classrooms")
+        .update(data)
+        .eq("id", id);
 
-return classroom;
+    if (error) {
+        throw new Error(error.message);
+    }
+
 }
 
 export async function deleteClassroom(id: string) {
-    /* Futuramente: soft delete no Supabase e verificação de permissão */
-    const { error } =
-    await deleteClassroomQuery(id);
-       
-        
 
-if (error) {
-    throw error;
-}
+    const { error } = await supabase
+        .from("classrooms")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
 
 }
