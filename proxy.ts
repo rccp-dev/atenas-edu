@@ -1,37 +1,33 @@
 import { NextResponse } from "next/server";
-
 import type { NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export function proxy(
-    request: NextRequest
-) {
+export async function proxy(request: NextRequest) {
 
-    const hasSession =
-        request.cookies.has(
-            "sb-access-token"
-        );
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                getAll: () => request.cookies.getAll(),
+                setAll: () => {}
+            }
+        }
+    );
 
-    const isLoginPage =
-        request.nextUrl.pathname === "/login";
+    const { data: { user } } = await supabase.auth.getUser();
 
-    if (!hasSession && !isLoginPage) {
+    const isLoginPage = request.nextUrl.pathname === "/login";
 
-        return NextResponse.redirect(
-            new URL("/login", request.url)
-        );
-
+    if (!user && !isLoginPage) {
+        return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (hasSession && isLoginPage) {
-
-        return NextResponse.redirect(
-            new URL("/", request.url)
-        );
-
+    if (user && isLoginPage) {
+        return NextResponse.redirect(new URL("/", request.url));
     }
 
     return NextResponse.next();
-
 }
 
 export const config = {
