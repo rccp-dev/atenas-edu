@@ -1,5 +1,12 @@
 import { Student } from "@/types/student";
-import { supabase } from "@/lib/supabase";
+import {
+    createStudentQuery,
+    getStudentsQuery,
+    getStudentByIdQuery,
+    getStudentsByClassroomIdQuery,
+    updateStudentQuery,
+    deleteStudentQuery
+} from "@/queries/student.querie";
 
 /* 
     Service responsável por integração futura com database
@@ -11,11 +18,7 @@ export async function createStudent(
 ) {
 
   const {data: student, error} =
-  await supabase
-  .from("students")
-  .insert(data)
-  .select()
-  .single();
+  await createStudentQuery(data);
 
   if(error){
     throw error;
@@ -26,9 +29,7 @@ export async function createStudent(
 
 export async function getStudents(): Promise<Student[]> {
     const {data, error} = 
-    await supabase
-    .from("students")
-    .select("*");
+    await getStudentsQuery();
 
     if(error) {
         throw error;
@@ -38,12 +39,8 @@ export async function getStudents(): Promise<Student[]> {
 
 export async function getStudentById(id: string) {
     const {data, error } =
-    await supabase
-    .from("students")
-    .select("*")
-    .eq("id", id)
-    .single();
-
+    await getStudentByIdQuery(id);
+   
     if (error) {
         throw error;
     }
@@ -53,10 +50,9 @@ export async function getStudentById(id: string) {
 
 export async function getStudentsByClassroomId(classroomId: string) {
     const {data, error } = 
-    await supabase
-    .from("students")
-    .select("*")
-    .eq("classroomId", classroomId);
+    await getStudentsByClassroomIdQuery(
+      classroomId
+    );
 
     if(error) {
         throw error;
@@ -70,13 +66,10 @@ export async function updateStudent(id: string, data: Partial<Student>) {
     /* Futuramente: update no banco e validação de permissões */
 
   const {data: student, error} =
-  await supabase
-  .from("students")
-  .update(data)
-  .eq("id" , id)
-  .select()
-  .single();
-
+  await updateStudentQuery(
+    id,
+    data
+  )
   if(error){
     throw error;
   }
@@ -87,10 +80,7 @@ export async function updateStudent(id: string, data: Partial<Student>) {
 export async function deleteStudent(id: string) {
     /* Futuramente: soft delete no Supabase e verificação de permissão */
   const { error } =
-  await supabase
-  .from("students")
-  .delete()
-  .eq("id", id);
+  await deleteStudentQuery(id);
 
   if(error){
     throw error;

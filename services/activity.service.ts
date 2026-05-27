@@ -1,13 +1,16 @@
 import { Activity } from "@/types/activity";
-import { supabase } from "@/lib/supabase";
+import { 
+    createActivityQuery,
+    getActivitiesQuery,
+    getActivityByIdQuery,
+    getActivityByTokenQuery,
+    updateActivityQuery,
+    deleteActivityQuery} from "@/queries/submission.query";
 
 export async function createActivity(data: Partial<Activity>) {
   const { data: activity, error } =
-    await supabase
-        .from("activities")
-        .insert(data)
-        .select()
-        .single();
+    await createActivityQuery(data);
+       
 
 if (error) {
     throw error;
@@ -18,9 +21,8 @@ return activity;
 
 export async function getActivities(): Promise<Activity[]> {
   const { data, error } =
-    await supabase
-        .from("activities")
-        .select("*");
+    await getActivitiesQuery();
+        
         
 
 if (error) {
@@ -32,11 +34,8 @@ return data || [];
 
 export async function getActivityById(id: string) {
     const { data, error } =
-    await supabase
-        .from("activities")
-        .select("*")
-        .eq("id", id)
-        .single();
+    await getActivityByIdQuery(id);
+        
 
 if (error) {
     throw error;
@@ -47,12 +46,8 @@ return data;
 
 export async function getActivityByToken(token: string) {
    const { data, error } =
-    await supabase
-        .from("activities")
-        .select("*")
-        .eq("token", token)
-        .single();
-
+    await getActivityByTokenQuery(token)
+        
 if (error) {
     throw error;
 }
@@ -93,13 +88,11 @@ export function getActivityStatus(
 
 export async function updateActivity(id: string, data: Partial<Activity>) {
   const { data: activity, error } =
-    await supabase
-        .from("activities")
-        .update(data)
-        .eq("id", id)
-        .select()
-        .single();
-
+    await updateActivityQuery(
+        id,
+        data
+    );
+       
 if (error) {
     throw error;
 }
@@ -109,10 +102,8 @@ return activity;
 
 export async function deleteActivity(id: string) {
   const { error } =
-    await supabase
-        .from("activities")
-        .delete()
-        .eq("id", id);
+    await deleteActivityQuery(id);
+       
 if (error) {
     throw error;
 }

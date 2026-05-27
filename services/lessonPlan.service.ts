@@ -1,5 +1,11 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { supabase } from "@/lib/supabase";
+import {  
+    createLessonPlanQuery,
+    getLessonPlansQuery,
+    getLessonPlanByIdQuery,
+    updateLessonPlanQuery,
+    deleteLessonPlanQuery
+} from "@/queries/lessonPlan.query";
 
 /* 
     Service respobnsável por integração futura com database
@@ -10,12 +16,8 @@ export async function createLessonPlan(
   data: Partial<LessonPlan>
 ) {
   const { data: lessonPlan, error } =
-    await supabase
-        .from("lesson_plans")
-        .insert(data)
-        .select()
-        .single();
-
+    await createLessonPlanQuery(data);
+       
 if (error) {
     throw error;
 }
@@ -27,9 +29,8 @@ export async function getLessonPlans(): Promise<LessonPlan[]> {
 
     /* Futuramente: Supabase, autenticação, filtros e pagnação */
    const { data, error } =
-    await supabase
-        .from("lesson_plans")
-        .select("*")
+    await getLessonPlansQuery();
+        
         
 
 if (error) {
@@ -42,11 +43,7 @@ return data || [];
 export async function getLessonPlanById(id: string): Promise<LessonPlan | undefined> {
         
     const { data, error } =
-    await supabase
-        .from("lesson_plans")
-        .select("*")
-        .eq("id", id)
-        .single();
+    await getLessonPlanByIdQuery(id);
 
 if (error) {
     throw error;
@@ -58,12 +55,11 @@ return data;
 export async function updateLessonPlan(id: string, data: Partial<LessonPlan>) {
     /* Futuramente: update no banco e validação de permissões */
     const { data: lessonPlan, error } =
-    await supabase
-        .from("lesson_plans")
-        .update(data)
-        .eq("id", id)
-        .select()
-        .single();
+    await updateLessonPlanQuery(
+        id,
+        data
+    )
+       
 
 if (error) {
     throw error;
@@ -75,10 +71,8 @@ return lessonPlan;
 export async function deleteLessonPlan(id: string) {
     /* Futuramente: soft delete no Supabase e verificação de permissão */
   const { error } =
-    await supabase
-        .from("lesson_plans")
-        .delete()
-        .eq("id", id);
+    await deleteLessonPlanQuery(id)
+        
 
 if (error) {
     throw error;

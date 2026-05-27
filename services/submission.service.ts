@@ -1,26 +1,30 @@
 import { Submission } from "@/types/submission";
-import { supabase} from "@/lib/supabase";
+import { 
+    createSubmissionQuery,
+    getSubmissionsQuery,
+    getSubmissionByIdQuery,
+    getSubmissionsByActivityIdQuery,
+    getSubmissionByActivityAndStudentQuery,
+    updateSubmissionQuery,
+    deleteSubmissionQuery} from "@/queries/submission.query";
 
 export async function createSubmission(data: Partial<Submission>) {
-  const { data: existing } =
-    await supabase
-        .from("submissions")
-        .select("*")
-        .eq("activityId", data.activityId)
-        .eq("studentId", data.studentId)
-        .maybeSingle();
+  const { data: existing, error: existingError } =
+        await getSubmissionByActivityAndStudentQuery(
+            data.activityId!,
+            data.studentId!
+        );
 
+    if (existingError) {
+        throw existingError;
+    }
 if (existing) {
     return existing;
 }
 
 const { data: submission, error } =
-    await supabase
-        .from("submissions")
-        .insert(data)
-        .select()
-        .single();
-
+    await createSubmissionQuery(data);
+       
 if (error) {
     throw error;
 }
@@ -30,9 +34,8 @@ return submission;
 
 export async function getSubmissions(): Promise<Submission[]> {
  const { data, error } =
-    await supabase
-        .from("submissions")
-        .select("*");
+    await getSubmissionsQuery();
+        
 
 if (error) {
     throw error;
@@ -43,11 +46,8 @@ return data || [];
 
 export async function getSubmissionById(id: string) {
   const { data, error } =
-    await supabase
-        .from("submissions")
-        .select("*")
-        .eq("id", id)
-        .single();
+    await getSubmissionByIdQuery(id);
+        
 
 if (error) {
     throw error;
@@ -58,10 +58,8 @@ return data;
 
 export async function getSubmissionsByActivityId(activityId: string) {
   const { data, error } =
-    await supabase
-        .from("submissions")
-        .select("*")
-        .eq("activityId", activityId);
+    await getSubmissionsByActivityIdQuery(activityId)
+       
 
 if (error) {
     throw error;
@@ -75,12 +73,11 @@ export async function getSubmissionByActivityAndStudent(
     studentId: string
 ) {
     const { data, error } =
-    await supabase
-        .from("submissions")
-        .select("*")
-        .eq("activityId", activityId)
-        .eq("studentId", studentId)
-        .maybeSingle();
+    await getSubmissionByActivityAndStudentQuery(
+        activityId,
+        studentId
+    )
+        
 
 
 if (error) {
@@ -92,12 +89,11 @@ return data;
 
 export async function updateSubmission(id: string, data: Partial<Submission>) {
   const { data: submission, error } =
-    await supabase
-        .from("submissions")
-        .update(data)
-        .eq("id", id)
-        .select()
-        .single();
+    await updateSubmissionQuery(
+        id,
+        data
+    )
+        
 
 if (error) {
     throw error;
@@ -108,10 +104,8 @@ return submission;
 
 export async function deleteSubmission(id: string) {
   const { error } =
-    await supabase
-        .from("submissions")
-        .delete()
-        .eq("id", id);
+    await deleteSubmissionQuery(id)
+       
 
 if (error) {
     throw error;
