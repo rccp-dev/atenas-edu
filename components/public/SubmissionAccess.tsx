@@ -37,7 +37,8 @@ export default function SubmissionAccess({ activity, classroomName }: Props) {
 
     }, [activity.classroomId]);
 
-    function handleAccess() {
+    function handleAccess(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
         if (!studentId) {
             return;
@@ -50,7 +51,7 @@ export default function SubmissionAccess({ activity, classroomName }: Props) {
         <main className="flex justify-center items-center min-h-screen px-4 py-10">
             <section className="w-full max-w-2xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
 
-                <Form>
+                <Form onSubmit={handleAccess}>
                     <div className="space-y-6">
                         <div>
                             <h1 className="text-3xl font-bold">
@@ -79,7 +80,7 @@ export default function SubmissionAccess({ activity, classroomName }: Props) {
                         </Field>
 
                         <div className="w-24">
-                            <Button onClick={handleAccess}>Entrar</Button>
+                            <Button type="submit">Entrar</Button>
                         </div>
                     </div>
                 </Form>
