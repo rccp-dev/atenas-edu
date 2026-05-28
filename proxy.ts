@@ -51,7 +51,6 @@ export const config = {
         "/envios/:path*",
         "/planos/:path*",
         "/tarefas/:path*",
-        "/turmas/:path*",
-        "/login",
+        "/turmas/:path*"
     ],
 };
