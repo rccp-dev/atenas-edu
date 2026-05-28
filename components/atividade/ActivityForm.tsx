@@ -45,6 +45,9 @@ export default function ActivityForm({ activity }: Props) {
         Classroom[]
     >([]);
 
+    const [loading, setLoading] =
+        useState(false);
+
     useEffect(() => {
 
         async function loadClassrooms() {
@@ -67,6 +70,8 @@ export default function ActivityForm({ activity }: Props) {
         
         try {
 
+            setLoading(true);
+
             await createActivity({
                 title,
                 description,
@@ -81,12 +86,15 @@ export default function ActivityForm({ activity }: Props) {
             
             console.error(error);
             
-        }
+        } finally {
 
+            setLoading(false);
+
+        }
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Título">
@@ -137,7 +145,9 @@ export default function ActivityForm({ activity }: Props) {
             </Field>
 
             <div className="w-20">
-                <Button type="submit" onClick={handleSubmit}>Salvar</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Salvando..." : "Salvar"}
+                </Button>
             </div>
         </Form>
     );
