@@ -6,10 +6,7 @@ export async function login(
 ) {
 
     const { error } =
-        await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        await supabase.auth.signInWithPassword({ email, password,});
 
     if (error) {
         throw error;
