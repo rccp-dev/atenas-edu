@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link'
 
-// Tipagem das propriedades
 interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
@@ -13,7 +12,6 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-// Componente Funcional
 export const Button = ({
   children,
   onClick,
@@ -23,7 +21,6 @@ export const Button = ({
   disabled = false,
 }: ButtonProps) => {
   
-  // Estilo
   const baseStyle = 'px-4 py-2 rounded-lg font-semibold transition-all';
   const variants = {
     primary: 'bg-primary text-light hover:bg-accent',
@@ -41,7 +38,7 @@ export const Button = ({
   }
 
   return (
-    <button onClick={onClick} disabled={disabled} className={className}>
+    <button type={type} onClick={onClick} disabled={disabled} className={className}>
       {children}
     </button>
   );

@@ -62,8 +62,9 @@ export default function ActivityForm({ activity }: Props) {
 
     }
 
-    async function handleSubmit() {
-
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        
         try {
 
             await createActivity({

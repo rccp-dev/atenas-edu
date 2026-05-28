@@ -55,7 +55,8 @@ export default function StudentForm({ initialData }: Props) {
 
     }, []);
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
         try {
 
@@ -81,7 +82,7 @@ export default function StudentForm({ initialData }: Props) {
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Nome">
@@ -119,7 +120,7 @@ export default function StudentForm({ initialData }: Props) {
             </Field>
 
             <div className="w-20">
-                <Button disabled={loading} type="submit" onClick={handleSubmit}>
+                <Button disabled={loading} type="submit">
                     {loading ? "Salvando..." : "Salvar"}
                 </Button>
             </div>
