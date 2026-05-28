@@ -17,7 +17,8 @@ export default function ClassroomForm() {
     const [section, setSection] = useState("");
     const [description, setDescription] = useState("");
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
         try {
 
@@ -36,7 +37,7 @@ export default function ClassroomForm() {
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Ano">
@@ -57,7 +58,7 @@ export default function ClassroomForm() {
             </Field>
 
             <div className="w-24">
-                <Button type="submit" onClick={handleSubmit}>Salvar</Button>
+                <Button type="submit">Salvar</Button>
             </div>
         </Form>
     );

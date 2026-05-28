@@ -56,7 +56,8 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
     }, []);
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
         try {
 
@@ -77,7 +78,7 @@ export default function LessonPlanForm({ initialData, }: Props) {
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 w-sm">
 
                 <Field label="Título">
@@ -136,7 +137,7 @@ export default function LessonPlanForm({ initialData, }: Props) {
             </Field>
 
             <div className="w-20">
-                <Button type="submit" onClick={handleSubmit}>Salvar</Button>
+                <Button type="submit">Salvar</Button>
             </div>
         </Form>
     );

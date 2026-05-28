@@ -38,7 +38,8 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
         }
     }, [classroom]);
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
         try {
 
@@ -61,7 +62,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <div className="flex flex-col w-sm">
 
                 <h1 className="text-3xl font-bold text-foreground">
@@ -76,7 +77,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
             <UploadBox file={file} setFile={setFile}/>
 
             <div className="w-20">
-                <Button type="submit" onClick={handleSubmit}>Enviar</Button>
+                <Button type="submit">Enviar</Button>
             </div>
         </Form>
     );
