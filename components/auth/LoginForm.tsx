@@ -24,10 +24,7 @@ export default function LoginForm() {
 
         try {
             await login(email, password);
-
             router.replace("/dashboard");
-            router.refresh();
-
         } catch {
             setError("E-mail ou senha inválidos.");
         } finally {
