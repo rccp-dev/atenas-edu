@@ -1,4 +1,5 @@
 import { Student } from '@/types/student';
+import { mapStudent } from '@/mappers/student.mapper';
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getStudentsByClassroomId(supabase: SupabaseClient, classroomId: string): Promise<Student[]> {
@@ -12,6 +13,5 @@ export async function getStudentsByClassroomId(supabase: SupabaseClient, classro
         throw new Error(error.message);
     }
 
-    return data ?? [];
-
+    return data ? data.map(mapStudent) : [];
 }

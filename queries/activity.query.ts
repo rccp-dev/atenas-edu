@@ -1,4 +1,5 @@
 import { Activity } from "@/types/activity";
+import { mapActivity } from "@/mappers/activity.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getActivityByToken(supabase: SupabaseClient, token: string): Promise<Activity> {
@@ -13,5 +14,5 @@ export async function getActivityByToken(supabase: SupabaseClient, token: string
         throw new Error(error.message);
     }
 
-    return data || [];
+    return (data || []).map(mapActivity);
 }

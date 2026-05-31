@@ -1,4 +1,5 @@
 import { Classroom } from "@/types/classroom";
+import { mapClassroom } from "@/mappers/classroom.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getClassrooms(supabase: SupabaseClient): Promise<Classroom[]> {
@@ -11,7 +12,7 @@ export async function getClassrooms(supabase: SupabaseClient): Promise<Classroom
         throw new Error(error.message);
     }
 
-    return data || [];
+    return (data || []).map(mapClassroom);;
 }
 
 export async function getClassroomById(supabase: SupabaseClient, id: string) {
@@ -26,7 +27,7 @@ export async function getClassroomById(supabase: SupabaseClient, id: string) {
         throw new Error(error.message);
     }
 
-    return data;
+    return data ? mapClassroom(data) : null;
 }
 
 export function getClassroomDisplayName(classroom: Classroom) {

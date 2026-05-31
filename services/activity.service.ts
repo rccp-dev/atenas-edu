@@ -1,4 +1,5 @@
 import { Activity } from "@/types/activity";
+import { mapActivity } from "@/mappers/activity.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getActivities(supabase: SupabaseClient): Promise<Activity[]> {
@@ -17,7 +18,7 @@ export async function getActivities(supabase: SupabaseClient): Promise<Activity[
         throw new Error(error.message);
     }
 
-    return data || [];
+    return (data || []).map(mapActivity);;
 }
 
 export async function getActivityById(supabase: SupabaseClient, id: string) {
@@ -32,7 +33,7 @@ export async function getActivityById(supabase: SupabaseClient, id: string) {
         throw new Error(error.message);
     }
 
-    return data;
+    return data ? mapActivity(data) : null;
 }
 
 export function getActivityStatus(activity: Activity) {

@@ -1,4 +1,5 @@
 import { Student } from "@/types/student";
+import { mapStudent } from "@/mappers/student.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getStudents(supabase: SupabaseClient): Promise<Student[]> {
@@ -11,7 +12,7 @@ export async function getStudents(supabase: SupabaseClient): Promise<Student[]> 
     throw new Error(error.message);
   }
 
-  return data || [];
+  return (data || []).map(mapStudent);
 }
 
 export async function getStudentById(supabase: SupabaseClient, id: string) {
@@ -26,7 +27,7 @@ export async function getStudentById(supabase: SupabaseClient, id: string) {
     throw new Error(error.message);
   }
 
-  return data;
+    return data ? mapStudent(data) : null;
 }
 
 export async function createStudent(supabase: SupabaseClient, data: Partial<Student>) {

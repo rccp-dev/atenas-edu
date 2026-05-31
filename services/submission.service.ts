@@ -1,4 +1,5 @@
 import { Submission } from "@/types/submission";
+import { mapSubmission } from "@/mappers/submission.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getSubmissions(supabase: SupabaseClient): Promise<Submission[]> {
@@ -11,7 +12,7 @@ export async function getSubmissions(supabase: SupabaseClient): Promise<Submissi
         throw new Error(error.message);
     }
 
-    return data || [];
+    return (data || []).map(mapSubmission);
 }
 
 export async function getSubmissionById(supabase: SupabaseClient, id: string) {
@@ -26,7 +27,7 @@ export async function getSubmissionById(supabase: SupabaseClient, id: string) {
         throw new Error(error.message);
     }
 
-    return data;
+    return data ? mapSubmission(data) : null;
 }
 
 export async function createSubmission(supabase: SupabaseClient, data: Partial<Submission>) {

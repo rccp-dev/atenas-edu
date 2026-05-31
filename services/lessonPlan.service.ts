@@ -1,4 +1,5 @@
 import { LessonPlan } from "@/types/lessonPlan";
+import { mapLessonPlan } from "@/mappers/lessonPlan.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getLessonPlans(supabase: SupabaseClient): Promise<LessonPlan[]> {
@@ -11,7 +12,7 @@ export async function getLessonPlans(supabase: SupabaseClient): Promise<LessonPl
         throw new Error(error.message);
     }
 
-    return data || [];
+    return (data || []).map(mapLessonPlan);
 }
 
 export async function getLessonPlanById(supabase: SupabaseClient, id: string) {
@@ -26,7 +27,7 @@ export async function getLessonPlanById(supabase: SupabaseClient, id: string) {
         throw new Error(error.message);
     }
 
-    return data;
+    return data ? mapLessonPlan(data) : null;
 }
 
 export async function createLessonPlan(supabase: SupabaseClient, data: Partial<LessonPlan>) {

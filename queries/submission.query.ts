@@ -1,4 +1,5 @@
 import { Submission } from "@/types/submission";
+import { mapSubmission } from "@/mappers/submission.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getSubmissionsByActivityId(supabase: SupabaseClient, activityId: string): Promise<Submission[]> {
@@ -12,7 +13,7 @@ export async function getSubmissionsByActivityId(supabase: SupabaseClient, activ
         throw new Error(error.message);
     }
 
-    return data ?? [];
+    return data ? data.map(mapSubmission) : [];
 
 }
 
@@ -29,6 +30,10 @@ export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient
         throw new Error(error.message);
     }
 
-    return data;
+    if (!data) {
+        throw new Error("Envio não encontrado");
+    }
+
+    return mapSubmission(data);
 
 }
