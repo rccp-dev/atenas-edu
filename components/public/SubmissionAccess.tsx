@@ -13,6 +13,8 @@ import Field from "@/components/ui/Field";
 import Select from "@/components/ui/Select";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     activity: Activity;
     classroomName: string;
@@ -20,6 +22,7 @@ interface Props {
 
 export default function SubmissionAccess({ activity, classroomName }: Props) {
 
+    const supabase = browserClient();
 
     const router = useRouter();
     const [studentId, setStudentId] = useState("");
@@ -28,7 +31,7 @@ export default function SubmissionAccess({ activity, classroomName }: Props) {
     useEffect(() => {
 
         async function loadStudents() {
-            const students = await getStudents();
+            const students = await getStudents(supabase);
             const filtered_students = students.filter((student) => student.classroomId === activity.classroomId);
             setStudents(filtered_students);
         }
