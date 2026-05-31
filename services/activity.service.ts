@@ -8,12 +8,6 @@ export async function getActivities(supabase: SupabaseClient): Promise<Activity[
         .from("activities")
         .select("*");
 
-    const {
-        data: { user }
-    } = await supabase.auth.getUser();
-
-    console.log("USER:", user);
-
     if (error) {
         throw new Error(error.message);
     }

@@ -2,6 +2,8 @@ import { Activity } from "@/types/activity";
 import { mapActivity } from "@/mappers/activity.mapper";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import { notFound } from "next/navigation";
+
 export async function getActivityByToken(supabase: SupabaseClient, token: string): Promise<Activity> {
 
     const { data, error } = await supabase
@@ -10,9 +12,13 @@ export async function getActivityByToken(supabase: SupabaseClient, token: string
         .eq("token", token)
         .single();
     
+    if (!data) {
+        notFound();
+    }
+
     if(error) {
         throw new Error(error.message);
     }
 
-    return (data || []).map(mapActivity);
+    return  mapActivity(data);
 }

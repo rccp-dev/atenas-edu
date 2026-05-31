@@ -17,7 +17,7 @@ export async function getSubmissionsByActivityId(supabase: SupabaseClient, activ
 
 }
 
-export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient, activityId: string, studentId: string): Promise<Submission> {
+export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient, activityId: string, studentId: string): Promise<Submission | null> {
 
     const { data, error } = await supabase
         .from("submissions")
@@ -31,7 +31,7 @@ export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient
     }
 
     if (!data) {
-        throw new Error("Envio não encontrado");
+        return null;
     }
 
     return mapSubmission(data);

@@ -6,7 +6,7 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 import View from "@/components/ui/View";
 import { notFound } from "next/navigation";
 
-import { browserClient } from "@/lib/supabase/browser";
+import { serverClient } from "@/lib/supabase/server";
 
 interface Props {
     submission: Submission;
@@ -18,7 +18,7 @@ export default async function SubmissionPublicView({ submission }: Props) {
         notFound();
     }
 
-    const supabase = browserClient();
+    const supabase = await serverClient();
 
     const student = await getStudentById(supabase, submission.studentId);
     const activity = await getActivityById(supabase, submission.activityId);
