@@ -30,29 +30,40 @@ export async function getLessonPlanById(supabase: SupabaseClient, id: string) {
     return data ? mapLessonPlan(data) : null;
 }
 
-export async function createLessonPlan(supabase: SupabaseClient, data: Partial<LessonPlan>) {
+export async function createLessonPlan(
+  supabase: SupabaseClient,
+  data: Partial<LessonPlan>
+) {
+  const { error } = await supabase.from("lesson_plans").insert({
+    title: data.title,
+    subjects: data.subjects,
+    classroom_id: data.classroomId,
+    description: data.description,
+    content: data.content,
+    is_draft: data.isDraft,
+  });
 
-    const { error } = await supabase
-        .from("lesson_plans")
-        .insert(data);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
+  if (error) throw new Error(error.message);
 }
 
-export async function updateLessonPlan(supabase: SupabaseClient, id: string, data: Partial<LessonPlan>) {
+export async function updateLessonPlan(
+  supabase: SupabaseClient,
+  id: string,
+  data: Partial<LessonPlan>
+) {
+  const { error } = await supabase
+    .from("lesson_plans")
+    .update({
+      title: data.title,
+      subjects: data.subjects,
+      classroom_id: data.classroomId,
+      description: data.description,
+      content: data.content,
+      is_draft: data.isDraft,
+    })
+    .eq("id", id);
 
-    const { error } = await supabase
-        .from("lesson_plans")
-        .update(data)
-        .eq("id", id);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
+  if (error) throw new Error(error.message);
 }
 
 export async function deleteLessonPlan(supabase: SupabaseClient, id: string) {

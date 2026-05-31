@@ -7,7 +7,7 @@ export async function getSubmissionsByActivityId(supabase: SupabaseClient, activ
     const { data, error } = await supabase
         .from("submissions")
         .select("*")
-        .eq("activityId", activityId);
+        .eq("activity_id", activityId);
 
     if (error) {
         throw new Error(error.message);
@@ -22,8 +22,8 @@ export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient
     const { data, error } = await supabase
         .from("submissions")
         .select("*")
-        .eq("activityId", activityId)
-        .eq("studentId", studentId)
+        .eq("activity_id", activityId)
+        .eq("student_id", studentId)
         .maybeSingle();
 
     if (error) {

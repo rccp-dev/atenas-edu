@@ -31,28 +31,30 @@ export async function getStudentById(supabase: SupabaseClient, id: string) {
 }
 
 export async function createStudent(supabase: SupabaseClient, data: Partial<Student>) {
+  const { error } = await supabase.from("students").insert({
+    name: data.name,
+    enrollment: data.enrollment,
+    content: data.content,
+    classroom_id: data.classroomId,
+    is_draft: data.isDraft,
+  });
 
-  const { error } = await supabase
-    .from("students")
-    .insert(data);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw new Error(error.message);
 }
 
 export async function updateStudent(supabase: SupabaseClient, id: string, data: Partial<Student>) {
-
   const { error } = await supabase
     .from("students")
-    .update(data)
+    .update({
+      name: data.name,
+      enrollment: data.enrollment,
+      content: data.content,
+      classroom_id: data.classroomId,
+      is_draft: data.isDraft,
+    })
     .eq("id", id);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw new Error(error.message);
 }
 
 export async function deleteStudent(supabase: SupabaseClient, id: string) {

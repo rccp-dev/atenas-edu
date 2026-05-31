@@ -81,8 +81,8 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             }
 
             await updateSubmission(supabase, submission.id, {
-            file_url: fileUrl,
-        });
+                file_url: fileUrl,
+            });
 
         } finally {
             setSaving(false);

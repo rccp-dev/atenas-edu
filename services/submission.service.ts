@@ -31,28 +31,35 @@ export async function getSubmissionById(supabase: SupabaseClient, id: string) {
 }
 
 export async function createSubmission(supabase: SupabaseClient, data: Partial<Submission>) {
+  const { error } = await supabase.from("submissions").insert({
+    student_id: data.studentId,
+    classroom_id: data.classroomId,
+    activity_id: data.activityId,
+    file_url: data.file_url,
+    grade: data.grade,
+    feedback: data.feedback,
+    status: data.status,
+    submitted_at: data.submittedAt,
+    is_draft: data.isDraft,
+  });
 
-    const { error } = await supabase
-        .from("submissions")
-        .insert(data);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
+  if (error) throw new Error(error.message);
 }
 
 export async function updateSubmission(supabase: SupabaseClient, id: string, data: Partial<Submission>) {
+  const { error } = await supabase
+    .from("submissions")
+    .update({
+      file_url: data.file_url,
+      grade: data.grade,
+      feedback: data.feedback,
+      status: data.status,
+      submitted_at: data.submittedAt,
+      is_draft: data.isDraft,
+    })
+    .eq("id", id);
 
-    const { error } = await supabase
-        .from("submissions")
-        .update(data)
-        .eq("id", id);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
+  if (error) throw new Error(error.message);
 }
 
 export async function deleteSubmission(supabase: SupabaseClient, id: string) {
