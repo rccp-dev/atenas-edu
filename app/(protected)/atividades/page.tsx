@@ -6,11 +6,10 @@ import { serverClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const supabase = await serverClient();
-
 export default async function ActivityPage() {
+  const supabase = await serverClient();
   const activities = await getActivities(supabase);
-
+  
   return (
     <main className="min-h-screen px-6 py-10">
       <section className="mx-auto max-w-5xl rounded-2xl border border-border bg-surface p-8 shadow-sm">

@@ -6,10 +6,8 @@ import { serverClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const supabase = await serverClient();
-
 export default async function TurmasPage() {
-
+    const supabase = await serverClient();
     const classrooms = await getClassrooms(supabase);
 
     return (

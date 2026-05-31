@@ -6,10 +6,9 @@ import { serverClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const supabase = await serverClient();
-
 export default async function StudentPage() {
 
+  const supabase = await serverClient();
   const student  = await getStudents(supabase);
 
   return (

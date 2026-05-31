@@ -7,8 +7,6 @@ import { serverClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const supabase = await serverClient();
-
 interface PageProps {
   params: Promise<{
     id: string;
@@ -21,6 +19,8 @@ interface PageProps {
 export default async function Page({ params, searchParams }: PageProps) {
   const { id } = await params;
   const sp = await searchParams;
+  const supabase = await serverClient();
+
   const student = await getStudentById(supabase, id);
 
   if (!student) notFound();

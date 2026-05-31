@@ -7,8 +7,6 @@ import { serverClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const supabase = await serverClient();
-
 interface PageProps {
     params: Promise<{
         id: string;
@@ -22,6 +20,8 @@ export default async function Page({params, searchParams}: PageProps) {
 
   const { id } = await params;
   const sp = await searchParams;
+  const supabase = await serverClient();
+
   const submission = await getSubmissionById(supabase, id);
 
   if (!submission) notFound();
