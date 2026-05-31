@@ -8,6 +8,8 @@ import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/serv
 import { updateActivity, deleteActivity } from "@/services/activity.service";
 
 import Edit from "@/components/ui/Edit";
+import Form from "@/components/ui/Form";
+
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
@@ -67,7 +69,9 @@ export default function ActivityEdit({ activity }: Props) {
 
     }, [activity.classroomId]);
 
-    async function handleUpdate() {
+    async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
+
+        event.preventDefault();
 
         try {
 
@@ -77,12 +81,14 @@ export default function ActivityEdit({ activity }: Props) {
                 title,
                 classroomId,
                 deadline,
-                attachments: attachments ? attachments.split("\n").filter(Boolean): [],
+                attachments: attachments ? attachments.split("\n").filter(Boolean) : [],
                 description,
             });
 
         } finally {
+
             setSaving(false);
+
         }
 
     }
@@ -96,7 +102,9 @@ export default function ActivityEdit({ activity }: Props) {
             await deleteActivity(supabase, activity.id);
 
         } finally {
+
             setDeleting(false);
+
         }
 
     }
@@ -113,51 +121,53 @@ export default function ActivityEdit({ activity }: Props) {
                 </p>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <Form onSubmit={handleUpdate}>
+                <div className="flex flex-col gap-4">
 
-                <Field label="Título">
-                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-                </Field>
+                    <Field label="Título">
+                        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </Field>
 
-                <Field label="Turma">
-                    <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
+                    <Field label="Turma">
+                        <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
 
-                        <option value="">Selecione uma turma</option>
+                            <option value="">Selecione uma turma</option>
 
-                        {classrooms.map((classroom) => (
-                            <option key={classroom.id} value={classroom.id}>
-                                {getClassroomDisplayName(classroom)}
-                            </option>
-                        ))}
+                            {classrooms.map((classroom) => (
+                                <option key={classroom.id} value={classroom.id}>
+                                    {getClassroomDisplayName(classroom)}
+                                </option>
+                            ))}
 
-                    </Select>
-                </Field>
+                        </Select>
+                    </Field>
 
-                <Field label="Prazo">
-                    <Input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
-                </Field>
+                    <Field label="Prazo">
+                        <Input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+                    </Field>
 
-                <Field label="Anexos">
-                    <Textarea value={attachments} onChange={(e) => setAttachments(e.target.value)} placeholder="Um link por linha..." />
-                </Field>
+                    <Field label="Anexos">
+                        <Textarea value={attachments} onChange={(e) => setAttachments(e.target.value)} placeholder="Um link por linha..." />
+                    </Field>
 
-                <Field label="Descrição">
-                    <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                </Field>
+                    <Field label="Descrição">
+                        <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </Field>
 
-            </div>
+                </div>
 
-            <div className="mt-8 flex gap-3">
-                <Button href="?mode=view">Voltar</Button>
+                <div className="mt-8 flex gap-3">
+                    <Button href="?mode=view">Voltar</Button>
 
-                <Button disabled={saving} onClick={handleUpdate}>
-                    {saving ? "Salvando..." : "Salvar alterações"}
-                </Button>
+                    <Button type="submit" disabled={saving}>
+                        {saving ? "Salvando..." : "Salvar alterações"}
+                    </Button>
 
-                <Button disabled={deleting} onClick={handleDelete}>
-                    {deleting ? "Excluindo..." : "Excluir"}
-                </Button>
-            </div>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                        {deleting ? "Excluindo..." : "Excluir"}
+                    </Button>
+                </div>
+            </Form>
         </Edit>
     );
 }

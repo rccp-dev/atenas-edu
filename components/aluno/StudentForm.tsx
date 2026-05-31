@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import { Student } from "@/types/student";
 import { Classroom } from "@/types/classroom";
@@ -12,7 +13,6 @@ import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
-import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
 import { browserClient } from "@/lib/supabase/browser";
@@ -24,29 +24,13 @@ interface Props {
 export default function StudentForm({ initialData }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
-    const [name, setName] = useState(
-        initialData?.name || ""
-    );
-
-    const [classroomId, setClassroomId] = useState(
-        initialData?.classroomId || ""
-    );
-
-    const [classroms, setClassrooms] = useState<
-        Classroom[]
-    >([]);
-
-    const [enrollment, setEnrollment] = useState(
-        initialData?.enrollment || ""
-    );
-
-    const [content, setContent] = useState(
-        initialData?.content || ""
-    );
-    
-    const [loading, setLoading] =
-        useState(false);
+    const [name, setName] = useState(initialData?.name || "");
+    const [classroomId, setClassroomId] = useState(initialData?.classroomId || "");
+    const [classroms, setClassrooms] = useState<Classroom[]>([]);
+    const [enrollment, setEnrollment] = useState(initialData?.enrollment || "");    
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -60,18 +44,20 @@ export default function StudentForm({ initialData }: Props) {
     }, []);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
 
         try {
 
             setLoading(true);
 
-            await createStudent(supabase, {
+            const student = await createStudent(supabase, {
                 name,
                 classroomId,
-                enrollment,
-                content,
+                enrollment
             });
+
+            router.push(`/alunos/${student.id}?mode=draft`);
 
         } catch(error) {
 
@@ -115,13 +101,6 @@ export default function StudentForm({ initialData }: Props) {
                 </Field>
 
             </div>
-
-            <Field label="Conteúdo">
-                <Textarea
-                    value={content} onChange={(e) => setContent(e.target.value)}
-                    placeholder="Escreva qualquer anotação aqui..." className="min-h-50"
-                />
-            </Field>
 
             <div className="w-20">
                 <Button disabled={loading} type="submit">

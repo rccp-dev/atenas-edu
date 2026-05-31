@@ -7,7 +7,6 @@ export function mapClassroom(db: any): Classroom {
     section: db.section,
     description: db.description,
     createdAt: db.created_at,
-    updatedAt: db.updated_at,
-    isDraft: db.is_draft,
+    updatedAt: db.updated_at
   };
 }

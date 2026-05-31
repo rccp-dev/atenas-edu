@@ -14,6 +14,8 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 import { updateSubmission } from "@/services/submission.service";
 
 import Edit from "@/components/ui/Edit";
+import Form from "@/components/ui/Form";
+
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
@@ -78,7 +80,9 @@ export default function Grading({ submission }: Props) {
         submission.classroomId
     ]);
 
-    async function handleUpdate() {
+    async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
+
+        event.preventDefault();
 
         try {
 
@@ -90,7 +94,9 @@ export default function Grading({ submission }: Props) {
             });
 
         } finally {
+
             setSaving(false);
+
         }
 
     }
@@ -108,7 +114,9 @@ export default function Grading({ submission }: Props) {
             });
 
         } finally {
+
             setSaving(false);
+
         }
 
     }
@@ -143,32 +151,31 @@ export default function Grading({ submission }: Props) {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <Form onSubmit={handleUpdate}>
+                <div className="flex flex-col gap-4">
 
-                <Field label="Nota">
-                    <Input type="number" step="0.1" min="0" max="10" value={grade} onChange={(e) => setGrade(e.target.value)}/>
-                </Field>
+                    <Field label="Nota">
+                        <Input type="number" step="0.1" min="0" max="10" value={grade} onChange={(e) => setGrade(e.target.value)} />
+                    </Field>
 
-                <Field label="Feedback">
-                    <Textarea value={feedback} onChange={(e) => setFeedback(e.target.value)}/>
-                </Field>
+                    <Field label="Feedback">
+                        <Textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} />
+                    </Field>
 
-            </div>
+                </div>
 
-            <div className="mt-8 flex gap-3">
-                <Button href="?mode=view">Voltar</Button>
+                <div className="mt-8 flex gap-3">
+                    <Button href="?mode=view">Voltar</Button>
 
-                <Button
-                    disabled={saving}
-                    onClick={handleUpdate}
-                >
-                    {saving ? "Salvando..." : "Salvar alterações"}
-                </Button>
+                    <Button type="submit" disabled={saving}>
+                        {saving ? "Salvando..." : "Salvar alterações"}
+                    </Button>
 
-                <Button disabled={saving} onClick={handleSubmitCorrection}>
-                    Enviar correção
-                </Button>
-            </div>
+                    <Button type="button" disabled={saving} onClick={handleSubmitCorrection}>
+                        Enviar correção
+                    </Button>
+                </div>
+            </Form>
 
         </Edit>
     );

@@ -1,5 +1,7 @@
 import StudentView from "@/components/aluno/StudentView";
 import StudentEdit from "@/components/aluno/StudentEdit";
+import StudentDraft from "@/components/aluno/StudentDraft";
+
 import { getStudentById } from "@/services/student.service";
 import { notFound } from "next/navigation";
 
@@ -12,7 +14,7 @@ interface PageProps {
     id: string;
   }>;
   searchParams?: {
-    mode?: "view" | "edit";
+    mode?: "view" | "edit" | "draft";
   };
 }
 
@@ -27,9 +29,17 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const mode = sp?.mode ?? "view";
 
-  if (mode === "edit") {
-    return <StudentEdit student={student} />;
-  }
+  switch (mode) {
 
-  return <StudentView student={student} />;
+    case "draft":
+        return <StudentDraft student={student} />;
+
+    case "edit":
+        return <StudentEdit student={student} />;
+
+    case "view":
+    default:
+        return <StudentView student={student} />;
+
+  }
 }

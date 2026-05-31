@@ -32,6 +32,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
 
     const [file, setFile] = useState<File | null>(null);
     const [classroomName, setClassroomName] = useState<string>("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (classroom) {
@@ -42,9 +43,12 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
     }, [classroom]);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
 
         try {
+
+            setLoading(true);
 
             await createSubmission(supabase, {
                 studentId: student.id,
@@ -53,13 +57,16 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
                 /* Puxar URL de file da UploadBox */
                 /* Criar lógica para decidir entre "Entregue" e "Entregue com atraso" para status */
                 submittedAt: new Date().toISOString(),
-                isDraft: false
             });
 
         } catch(error) {
 
             console.error(error);
             
+        } finally {
+
+            setLoading(false);
+
         }
 
     }
@@ -80,7 +87,9 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
             <UploadBox file={file} setFile={setFile}/>
 
             <div className="w-20">
-                <Button type="submit">Enviar</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Salvando..." : "Salvar"}
+                </Button>
             </div>
         </Form>
     );

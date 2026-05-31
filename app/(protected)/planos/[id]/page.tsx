@@ -1,5 +1,7 @@
 import LessonPlanView from "@/components/plano/LessonPlanView";
 import LessonPlanEdit from "@/components/plano/LessonPlanEdit";
+import LessonPlanDraft from "@/components/plano/LessonPlanDraft";
+
 import { getLessonPlanById } from "@/services/lessonPlan.service";
 import { notFound } from "next/navigation";
 
@@ -12,7 +14,7 @@ interface PageProps {
     id: string;
   }>;
   searchParams?: {
-    mode?: "view" | "edit";
+    mode?: "view" | "edit" | "draft";
   };
 }
 
@@ -27,9 +29,17 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const mode = sp?.mode ?? "view";
 
-  if (mode === "edit") {
-    return <LessonPlanEdit plan={plan} />;
-  }
+  switch (mode) {
 
-  return <LessonPlanView plan={plan} />;
+    case "draft":
+        return <LessonPlanDraft plan={plan} />;
+
+    case "edit":
+        return <LessonPlanEdit plan={plan} />;
+
+    case "view":
+    default:
+        return <LessonPlanView plan={plan} />;
+
+  }
 }

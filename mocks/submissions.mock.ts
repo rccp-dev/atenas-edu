@@ -11,8 +11,7 @@ export const submissionsMock: Submission[] = [
         feedback: "Bom trabalho!",
         status: "Entregue",
         createdAt: "20/03/2026",
-        submittedAt: "27/03/2026",
-        isDraft: false,
+        submittedAt: "27/03/2026"
     },
     {
         id: "2",
@@ -24,7 +23,6 @@ export const submissionsMock: Submission[] = [
         feedback: "Excelente trabalho!",
         status: "Entregue",
         createdAt: "20/03/2026",
-        submittedAt: "27/03/2026",
-        isDraft: true,
+        submittedAt: "27/03/2026"
     }
 ]

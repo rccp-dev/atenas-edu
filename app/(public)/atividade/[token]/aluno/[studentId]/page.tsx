@@ -54,7 +54,7 @@ export default async function SubmissionPublicPage({ params }: Props) {
         );
     }
 
-    if (submission.isDraft) {
+    if (submission.status == "Pendente") {
 
         return (
             <SubmissionPublicEdit submission={submission}/>

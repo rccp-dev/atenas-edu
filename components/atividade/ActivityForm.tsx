@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Activity } from "@/types/activity";
 import { Classroom } from "@/types/classroom";
@@ -12,7 +13,6 @@ import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
-import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
 import { browserClient } from "@/lib/supabase/browser";
@@ -24,21 +24,14 @@ interface Props {
 export default function ActivityForm({ activity }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [title, setTitle] = useState(
         activity?.title || ""
     );
 
-    const [description, setDescription] = useState(
-        activity?.description || ""
-    );
-
     const [deadline, setDeadline] = useState(
         activity?.deadline || ""
-    );
-
-    const [attachments, setAttachments] = useState<string[]>(
-        activity?.attachments || []
     );
 
     const [classroomId, setClassroomId] = useState(
@@ -70,21 +63,22 @@ export default function ActivityForm({ activity }: Props) {
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
         
         try {
 
             setLoading(true);
 
-            await createActivity(supabase, {
+            const activity = await createActivity(supabase, {
                 title,
-                description,
                 classroomId,
                 deadline,
-                attachments,
                 token: generateToken(),
-                status: "Atribuída",
+                status: "Atribuída"
             });
+
+            router.push(`/atividades/${activity.id}?mode=draft`);
 
         } catch(error) {
             
@@ -127,26 +121,6 @@ export default function ActivityForm({ activity }: Props) {
                 </Field>
 
             </div>
-
-            <Field label="Descrição">
-                <Textarea 
-                    value={description} onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Descrição da atividade..."
-                />
-            </Field>
-
-            <Field label="Anexos">
-                <Textarea
-                    value={attachments.join("\n")} placeholder="Um link por linha..."
-                    onChange={(e) =>
-                        setAttachments(
-                            e.target.value
-                                .split("\n")
-                                .filter(Boolean)
-                        )
-                    }
-                />
-            </Field>
 
             <div className="w-20">
                 <Button disabled={loading} type="submit">

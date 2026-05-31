@@ -18,5 +18,4 @@ export interface Submission {
     status: Status;
     createdAt: string;
     submittedAt: string;
-    isDraft: boolean;
 }

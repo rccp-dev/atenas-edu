@@ -16,5 +16,4 @@ export interface LessonPlan {
     content?: string;
     createdAt: string;
     updatedAt?: string;
-    isDraft: boolean;
 }

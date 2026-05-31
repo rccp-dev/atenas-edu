@@ -34,16 +34,21 @@ export async function createLessonPlan(
   supabase: SupabaseClient,
   data: Partial<LessonPlan>
 ) {
-  const { error } = await supabase.from("lesson_plans").insert({
+  const { data: lessonPlan, error } = await supabase.from("lesson_plans").insert({
     title: data.title,
     subjects: data.subjects,
     classroom_id: data.classroomId,
     description: data.description,
     content: data.content,
-    is_draft: data.isDraft,
-  });
+  })
+  .select()
+  .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return lessonPlan;
 }
 
 export async function updateLessonPlan(
@@ -58,8 +63,7 @@ export async function updateLessonPlan(
       subjects: data.subjects,
       classroom_id: data.classroomId,
       description: data.description,
-      content: data.content,
-      is_draft: data.isDraft,
+      content: data.content
     })
     .eq("id", id);
 

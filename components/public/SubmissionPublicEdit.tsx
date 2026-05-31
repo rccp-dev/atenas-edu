@@ -18,6 +18,8 @@ import { updateSubmission } from "@/services/submission.service";
 import { uploadFile } from "@/lib/upload";
 
 import Edit from "@/components/ui/Edit";
+import Form from "@/components/ui/Form";
+
 import UploadBox from "./UploadBox";
 import { Button } from "../ui/Button";
 
@@ -68,7 +70,9 @@ export default function SubmissionPublicEdit({ submission }: Props) {
         submission.classroomId
     ]);
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+
+        event.preventDefault();
 
         try {
 
@@ -85,7 +89,9 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             });
 
         } finally {
+
             setSaving(false);
+
         }
 
     }
@@ -107,16 +113,19 @@ export default function SubmissionPublicEdit({ submission }: Props) {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-4">
-                <UploadBox file={file} setFile={setFile} />
-            </div>
+            <Form onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-4">
+                    <UploadBox file={file} setFile={setFile} />
+                </div>
 
-            <div className="mt-8 flex gap-3">
-                <Button href="?mode=view">Voltar</Button>
-                <Button disabled={saving} onClick={handleSubmit}>
-                    {saving ? "Enviando..." : "Enviar"}
-                </Button>
-            </div>
+                <div className="mt-8 flex gap-3">
+                    <Button href="?mode=view">Voltar</Button>
+
+                    <Button type="submit" disabled={saving}>
+                        {saving ? "Enviando..." : "Enviar"}
+                    </Button>
+                </div>
+            </Form>
 
         </Edit>
     );

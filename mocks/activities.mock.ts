@@ -10,8 +10,7 @@ export const activitiesMock: Activity[] = [
         classroomId: "1",
         attachments: ["https://example.com/attachment1", "https://example.com/attachment2"],
         status: "Atribuída",
-        createdAt: "2026-01-01",
-        isDraft: false
+        createdAt: "2026-01-01"
     },
     {
         id: "2",
@@ -22,7 +21,6 @@ export const activitiesMock: Activity[] = [
         classroomId: "2",
         attachments: ["https://example.com/attachment3"],
         status: "Atribuída",
-        createdAt: "2026-01-01",
-        isDraft: false
+        createdAt: "2026-01-01"
     }
 ]

@@ -9,15 +9,13 @@ export const classroomsMock: Classroom[] = [
         grade: 1,
         section: "A",
         description: "Turma do 1º ano A de português",
-        createdAt: "2026-01-01",
-        isDraft: false
+        createdAt: "2026-01-01"
     },
     {
         id: "2",
         grade: 2,
         section: "B",
         description: "Turma do 2º ano B de português",
-        createdAt: "2026-01-01",
-        isDraft: false
+        createdAt: "2026-01-01"
     }
 ]

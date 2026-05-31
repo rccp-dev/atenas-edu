@@ -5,5 +5,4 @@ export interface Classroom {
     description?: string;
     createdAt: string;
     updatedAt?: string;
-    isDraft: boolean;
 }

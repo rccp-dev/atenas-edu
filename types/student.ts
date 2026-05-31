@@ -6,5 +6,4 @@ export interface Student {
     classroomId: string;
     createdAt: string;
     updatedAt?: string;
-    isDraft: boolean;
 }

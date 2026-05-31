@@ -31,15 +31,20 @@ export async function getStudentById(supabase: SupabaseClient, id: string) {
 }
 
 export async function createStudent(supabase: SupabaseClient, data: Partial<Student>) {
-  const { error } = await supabase.from("students").insert({
+  const {data: student, error } = await supabase.from("students").insert({
     name: data.name,
     enrollment: data.enrollment,
     content: data.content,
-    classroom_id: data.classroomId,
-    is_draft: data.isDraft,
-  });
+    classroom_id: data.classroomId
+  })
+  .select()
+  .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return student;
 }
 
 export async function updateStudent(supabase: SupabaseClient, id: string, data: Partial<Student>) {
@@ -49,8 +54,7 @@ export async function updateStudent(supabase: SupabaseClient, id: string, data: 
       name: data.name,
       enrollment: data.enrollment,
       content: data.content,
-      classroom_id: data.classroomId,
-      is_draft: data.isDraft,
+      classroom_id: data.classroomId
     })
     .eq("id", id);
 

@@ -8,8 +8,7 @@ export const lessonPlansMock: LessonPlan[] = [
         classroomId: "1",
         description: "Introdução à substantivos",
         content: "",
-        createdAt: "10/01/26",
-        isDraft: false
+        createdAt: "10/01/26"
     },
     {
         id: "2",
@@ -18,8 +17,7 @@ export const lessonPlansMock: LessonPlan[] = [
         classroomId: "1",
         description: "Introdução à adjetivos",
         content: "",
-        createdAt: "05/02/26",
-        isDraft: false
+        createdAt: "05/02/26"
     },
     {
         id: "3",
@@ -28,8 +26,7 @@ export const lessonPlansMock: LessonPlan[] = [
         classroomId: "2",
         description: "Introdução à crônica",
         content: "",
-        createdAt: "11/02/26",
-        isDraft: false
+        createdAt: "11/02/26"
     },
     {
         id: "4",
@@ -38,7 +35,6 @@ export const lessonPlansMock: LessonPlan[] = [
         classroomId: "2",
         description: "Introdução às obras de Machado de Assis",
         content: "",
-        createdAt: "15/02/26",
-        isDraft: false
+        createdAt: "15/02/26"
     }
 ];

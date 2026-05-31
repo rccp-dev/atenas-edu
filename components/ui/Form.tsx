@@ -1,14 +1,18 @@
-import { ReactNode } from "react";
+"use client";
 
-type Props = {
-  children: ReactNode;
-  onSubmit: React.FormEventHandler<HTMLFormElement>;
-};
+import { FormHTMLAttributes, ReactNode } from "react";
 
-export default function Form({ children, onSubmit }: Props) {
-  return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      {children}
-    </form>
-  );
+type Props =
+    FormHTMLAttributes<HTMLFormElement> & {
+        children: ReactNode;
+    };
+
+export default function Form({ children, className = "", ...props}: Props) {
+
+    return (
+        <form className={`flex flex-col gap-4 ${className}`} {...props}>
+            {children}
+        </form>
+    );
+
 }

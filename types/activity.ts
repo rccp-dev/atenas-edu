@@ -17,5 +17,4 @@ export interface Activity {
     status: Status;
     createdAt: string;
     updatedAt?: string;
-    isDraft: boolean;
 }

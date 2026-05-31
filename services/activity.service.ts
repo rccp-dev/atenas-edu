@@ -58,18 +58,23 @@ export function getActivityStatus(activity: Activity) {
 }
 
 export async function createActivity(supabase: SupabaseClient, data: Partial<Activity>) {
-  const { error } = await supabase.from("activities").insert({
+  const { data: activity, error } = await supabase.from("activities").insert({
     title: data.title,
     description: data.description,
     deadline: data.deadline,
     token: data.token,
     classroom_id: data.classroomId,
     attachments: data.attachments,
-    status: data.status,
-    is_draft: data.isDraft,
-  });
+    status: data.status
+  })
+  .select()
+  .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return activity;
 }
 
 export async function updateActivity(supabase: SupabaseClient, id: string, data: Partial<Activity>) {
@@ -81,8 +86,7 @@ export async function updateActivity(supabase: SupabaseClient, id: string, data:
       deadline: data.deadline,
       classroom_id: data.classroomId,
       attachments: data.attachments,
-      status: data.status,
-      is_draft: data.isDraft,
+      status: data.status
     })
     .eq("id", id);
 

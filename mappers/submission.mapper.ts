@@ -11,7 +11,6 @@ export function mapSubmission(db: any): Submission {
     feedback: db.feedback,
     status: db.status,
     createdAt: db.created_at,
-    submittedAt: db.submitted_at,
-    isDraft: db.is_draft,
+    submittedAt: db.submitted_at
   };
 }

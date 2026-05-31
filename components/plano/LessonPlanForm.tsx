@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { LessonPlan, Subject, subject_options } from "@/types/lessonPlan";
 import { Classroom } from "@/types/classroom";
@@ -12,7 +13,6 @@ import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
-import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
 import { browserClient } from "@/lib/supabase/browser";
@@ -24,30 +24,13 @@ interface Props {
 export default function LessonPlanForm({ initialData, }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
-    const [title, setTitle] = useState(
-        initialData?.title || ""
-    );
-
-    const [subjects, setSubjects] = useState(
-        initialData?.subjects || []
-    );
-
-    const [classroomId, setClassroomId] = useState(
-        initialData?.classroomId || ""
-    );
-
-    const [classrooms, setClassrooms] = useState<
-        Classroom[]
-    >([]);
-
-    const [description, setDescription] = useState(
-        initialData?.description || ""
-    );
-
-    const [content, setContent] = useState(
-        initialData?.content || ""
-    );
+    const [title, setTitle] = useState(initialData?.title || "");
+    const [subjects, setSubjects] = useState(initialData?.subjects || []);
+    const [classroomId, setClassroomId] = useState(initialData?.classroomId || "");
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -61,21 +44,28 @@ export default function LessonPlanForm({ initialData, }: Props) {
     }, []);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
 
         try {
 
-            await createLessonPlan(supabase, {
+            setLoading(true);
+
+            const lessonPlan = await createLessonPlan(supabase, {
                 title,
                 subjects,
-                classroomId,
-                description,
-                content,
+                classroomId
             });
+
+            router.push(`/planos/${lessonPlan.id}?mode=draft`);
 
         } catch(error) {
 
             console.error(error);
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -129,19 +119,10 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
             </div>
 
-            <Field label="Descrição">
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Descrição..."/>
-            </Field>
-
-            <Field label="Conteúdo">
-                <Textarea
-                    value={content} onChange={(e) => setContent(e.target.value)}
-                    placeholder="Escreva aqui..." className="min-h-50"
-                />
-            </Field>
-
             <div className="w-20">
-                <Button type="submit">Salvar</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Salvando..." : "Salvar"}
+                </Button>
             </div>
         </Form>
     );

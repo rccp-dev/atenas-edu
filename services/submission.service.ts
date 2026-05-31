@@ -39,8 +39,7 @@ export async function createSubmission(supabase: SupabaseClient, data: Partial<S
     grade: data.grade,
     feedback: data.feedback,
     status: data.status,
-    submitted_at: data.submittedAt,
-    is_draft: data.isDraft,
+    submitted_at: data.submittedAt
   });
 
   if (error) throw new Error(error.message);
@@ -54,8 +53,7 @@ export async function updateSubmission(supabase: SupabaseClient, id: string, dat
       grade: data.grade,
       feedback: data.feedback,
       status: data.status,
-      submitted_at: data.submittedAt,
-      is_draft: data.isDraft,
+      submitted_at: data.submittedAt
     })
     .eq("id", id);
 

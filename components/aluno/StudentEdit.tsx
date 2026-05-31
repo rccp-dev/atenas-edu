@@ -7,6 +7,8 @@ import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/serv
 import { updateStudent, deleteStudent } from "@/services/student.service";
 
 import Edit from "@/components/ui/Edit";
+import Form from "@/components/ui/Form";
+
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
@@ -63,7 +65,9 @@ export default function StudentEdit({ student }: Props) {
 
     }, [student.classroomId]);
 
-    async function handleUpdate() {
+    async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
+
+        event.preventDefault();
 
         try {
 
@@ -112,47 +116,49 @@ export default function StudentEdit({ student }: Props) {
                 </p>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <Form onSubmit={handleUpdate}>
+                <div className="flex flex-col gap-4">
 
-                <Field label="Nome">
-                    <Input value={name} onChange={(e) => setName(e.target.value)} />
-                </Field>
+                    <Field label="Nome">
+                        <Input value={name} onChange={(e) => setName(e.target.value)} />
+                    </Field>
 
-                <Field label="Matrícula">
-                    <Input value={enrollment} onChange={(e) => setEnrollment(e.target.value)} />
-                </Field>
+                    <Field label="Matrícula">
+                        <Input value={enrollment} onChange={(e) => setEnrollment(e.target.value)} />
+                    </Field>
 
-                <Field label="Turma">
-                    <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
+                    <Field label="Turma">
+                        <Select value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
 
-                        <option value="">Selecione uma turma</option>
+                            <option value="">Selecione uma turma</option>
 
-                        {classrooms.map((classroom) => (
-                            <option key={classroom.id} value={classroom.id}>
-                                {getClassroomDisplayName(classroom)}
-                            </option>
-                        ))}
+                            {classrooms.map((classroom) => (
+                                <option key={classroom.id} value={classroom.id}>
+                                    {getClassroomDisplayName(classroom)}
+                                </option>
+                            ))}
 
-                    </Select>
-                </Field>
+                        </Select>
+                    </Field>
 
-                <Field label="Conteúdo">
-                    <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-50" />
-                </Field>
+                    <Field label="Conteúdo">
+                        <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-50" />
+                    </Field>
 
-            </div>
+                </div>
 
-            <div className="mt-8 flex gap-3">
-                <Button href="?mode=view">Voltar</Button>
+                <div className="mt-8 flex gap-3">
+                    <Button href="?mode=view">Voltar</Button>
 
-                <Button disabled={saving} onClick={handleUpdate}>
-                    {saving ? "Salvando..." : "Salvar alterações"}
-                </Button>
+                    <Button type="submit" disabled={saving}>
+                        {saving ? "Salvando..." : "Salvar alterações"}
+                    </Button>
 
-                <Button disabled={deleting} onClick={handleDelete}>
-                    {deleting ? "Excluindo..." : "Excluir"}
-                </Button>
-            </div>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                        {deleting ? "Excluindo..." : "Excluir"}
+                    </Button>
+                </div>
+            </Form>
         </Edit>
     );
 }

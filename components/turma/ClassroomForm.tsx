@@ -18,12 +18,16 @@ export default function ClassroomForm() {
     const [grade, setGrade] = useState<number>(0);
     const [section, setSection] = useState("");
     const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
 
         try {
 
+            setLoading(true);
+            
             await createClassroom(supabase, {
                 grade,
                 section,
@@ -33,6 +37,10 @@ export default function ClassroomForm() {
         } catch(error) {
 
             console.error(error);
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -60,7 +68,9 @@ export default function ClassroomForm() {
             </Field>
 
             <div className="w-24">
-                <Button type="submit">Salvar</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Salvando..." : "Salvar"}
+                </Button>
             </div>
         </Form>
     );

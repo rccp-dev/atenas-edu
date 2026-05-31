@@ -1,5 +1,7 @@
 import ActivityView from "@/components/atividade/ActivityView";
 import ActivityEdit from "@/components/atividade/ActivityEdit";
+import ActivityDraft from "@/components/atividade/ActivityDraft";
+
 import { getActivityById } from "@/services/activity.service";
 import { notFound } from "next/navigation";
 
@@ -12,7 +14,7 @@ interface PageProps {
     id: string;
   }>;
   searchParams?: {
-    mode?: "view" | "edit";
+    mode?: "view" | "edit" | "draft";
   };
 }
 
@@ -27,9 +29,17 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const mode = sp?.mode ?? "view";
 
-  if (mode === "edit") {
-    return <ActivityEdit activity={activity} />;
-  }
+  switch (mode) {
 
-  return <ActivityView activity={activity} />;
+    case "draft":
+        return <ActivityDraft activity={activity} />;
+
+    case "edit":
+        return <ActivityEdit activity={activity} />;
+
+    case "view":
+    default:
+        return <ActivityView activity={activity} />;
+
+  }
 }

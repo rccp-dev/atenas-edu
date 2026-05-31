@@ -11,6 +11,8 @@ import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/serv
 import { updateLessonPlan, deleteLessonPlan } from "@/services/lessonPlan.service";
 
 import Edit from "@/components/ui/Edit";
+import Form from "@/components/ui/Form";
+
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
@@ -68,7 +70,9 @@ export default function LessonPlanEdit({ plan }: Props) {
 
     }, [plan.classroomId]);
 
-    async function handleUpdate() {
+    async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
+
+        event.preventDefault();
 
         try {
 
@@ -83,7 +87,9 @@ export default function LessonPlanEdit({ plan }: Props) {
             });
 
         } finally {
+
             setSaving(false);
+
         }
 
     }
@@ -97,7 +103,9 @@ export default function LessonPlanEdit({ plan }: Props) {
             await deleteLessonPlan(supabase, plan.id);
 
         } finally {
+
             setDeleting(false);
+
         }
 
     }
@@ -115,75 +123,77 @@ export default function LessonPlanEdit({ plan }: Props) {
                 </p>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <Form onSubmit={handleUpdate}>
+                <div className="flex flex-col gap-4">
 
-                <Field label="Título">
-                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-                </Field>
+                    <Field label="Título">
+                        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </Field>
 
-                <Field label="Matérias">
-                    <Select
-                        multiple
-                        value={subjects}
-                        onChange={(e) => {
-                            const values = Array.from(
-                                e.target.selectedOptions,
-                                (opt) => opt.value as any
-                            );
-                            setSubjects(values);
-                        }}
-                    >
-                        {subject_options.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </Select>
-                </Field>
+                    <Field label="Matérias">
+                        <Select
+                            multiple
+                            value={subjects}
+                            onChange={(e) => {
+                                const values = Array.from(
+                                    e.target.selectedOptions,
+                                    (opt) => opt.value as any
+                                );
+                                setSubjects(values);
+                            }}
+                        >
+                            {subject_options.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </Select>
+                    </Field>
 
-                <Field label="Turma">
-                    <Select
-                        value={classroomId}
-                        onChange={(e) => setClassroomId(e.target.value)}
-                    >
-                        <option value="">Selecione uma turma</option>
+                    <Field label="Turma">
+                        <Select
+                            value={classroomId}
+                            onChange={(e) => setClassroomId(e.target.value)}
+                        >
+                            <option value="">Selecione uma turma</option>
 
-                        {classrooms.map((classroom) => (
-                            <option key={classroom.id} value={classroom.id}>
-                                {getClassroomDisplayName(classroom)}
-                            </option>
-                        ))}
-                    </Select>
-                </Field>
+                            {classrooms.map((classroom) => (
+                                <option key={classroom.id} value={classroom.id}>
+                                    {getClassroomDisplayName(classroom)}
+                                </option>
+                            ))}
+                        </Select>
+                    </Field>
 
-                <Field label="Descrição">
-                    <Textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </Field>
+                    <Field label="Descrição">
+                        <Textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </Field>
 
-                <Field label="Conteúdo">
-                    <Textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        className="min-h-50"
-                    />
-                </Field>
+                    <Field label="Conteúdo">
+                        <Textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="min-h-50"
+                        />
+                    </Field>
 
-            </div>
+                </div>
 
-            <div className="mt-8 flex gap-3">
-                <Button href="?mode=view">Voltar</Button>
+                <div className="mt-8 flex gap-3">
+                    <Button href="?mode=view">Voltar</Button>
 
-                <Button disabled={saving} onClick={handleUpdate}>
-                    {saving ? "Salvando..." : "Salvar alterações"}
-                </Button>
+                    <Button type="submit" disabled={saving}>
+                        {saving ? "Salvando..." : "Salvar alterações"}
+                    </Button>
 
-                <Button disabled={deleting} onClick={handleDelete}>
-                    {deleting ? "Excluir" : "Excluir"}
-                </Button>
-            </div>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                        {deleting ? "Excluindo..." : "Excluir"}
+                    </Button>
+                </div>
+            </Form>
 
         </Edit>
     );
