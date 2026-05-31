@@ -1,12 +1,12 @@
 import { Student } from '@/types/student';
-import { supabase } from '@/lib/supabase';
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getStudentsByClassroomId(classroomId: string): Promise<Student[]> {
+export async function getStudentsByClassroomId(supabase: SupabaseClient, classroomId: string): Promise<Student[]> {
 
     const { data, error } = await supabase
         .from('students')
         .select('*')
-        .eq('classroomId', classroomId);
+        .eq('classroom_id', classroomId);
 
     if (error) {
         throw new Error(error.message);

@@ -3,7 +3,11 @@ import StudentEdit from "@/components/aluno/StudentEdit";
 import { getStudentById } from "@/services/student.service";
 import { notFound } from "next/navigation";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const supabase = await serverClient();
 
 interface PageProps {
   params: Promise<{
@@ -17,9 +21,9 @@ interface PageProps {
 export default async function Page({ params, searchParams }: PageProps) {
   const { id } = await params;
   const sp = await searchParams;
-  const student = await getStudentById(id);
+  const student = await getStudentById(supabase, id);
 
-  if (!student) return notFound();
+  if (!student) notFound();
 
   const mode = sp?.mode ?? "view";
 

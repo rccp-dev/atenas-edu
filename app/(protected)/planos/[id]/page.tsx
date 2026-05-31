@@ -3,7 +3,11 @@ import LessonPlanEdit from "@/components/plano/LessonPlanEdit";
 import { getLessonPlanById } from "@/services/lessonPlan.service";
 import { notFound } from "next/navigation";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const supabase = await serverClient();
 
 interface PageProps {
   params: Promise<{
@@ -18,7 +22,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const { id } = await params;
   const sp = await searchParams;
 
-  const plan = await getLessonPlanById(id);
+  const plan = await getLessonPlanById(supabase, id);
 
   if (!plan) notFound();
 

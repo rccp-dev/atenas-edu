@@ -1,12 +1,17 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+
 import Link from "next/link";
 import Card from "@/components/ui/Card";
+
+import { serverClient } from "@/lib/supabase/server";
 
 interface ActivityCardProps {
     activity: Activity;
 }
+
+const supabase = await serverClient();
 
 export default async function ActivityCard({ activity }: ActivityCardProps) {
 
@@ -14,7 +19,7 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
         return null;
     }
 
-    const classroom = await getClassroomById(activity.classroomId);
+    const classroom = await getClassroomById(supabase, activity.classroomId);
     const status = getActivityStatus(activity);
 
     if (!classroom) {

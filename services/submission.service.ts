@@ -1,7 +1,7 @@
 import { Submission } from "@/types/submission";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getSubmissions(): Promise<Submission[]> {
+export async function getSubmissions(supabase: SupabaseClient): Promise<Submission[]> {
 
     const { data, error } = await supabase
         .from("submissions")
@@ -14,7 +14,7 @@ export async function getSubmissions(): Promise<Submission[]> {
     return data || [];
 }
 
-export async function getSubmissionById(id: string) {
+export async function getSubmissionById(supabase: SupabaseClient, id: string) {
 
     const { data, error } = await supabase
         .from("submissions")
@@ -29,9 +29,7 @@ export async function getSubmissionById(id: string) {
     return data;
 }
 
-export async function createSubmission(
-    data: Partial<Submission>
-) {
+export async function createSubmission(supabase: SupabaseClient, data: Partial<Submission>) {
 
     const { error } = await supabase
         .from("submissions")
@@ -43,10 +41,7 @@ export async function createSubmission(
 
 }
 
-export async function updateSubmission(
-    id: string,
-    data: Partial<Submission>
-) {
+export async function updateSubmission(supabase: SupabaseClient, id: string, data: Partial<Submission>) {
 
     const { error } = await supabase
         .from("submissions")
@@ -59,7 +54,7 @@ export async function updateSubmission(
 
 }
 
-export async function deleteSubmission(id: string) {
+export async function deleteSubmission(supabase: SupabaseClient, id: string) {
 
     const { error } = await supabase
         .from("submissions")

@@ -2,10 +2,14 @@ import ActivityList from "@/components/atividade/ActivityList";
 import { getActivities } from "@/services/activity.service";
 import { Button } from "@/components/ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
 
+const supabase = await serverClient();
+
 export default async function ActivityPage() {
-  const activities = await getActivities();
+  const activities = await getActivities(supabase);
 
   return (
     <main className="min-h-screen px-6 py-10">

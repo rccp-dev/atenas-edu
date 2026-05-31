@@ -31,7 +31,7 @@ export default function ClassroomView({ classroom, students }: Props) {
             </div>
 
             <section className="space-y-4">
-                <h2 className="text-xl font-semibold">
+                <h2 className="mt-4 text-xl font-semibold">
                     Alunos
                 </h2>
 

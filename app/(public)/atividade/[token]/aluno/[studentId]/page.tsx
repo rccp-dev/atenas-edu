@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getActivityByToken } from "@/queries/activity.queries";
-import { getSubmissionByActivityAndStudent } from "@/queries/submission.queries";
+import { getActivityByToken } from "@/queries/activity.query";
+import { getSubmissionByActivityAndStudent } from "@/queries/submission.query";
 import { getStudentById } from "@/services/student.service";
 import { getClassroomById } from "@/services/classroom.service";
 

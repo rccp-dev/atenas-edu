@@ -15,11 +15,15 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     initialData?: LessonPlan;
 }
 
 export default function LessonPlanForm({ initialData, }: Props) {
+
+    const supabase = browserClient();
 
     const [title, setTitle] = useState(
         initialData?.title || ""
@@ -48,7 +52,7 @@ export default function LessonPlanForm({ initialData, }: Props) {
     useEffect(() => {
 
         async function loadClassrooms() {
-            const data = await getClassrooms();
+            const data = await getClassrooms(supabase);
             setClassrooms(data);
         }
 
@@ -61,7 +65,7 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
         try {
 
-            await createLessonPlan({
+            await createLessonPlan(supabase, {
                 title,
                 subjects,
                 classroomId,

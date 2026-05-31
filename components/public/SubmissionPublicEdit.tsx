@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
@@ -21,6 +21,8 @@ import Edit from "@/components/ui/Edit";
 import UploadBox from "./UploadBox";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     submission: Submission;
 }
@@ -28,8 +30,10 @@ interface Props {
 export default function SubmissionPublicEdit({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return notFound();
+        notFound();
     }
+
+    const supabase = browserClient();
 
     const [file, setFile] = useState<File | null>(null);
     const [student, setStudent] = useState<Student | null>(null);
@@ -43,9 +47,9 @@ export default function SubmissionPublicEdit({ submission }: Props) {
         async function loadData() {
 
             const [studentData, activityData, classroom] = await Promise.all([
-                getStudentById(submission.studentId),
-                getActivityById(submission.activityId),
-                getClassroomById(submission.classroomId),
+                getStudentById(supabase, submission.studentId),
+                getActivityById(supabase, submission.activityId),
+                getClassroomById(supabase, submission.classroomId),
             ]);
 
             setStudent(studentData ?? null);
@@ -76,7 +80,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
                 fileUrl = await uploadFile(file);
             }
 
-            await updateSubmission(submission.id, {
+            await updateSubmission(supabase, submission.id, {
             file_url: fileUrl,
         });
 
@@ -108,6 +112,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             </div>
 
             <div className="mt-8 flex gap-3">
+                <Button href="?mode=view">Voltar</Button>
                 <Button disabled={saving} onClick={handleSubmit}>
                     {saving ? "Enviando..." : "Enviar"}
                 </Button>

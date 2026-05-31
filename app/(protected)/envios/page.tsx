@@ -1,10 +1,14 @@
 import SubmissionList from "@/components/envio/SubmissionList";
 import { getSubmissions } from "@/services/submission.service";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
 
+const supabase = await serverClient();
+
 export default async function SubmissionPage() {
-  const submissions = await getSubmissions();
+  const submissions = await getSubmissions(supabase);
 
   return (
     <main className="min-h-screen px-6 py-10">

@@ -1,11 +1,17 @@
 import { Activity } from "@/types/activity";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getActivities(): Promise<Activity[]> {
+export async function getActivities(supabase: SupabaseClient): Promise<Activity[]> {
 
     const { data, error } = await supabase
         .from("activities")
         .select("*");
+
+    const {
+        data: { user }
+    } = await supabase.auth.getUser();
+
+    console.log("USER:", user);
 
     if (error) {
         throw new Error(error.message);
@@ -14,7 +20,7 @@ export async function getActivities(): Promise<Activity[]> {
     return data || [];
 }
 
-export async function getActivityById(id: string) {
+export async function getActivityById(supabase: SupabaseClient, id: string) {
 
     const { data, error } = await supabase
         .from("activities")
@@ -29,9 +35,7 @@ export async function getActivityById(id: string) {
     return data;
 }
 
-export function getActivityStatus(
-    activity: Activity
-) {
+export function getActivityStatus(activity: Activity) {
 
     if (activity.status === "Corrigida") {
         return "Corrigida";
@@ -58,9 +62,7 @@ export function getActivityStatus(
 
 }
 
-export async function createActivity(
-    data: Partial<Activity>
-) {
+export async function createActivity(supabase: SupabaseClient, data: Partial<Activity>) {
 
     const { error } = await supabase
         .from("activities")
@@ -72,10 +74,7 @@ export async function createActivity(
 
 }
 
-export async function updateActivity(
-    id: string,
-    data: Partial<Activity>
-) {
+export async function updateActivity(supabase: SupabaseClient, id: string, data: Partial<Activity>) {
 
     const { error } = await supabase
         .from("activities")
@@ -88,7 +87,7 @@ export async function updateActivity(
 
 }
 
-export async function deleteActivity(id: string) {
+export async function deleteActivity(supabase: SupabaseClient, id: string) {
 
     const { error } = await supabase
         .from("activities")

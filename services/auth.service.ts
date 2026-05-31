@@ -1,10 +1,9 @@
-import { supabase } from "@/lib/supabase";
+import { browserClient } from "@/lib/supabase/browser";
 
-export async function login(
-    email: string,
-    password: string
-) {
+const supabase = browserClient();
 
+export async function login(email: string, password: string) {
+    
     const { error } =
         await supabase.auth.signInWithPassword({ email, password,});
 

@@ -1,7 +1,7 @@
 import { Activity } from "@/types/activity";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getActivityByToken(token: string): Promise<Activity>{
+export async function getActivityByToken(supabase: SupabaseClient, token: string): Promise<Activity> {
 
     const { data, error } = await supabase
         .from("activities")

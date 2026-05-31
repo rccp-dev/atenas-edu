@@ -1,24 +1,18 @@
--- User
+-- Users
 
 insert into auth.users (
   id,
-  email,
-  email_confirmed_at,
-  created_at,
-  updated_at,
-  instance_id,
   aud,
-  role
+  role,
+  email,
+  encrypted_password
 )
 values (
   'd49a08e2-0d06-4566-8496-c3d9d86ca223',
-  'atenasedu.co@gmail.com',
-  now(),
-  now(),
-  now(),
-  '00000000-0000-0000-0000-000000000000',
   'authenticated',
-  'authenticated'
+  'authenticated',
+  'atenasedu.co@gmail.com',
+  crypt('admin.atenas-edu.2026', gen_salt('bf'))
 );
 
 -- Profiles
@@ -68,21 +62,21 @@ INSERT INTO students (
 )
 VALUES
 (
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     'Ana Clara',
     '2026001',
     'Boa interpretação textual.',
     false
 ),
 (
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     'Pedro Henrique',
     '2026002',
     'Precisa melhorar ortografia.',
     false
 ),
 (
-    (SELECT id FROM classrooms WHERE year = 8 AND grade = 'B'),
+    (SELECT id FROM classrooms WHERE grade = 8 AND section = 'B'),
     'Julia Martins',
     '2026003',
     'Excelente escrita.',
@@ -102,7 +96,7 @@ INSERT INTO activities (
 )
 VALUES
 (
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     gen_random_uuid(),
     'Redação sobre meio ambiente',
     'Escreva uma redação dissertativa sobre preservação ambiental.',
@@ -114,7 +108,7 @@ VALUES
     false
 ),
 (
-    (SELECT id FROM classrooms WHERE year = 8 AND grade = 'B'),
+    (SELECT id FROM classrooms WHERE grade = 8 AND section = 'B'),
     gen_random_uuid(),
     'Análise gramatical',
     'Realizar análise sintática das frases enviadas.',
@@ -141,7 +135,7 @@ VALUES
 (
     (SELECT id FROM activities WHERE title = 'Redação sobre meio ambiente'),
     (SELECT id FROM students WHERE name = 'Ana Clara'),
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     'https://example.com/envio-ana.pdf',
     NULL,
     NULL,
@@ -151,7 +145,7 @@ VALUES
 (
     (SELECT id FROM activities WHERE title = 'Redação sobre meio ambiente'),
     (SELECT id FROM students WHERE name = 'Pedro Henrique'),
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     'https://example.com/envio-pedro.pdf',
     7.50,
     'Boa estrutura, revise a pontuação.',
@@ -171,7 +165,7 @@ INSERT INTO lesson_plans (
 )
 VALUES
 (
-    (SELECT id FROM classrooms WHERE year = 7 AND grade = 'A'),
+    (SELECT id FROM classrooms WHERE grade = 7 AND section = 'A'),
     'Plano de leitura argumentativa',
     'Introdução à redação argumentativa.',
     'Apresentar conceitos básicos de tese, argumento e conclusão.',
@@ -179,7 +173,7 @@ VALUES
     false
 ),
 (
-    (SELECT id FROM classrooms WHERE year = 8 AND grade = 'B'),
+    (SELECT id FROM classrooms WHERE grade = 8 AND section = 'B'),
     'Plano de gramática',
     'Estudo de análise sintática.',
     'Explicar sujeito, predicado e complementos.',

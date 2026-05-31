@@ -1,6 +1,6 @@
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
-import { getSubmissionsByActivityId } from "@/queries/submission.queries";
+import { getSubmissionsByActivityId } from "@/queries/submission.query";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import { getStudents } from "@/services/student.service";
 
@@ -8,9 +8,13 @@ import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 interface Props {
     activity: Activity;
 };
+
+const supabase = await serverClient();
 
 export default async function ActivityView({ activity }: Props) {
 
@@ -19,8 +23,8 @@ export default async function ActivityView({ activity }: Props) {
     }
 
     const status = getActivityStatus(activity);
-    const classroom = await getClassroomById(activity.classroomId);
-    const submissions = await getSubmissionsByActivityId(activity.id);
+    const classroom = await getClassroomById(supabase, activity.classroomId);
+    const submissions = await getSubmissionsByActivityId(supabase, activity.id);
 
     if (!classroom) {
         return null;
@@ -28,7 +32,7 @@ export default async function ActivityView({ activity }: Props) {
 
     const classroomName = await getClassroomDisplayName(classroom);
     
-    const students = await getStudents();
+    const students = await getStudents(supabase);
 
     const student_lookup = Object.fromEntries(
         students.map((student) => [

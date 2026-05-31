@@ -1,7 +1,7 @@
 import { Submission } from "@/types/submission";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getSubmissionsByActivityId(activityId: string): Promise<Submission[]> {
+export async function getSubmissionsByActivityId(supabase: SupabaseClient, activityId: string): Promise<Submission[]> {
 
     const { data, error } = await supabase
         .from("submissions")
@@ -16,7 +16,7 @@ export async function getSubmissionsByActivityId(activityId: string): Promise<Su
 
 }
 
-export async function getSubmissionByActivityAndStudent(activityId: string, studentId: string): Promise<Submission> {
+export async function getSubmissionByActivityAndStudent(supabase: SupabaseClient, activityId: string, studentId: string): Promise<Submission> {
 
     const { data, error } = await supabase
         .from("submissions")

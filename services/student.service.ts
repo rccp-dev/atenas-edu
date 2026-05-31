@@ -1,7 +1,7 @@
 import { Student } from "@/types/student";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getStudents(): Promise<Student[]> {
+export async function getStudents(supabase: SupabaseClient): Promise<Student[]> {
 
   const { data, error } = await supabase
     .from("students")
@@ -14,7 +14,7 @@ export async function getStudents(): Promise<Student[]> {
   return data || [];
 }
 
-export async function getStudentById(id: string) {
+export async function getStudentById(supabase: SupabaseClient, id: string) {
 
   const { data, error } = await supabase
     .from("students")
@@ -29,9 +29,7 @@ export async function getStudentById(id: string) {
   return data;
 }
 
-export async function createStudent(
-  data: Partial<Student>
-) {
+export async function createStudent(supabase: SupabaseClient, data: Partial<Student>) {
 
   const { error } = await supabase
     .from("students")
@@ -43,10 +41,7 @@ export async function createStudent(
 
 }
 
-export async function updateStudent(
-  id: string,
-  data: Partial<Student>
-) {
+export async function updateStudent(supabase: SupabaseClient, id: string, data: Partial<Student>) {
 
   const { error } = await supabase
     .from("students")
@@ -59,7 +54,7 @@ export async function updateStudent(
 
 }
 
-export async function deleteStudent(id: string) {
+export async function deleteStudent(supabase: SupabaseClient, id: string) {
 
   const { error } = await supabase
     .from("students")

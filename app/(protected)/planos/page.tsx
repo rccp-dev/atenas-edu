@@ -2,11 +2,15 @@ import LessonPlanList from "@/components/plano/LessonPlanList";
 import { getLessonPlans } from "@/services/lessonPlan.service";
 import { Button } from "@/components/ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const supabase = await serverClient();
 
 export default async function PlanosPage() {
 
-    const plans = await getLessonPlans();
+    const plans = await getLessonPlans(supabase);
 
     return (
         <main className="min-h-screen px-6 py-10">

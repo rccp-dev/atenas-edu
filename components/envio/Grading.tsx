@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
 import { Submission } from "@/types/submission";
 import { Student } from "@/types/student";
 import { Activity } from "@/types/activity";
-import { Classroom } from "@/types/classroom";
 
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
@@ -18,7 +18,8 @@ import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
-import { notFound } from "next/navigation";
+
+import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
     submission: Submission;
@@ -26,12 +27,13 @@ interface Props {
 
 export default function Grading({ submission }: Props) {
 
+    const supabase = browserClient();
+
     const [saving, setSaving] = useState(false);
 
     const [student, setStudent] = useState<Student | null>(null);
     const [activity, setActivity] = useState<Activity | null>(null);
 
-    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     const [classroomName, setClassroomName] = useState("");
 
     const [grade, setGrade] = useState(submission.grade?.toString() || "");
@@ -43,7 +45,6 @@ export default function Grading({ submission }: Props) {
 
             if (!submission.studentId || !submission.activityId || !submission.classroomId) {
                 notFound();
-                return;
             }
 
             const [
@@ -51,9 +52,9 @@ export default function Grading({ submission }: Props) {
                 activityData,
                 classroomData
             ] = await Promise.all([
-                getStudentById(submission.studentId),
-                getActivityById(submission.activityId),
-                getClassroomById(submission.classroomId),
+                getStudentById(supabase, submission.studentId),
+                getActivityById(supabase, submission.activityId),
+                getClassroomById(supabase, submission.classroomId),
             ]);
 
             setStudent(studentData);
@@ -61,7 +62,6 @@ export default function Grading({ submission }: Props) {
 
             if (!classroomData) {
                 notFound();
-                return;
             }
 
             setClassroomName(
@@ -84,7 +84,7 @@ export default function Grading({ submission }: Props) {
 
             setSaving(true);
 
-            await updateSubmission(submission.id, {
+            await updateSubmission(supabase, submission.id, {
                 grade: grade ? Number(grade) : 0,
                 feedback,
             });
@@ -101,7 +101,7 @@ export default function Grading({ submission }: Props) {
 
             setSaving(true);
 
-            await updateSubmission(submission.id, {
+            await updateSubmission(supabase, submission.id, {
                 status: "Corrigida",
                 grade: grade ? Number(grade) : 0,
                 feedback,

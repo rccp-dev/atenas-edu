@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getActivityByToken } from "@/queries/activity.queries";
+import { getActivityByToken } from "@/queries/activity.query";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import SubmissionAccess from "@/components/public/SubmissionAccess";
 

@@ -15,11 +15,15 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     initialData?: Student;
 }
 
 export default function StudentForm({ initialData }: Props) {
+
+    const supabase = browserClient();
 
     const [name, setName] = useState(
         initialData?.name || ""
@@ -47,7 +51,7 @@ export default function StudentForm({ initialData }: Props) {
     useEffect(() => {
 
         async function loadClassrooms() {
-            const data = await getClassrooms();
+            const data = await getClassrooms(supabase);
             setClassrooms(data);
         }
 
@@ -62,7 +66,7 @@ export default function StudentForm({ initialData }: Props) {
 
             setLoading(true);
 
-            await createStudent({
+            await createStudent(supabase, {
                 name,
                 classroomId,
                 enrollment,

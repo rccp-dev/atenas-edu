@@ -6,6 +6,8 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 import View from "@/components/ui/View";
 import { notFound } from "next/navigation";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     submission: Submission;
 };
@@ -13,15 +15,17 @@ interface Props {
 export default async function SubmissionPublicView({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return notFound();
+        notFound();
     }
 
-    const student = await getStudentById(submission.studentId);
-    const activity = await getActivityById(submission.activityId);
-    const classroom = await getClassroomById(submission.classroomId);
+    const supabase = browserClient();
+
+    const student = await getStudentById(supabase, submission.studentId);
+    const activity = await getActivityById(supabase, submission.activityId);
+    const classroom = await getClassroomById(supabase, submission.classroomId);
 
     if (!classroom) {
-        return notFound();
+        notFound();
     }
         
     const classroomName = await getClassroomDisplayName(classroom);

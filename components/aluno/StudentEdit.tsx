@@ -13,11 +13,15 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     student: Student;
 };
 
 export default function StudentEdit({ student }: Props) {
+
+    const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -39,8 +43,8 @@ export default function StudentEdit({ student }: Props) {
             }
 
             const [classroomsData, classroomData] = await Promise.all([
-                getClassrooms(),
-                getClassroomById(student.classroomId),
+                getClassrooms(supabase),
+                getClassroomById(supabase, student.classroomId),
             ]);
 
             setClassrooms(classroomsData);
@@ -65,7 +69,7 @@ export default function StudentEdit({ student }: Props) {
 
             setSaving(true);
 
-            await updateStudent(student.id, {
+            await updateStudent(supabase, student.id, {
                 name,
                 enrollment,
                 classroomId,
@@ -86,7 +90,7 @@ export default function StudentEdit({ student }: Props) {
 
             setDeleting(true);
 
-            await deleteStudent(student.id);
+            await deleteStudent(supabase, student.id);
 
         } finally {
 

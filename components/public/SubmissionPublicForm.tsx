@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { notFound } from "next/navigation";
 
 import { Activity } from "@/types/activity";
@@ -15,6 +14,8 @@ import Form from "@/components/ui/Form";
 import UploadBox from "@/components/public/UploadBox";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     activity: Activity;
     student: Student;
@@ -24,8 +25,10 @@ interface Props {
 export default function SubmissionPublicForm({ activity, student, classroom }: Props) {
 
     if (!classroom) {
-        return notFound();
+        notFound();
     }
+
+    const supabase = browserClient();
 
     const [file, setFile] = useState<File | null>(null);
     const [classroomName, setClassroomName] = useState<string>("");
@@ -34,7 +37,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
         if (classroom) {
             setClassroomName(getClassroomDisplayName(classroom));
         } else {
-            return notFound();
+            notFound();
         }
     }, [classroom]);
 
@@ -43,7 +46,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
 
         try {
 
-            await createSubmission({
+            await createSubmission(supabase, {
                 studentId: student.id,
                 classroomId: classroom.id,
                 activityId: activity.id,

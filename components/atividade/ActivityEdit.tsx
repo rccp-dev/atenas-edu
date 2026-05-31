@@ -14,11 +14,15 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { browserClient } from "@/lib/supabase/browser";
+
 interface Props {
     activity: Activity;
 }
 
 export default function ActivityEdit({ activity }: Props) {
+
+    const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -33,7 +37,7 @@ export default function ActivityEdit({ activity }: Props) {
         activity.attachments?.join("\n") || ""
     );
     const [description, setDescription] = useState(activity.description);
-
+    
     useEffect(() => {
 
         async function loadData() {
@@ -43,8 +47,8 @@ export default function ActivityEdit({ activity }: Props) {
             }
 
             const [classroomsData, classroomData] = await Promise.all([
-                getClassrooms(),
-                getClassroomById(activity.classroomId),
+                getClassrooms(supabase),
+                getClassroomById(supabase, activity.classroomId),
             ]);
 
             setClassrooms(classroomsData);
@@ -69,7 +73,7 @@ export default function ActivityEdit({ activity }: Props) {
 
             setSaving(true);
 
-            await updateActivity(activity.id, {
+            await updateActivity(supabase, activity.id, {
                 title,
                 classroomId,
                 deadline,
@@ -89,7 +93,7 @@ export default function ActivityEdit({ activity }: Props) {
 
             setDeleting(true);
 
-            await deleteActivity(activity.id);
+            await deleteActivity(supabase, activity.id);
 
         } finally {
             setDeleting(false);

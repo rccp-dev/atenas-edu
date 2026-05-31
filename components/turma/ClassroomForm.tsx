@@ -1,17 +1,19 @@
 'use client';
 
 import { useState } from "react";
+import { createClassroom } from "@/services/classroom.service";
 
 import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
-
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
-
 import { Button } from "../ui/Button";
-import { createClassroom } from "@/services/classroom.service";
+
+import { browserClient } from "@/lib/supabase/browser";
 
 export default function ClassroomForm() {
+
+    const supabase = browserClient();
 
     const [grade, setGrade] = useState<number>(0);
     const [section, setSection] = useState("");
@@ -22,7 +24,7 @@ export default function ClassroomForm() {
 
         try {
 
-            await createClassroom({
+            await createClassroom(supabase, {
                 grade,
                 section,
                 description,

@@ -3,7 +3,11 @@ import ActivityEdit from "@/components/atividade/ActivityEdit";
 import { getActivityById } from "@/services/activity.service";
 import { notFound } from "next/navigation";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const supabase = await serverClient();
 
 interface PageProps {
   params: Promise<{
@@ -18,9 +22,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   const { id } = await params;
   const sp = await searchParams;
 
-  const activity = await getActivityById(id);
+  const activity = await getActivityById(supabase, id);
 
-  if (!activity) return notFound();
+  if (!activity) notFound();
 
   const mode = sp?.mode ?? "view";
 

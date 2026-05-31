@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/browser";
 import { logout } from "@/services/auth.service";
 
 export function useAuth() {

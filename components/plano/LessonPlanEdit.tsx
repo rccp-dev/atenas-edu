@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
 import { LessonPlan } from "@/types/lessonPlan";
 import { subject_options } from "@/types/lessonPlan";
 import { Classroom } from "@/types/classroom";
@@ -15,13 +16,16 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
-import { notFound } from "next/navigation";
+
+import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
     plan: LessonPlan;
 }
 
 export default function LessonPlanEdit({ plan }: Props) {
+
+    const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -41,19 +45,17 @@ export default function LessonPlanEdit({ plan }: Props) {
 
             if (!plan.classroomId) {
                 notFound();
-                return;
             }
 
             const [classroomsData, classroomData] = await Promise.all([
-                getClassrooms(),
-                getClassroomById(plan.classroomId),
+                getClassrooms(supabase),
+                getClassroomById(supabase, plan.classroomId),
             ]);
 
             setClassrooms(classroomsData);
 
             if (!classroomData) {
                 notFound();
-                return;
             }
 
             setClassroomName(
@@ -72,7 +74,7 @@ export default function LessonPlanEdit({ plan }: Props) {
 
             setSaving(true);
 
-            await updateLessonPlan(plan.id, {
+            await updateLessonPlan(supabase, plan.id, {
                 title,
                 subjects,
                 classroomId,
@@ -92,7 +94,7 @@ export default function LessonPlanEdit({ plan }: Props) {
 
             setDeleting(true);
 
-            await deleteLessonPlan(plan.id);
+            await deleteLessonPlan(supabase, plan.id);
 
         } finally {
             setDeleting(false);

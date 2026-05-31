@@ -2,11 +2,15 @@ import ClassroomList from "@/components/turma/ClassroomList";
 import { getClassrooms } from "@/services/classroom.service";
 import { Button } from "@/components/ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const supabase = await serverClient();
 
 export default async function TurmasPage() {
 
-    const classrooms = await getClassrooms();
+    const classrooms = await getClassrooms(supabase);
 
     return (
         <main className="min-h-screen px-6 py-10">

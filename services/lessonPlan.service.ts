@@ -1,7 +1,7 @@
 import { LessonPlan } from "@/types/lessonPlan";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getLessonPlans(): Promise<LessonPlan[]> {
+export async function getLessonPlans(supabase: SupabaseClient): Promise<LessonPlan[]> {
 
     const { data, error } = await supabase
         .from("lesson_plans")
@@ -14,7 +14,7 @@ export async function getLessonPlans(): Promise<LessonPlan[]> {
     return data || [];
 }
 
-export async function getLessonPlanById(id: string) {
+export async function getLessonPlanById(supabase: SupabaseClient, id: string) {
 
     const { data, error } = await supabase
         .from("lesson_plans")
@@ -29,9 +29,7 @@ export async function getLessonPlanById(id: string) {
     return data;
 }
 
-export async function createLessonPlan(
-    data: Partial<LessonPlan>
-) {
+export async function createLessonPlan(supabase: SupabaseClient, data: Partial<LessonPlan>) {
 
     const { error } = await supabase
         .from("lesson_plans")
@@ -43,10 +41,7 @@ export async function createLessonPlan(
 
 }
 
-export async function updateLessonPlan(
-    id: string,
-    data: Partial<LessonPlan>
-) {
+export async function updateLessonPlan(supabase: SupabaseClient, id: string, data: Partial<LessonPlan>) {
 
     const { error } = await supabase
         .from("lesson_plans")
@@ -59,7 +54,7 @@ export async function updateLessonPlan(
 
 }
 
-export async function deleteLessonPlan(id: string) {
+export async function deleteLessonPlan(supabase: SupabaseClient, id: string) {
 
     const { error } = await supabase
         .from("lesson_plans")

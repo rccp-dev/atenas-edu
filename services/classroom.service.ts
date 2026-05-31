@@ -1,7 +1,7 @@
 import { Classroom } from "@/types/classroom";
-import { supabase } from "@/lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getClassrooms(): Promise<Classroom[]> {
+export async function getClassrooms(supabase: SupabaseClient): Promise<Classroom[]> {
 
     const { data, error } = await supabase
         .from("classrooms")
@@ -14,7 +14,7 @@ export async function getClassrooms(): Promise<Classroom[]> {
     return data || [];
 }
 
-export async function getClassroomById(id: string) {
+export async function getClassroomById(supabase: SupabaseClient, id: string) {
 
     const { data, error } = await supabase
         .from("classrooms")
@@ -29,17 +29,13 @@ export async function getClassroomById(id: string) {
     return data;
 }
 
-export function getClassroomDisplayName(
-    classroom: Classroom
-) {
+export function getClassroomDisplayName(classroom: Classroom) {
 
     return `${classroom.grade}º ano ${classroom.section}`;
 
 }
 
-export async function createClassroom(
-    data: Partial<Classroom>
-) {
+export async function createClassroom(supabase: SupabaseClient, data: Partial<Classroom>) {
 
     const { error } = await supabase
         .from("classrooms")
@@ -51,10 +47,7 @@ export async function createClassroom(
 
 }
 
-export async function updateClassroom(
-    id: string,
-    data: Partial<Classroom>
-) {
+export async function updateClassroom(supabase: SupabaseClient, id: string, data: Partial<Classroom>) {
 
     const { error } = await supabase
         .from("classrooms")
@@ -67,7 +60,7 @@ export async function updateClassroom(
 
 }
 
-export async function deleteClassroom(id: string) {
+export async function deleteClassroom(supabase: SupabaseClient, id: string) {
 
     const { error } = await supabase
         .from("classrooms")

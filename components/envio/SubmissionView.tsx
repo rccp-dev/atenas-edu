@@ -2,27 +2,31 @@ import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+import { notFound } from "next/navigation";
 
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
-import { notFound } from "next/navigation";
+
+import { serverClient } from "@/lib/supabase/server";
 
 interface Props {
     submission: Submission;
 };
 
+const supabase = await serverClient();
+
 export default async function SubmissionView({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return notFound();
+        notFound();
     }
 
-    const student = await getStudentById(submission.studentId);
-    const activity = await getActivityById(submission.activityId);
-    const classroom = await getClassroomById(submission.classroomId);
+    const student = await getStudentById(supabase, submission.studentId);
+    const activity = await getActivityById(supabase, submission.activityId);
+    const classroom = await getClassroomById(supabase, submission.classroomId);
 
     if (!classroom) {
-        return notFound();
+        notFound();
     }
 
     const classroomName = await getClassroomDisplayName(classroom);

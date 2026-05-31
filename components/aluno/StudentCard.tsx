@@ -5,9 +5,13 @@ import { getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
+import { serverClient } from "@/lib/supabase/server";
+
 interface StudentCardProps {
     student: Student;
 }
+
+const supabase = await serverClient();
 
 export default async function StudentCard({ student }: StudentCardProps) {
 
@@ -15,7 +19,7 @@ export default async function StudentCard({ student }: StudentCardProps) {
         return null;
     }
 
-    const classroom = await getClassroomById(student.classroomId);
+    const classroom = await getClassroomById(supabase, student.classroomId);
 
    
     if (!classroom) {

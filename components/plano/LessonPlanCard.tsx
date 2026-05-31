@@ -2,9 +2,13 @@ import { LessonPlan } from "@/types/lessonPlan";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 
+import { serverClient } from "@/lib/supabase/server";
+
 interface LessonPlanCardProps {
     plan: LessonPlan;
 }
+
+const supabase = await serverClient();
 
 export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
 
@@ -12,7 +16,7 @@ export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
         return null;
     }
 
-    const classroom = await getClassroomById(plan.classroomId);
+    const classroom = await getClassroomById(supabase, plan.classroomId);
 
     if (!classroom) {
         return null;

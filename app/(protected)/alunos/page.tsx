@@ -2,10 +2,15 @@ import StudentList from "@/components/aluno/StudentList";
 import { getStudents } from "@/services/student.service";
 import { Button } from "@/components/ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
 
+const supabase = await serverClient();
+
 export default async function StudentPage() {
-  const student  = await getStudents();
+
+  const student  = await getStudents(supabase);
 
   return (
     <main className="min-h-screen px-6 py-10">

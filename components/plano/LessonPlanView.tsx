@@ -4,9 +4,13 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
 
+import { serverClient } from "@/lib/supabase/server";
+
 interface Props {
     plan: LessonPlan;
 };
+
+const supabase = await serverClient();
 
 export default async function LessonPlanView({ plan }: Props) {
 
@@ -14,7 +18,7 @@ export default async function LessonPlanView({ plan }: Props) {
         return null;
     }
 
-    const classroom = await getClassroomById(plan.classroomId);
+    const classroom = await getClassroomById(supabase, plan.classroomId);
 
     if (!classroom) {
         return null;
