@@ -9,6 +9,8 @@ import SubmissionPublicForm from "@/components/public/SubmissionPublicForm";
 import SubmissionPublicEdit from "@/components/public/SubmissionPublicEdit";
 import SubmissionPublicView from "@/components/public/SubmissionPublicView";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -21,16 +23,17 @@ interface Props {
 export default async function SubmissionPublicPage({ params }: Props) {
 
     const { token, studentId } = await params;
+    const supabase = await serverClient();
 
-    const activity = await getActivityByToken(token);
-    const student = await getStudentById(studentId);
+    const activity = await getActivityByToken(supabase, token);
+    const student = await getStudentById(supabase, studentId);
 
     if (!activity || !student) {
         notFound();
     }
 
-    const submission = await getSubmissionByActivityAndStudent(activity.id, studentId);
-    const classroom = await getClassroomById(student.classroomId);
+    const submission = await getSubmissionByActivityAndStudent(supabase, activity.id, studentId);
+    const classroom = await getClassroomById(supabase, student.classroomId);
 
     if (submission && submission.activityId !== activity.id) {
         notFound();

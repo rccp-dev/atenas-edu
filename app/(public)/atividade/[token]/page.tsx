@@ -3,6 +3,8 @@ import { getActivityByToken } from "@/queries/activity.query";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import SubmissionAccess from "@/components/public/SubmissionAccess";
 
+import { serverClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -14,7 +16,8 @@ interface Props {
 export default async function StudentLoginPage({ params }: Props) {
 
     const { token } = await params;
-    const activity = await getActivityByToken(token);
+    const supabase = await serverClient();
+    const activity = await getActivityByToken(supabase, token);
 
     if (!activity) {
         notFound();
@@ -22,9 +25,7 @@ export default async function StudentLoginPage({ params }: Props) {
 
     const classroom =
         activity.classroomId
-            ? await getClassroomById(
-                activity.classroomId
-            )
+            ? await getClassroomById(supabase, activity.classroomId)
             : null;
 
     if (!classroom) {
