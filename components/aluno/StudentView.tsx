@@ -10,14 +10,13 @@ interface Props {
     student: Student;
 };
 
-const supabase = await serverClient();
-
 export default async function StudentView({ student }: Props) {
 
     if (!student.classroomId) {
         return null;
     }
-
+    
+    const supabase = await serverClient();
     const classroom = await getClassroomById(supabase, student.classroomId);
 
     if (!classroom) {

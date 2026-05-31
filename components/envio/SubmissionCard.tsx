@@ -13,13 +13,13 @@ interface Props {
     submission: Submission;
 }
 
-const supabase = await serverClient();
-
 export default async function SubmissionCard({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
         return null;
     }
+    
+    const supabase = await serverClient();
     
     const student = await getStudentById(supabase, submission.studentId);
     const classroom = await getClassroomById(supabase, submission.classroomId);

@@ -8,14 +8,13 @@ interface LessonPlanCardProps {
     plan: LessonPlan;
 }
 
-const supabase = await serverClient();
-
 export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
 
     if (!plan.classroomId) {
         return null;
     }
 
+    const supabase = await serverClient();
     const classroom = await getClassroomById(supabase, plan.classroomId);
 
     if (!classroom) {

@@ -11,14 +11,13 @@ interface StudentCardProps {
     student: Student;
 }
 
-const supabase = await serverClient();
-
 export default async function StudentCard({ student }: StudentCardProps) {
 
     if (!student.classroomId) {
         return null;
     }
 
+    const supabase = await serverClient();
     const classroom = await getClassroomById(supabase, student.classroomId);
 
    

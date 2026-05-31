@@ -14,14 +14,14 @@ interface Props {
     activity: Activity;
 };
 
-const supabase = await serverClient();
-
 export default async function ActivityView({ activity }: Props) {
 
     if (!activity.classroomId) {
         return null;
     }
 
+    const supabase = await serverClient();
+    
     const status = getActivityStatus(activity);
     const classroom = await getClassroomById(supabase, activity.classroomId);
     const submissions = await getSubmissionsByActivityId(supabase, activity.id);

@@ -13,13 +13,13 @@ interface Props {
     submission: Submission;
 };
 
-const supabase = await serverClient();
-
 export default async function SubmissionView({ submission }: Props) {
 
     if (!submission.studentId || !submission.activityId || !submission.classroomId) {
         notFound();
     }
+
+    const supabase = await serverClient();
 
     const student = await getStudentById(supabase, submission.studentId);
     const activity = await getActivityById(supabase, submission.activityId);

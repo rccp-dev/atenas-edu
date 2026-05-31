@@ -11,14 +11,13 @@ interface ActivityCardProps {
     activity: Activity;
 }
 
-const supabase = await serverClient();
-
 export default async function ActivityCard({ activity }: ActivityCardProps) {
 
     if (!activity.classroomId) {
         return null;
     }
 
+    const supabase = await serverClient();
     const classroom = await getClassroomById(supabase, activity.classroomId);
     const status = getActivityStatus(activity);
 
