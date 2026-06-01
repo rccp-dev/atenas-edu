@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { Activity } from "@/types/activity";
-
 import { updateActivity } from "@/services/activity.service";
 
 import Draft from "@/components/ui/Draft";
@@ -13,7 +12,10 @@ import Field from "@/components/ui/Field";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
+
 
 interface Props {
     activity: Activity;
@@ -24,14 +26,8 @@ export default function ActivityDraft({ activity }: Props) {
     const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
-
-    const [description, setDescription] = useState(
-        activity.description
-    );
-
-    const [attachments, setAttachments] = useState<string[]>(
-        activity.attachments || []
-    );
+    const [description, setDescription] = useState(activity.description);
+    const [attachments, setAttachments] = useState<string[]>(activity.attachments || []);
 
     async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
 
@@ -46,6 +42,13 @@ export default function ActivityDraft({ activity }: Props) {
                 attachments,
             });
 
+            success("Atividade salva com sucesso.");
+
+        } catch(e) {
+            
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
+            
         } finally {
 
             setSaving(false);

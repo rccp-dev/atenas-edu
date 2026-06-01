@@ -15,6 +15,9 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+import { requireValue } from "@/lib/validation/requireValue";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -51,17 +54,23 @@ export default function LessonPlanForm({ initialData, }: Props) {
 
             setLoading(true);
 
+            if (!requireValue(classroomId, "Selecione uma turma.")) {
+                return;
+            }
+
             const lessonPlan = await createLessonPlan(supabase, {
                 title,
                 subjects,
                 classroomId
             });
 
+            success("Plano criado com sucesso.");
             router.push(`/planos/${lessonPlan.id}?mode=draft`);
 
-        } catch(error) {
+        } catch(e) {
 
-            console.error(error);
+            console.error(e);
+            error("Não foi possível criar o plano.");
 
         } finally {
 

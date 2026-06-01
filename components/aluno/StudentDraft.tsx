@@ -13,7 +13,11 @@ import Field from "@/components/ui/Field";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+import { useRefresh } from "@/hooks/useRefresh";
+
 import { browserClient } from "@/lib/supabase/browser";
+
 
 interface Props {
     student: Student;
@@ -22,12 +26,10 @@ interface Props {
 export default function StudentDraft({ student }: Props) {
 
     const supabase = browserClient();
+    const refresh = useRefresh();
 
     const [saving, setSaving] = useState(false);
-
-    const [content, setContent] = useState(
-        student.content || ""
-    );
+    const [content, setContent] = useState(student.content || "");
 
     async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
 
@@ -38,8 +40,16 @@ export default function StudentDraft({ student }: Props) {
             setSaving(true);
 
             await updateStudent(supabase, student.id, {
-                content,
+                content
             });
+
+            success("Aluno salvo com sucesso.");
+            refresh();
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
 
         } finally {
 

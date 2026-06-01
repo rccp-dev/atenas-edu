@@ -5,6 +5,8 @@ import { Student } from "@/types/student";
 
 import Card from "@/components/ui/Card";
 
+import { formatDate } from "@/lib/format/formatDate";
+
 interface Props {
     submissions: Submission[];
     student_lookup: Record<string, Student>;
@@ -56,7 +58,7 @@ export default function ActivitySubmissionList({
                                 </div>
 
                                 <p className="mt-3 text-secondary">
-                                    {submission.submittedAt}
+                                    {formatDate(submission.submittedAt)}
                                 </p>
 
                             </Card>

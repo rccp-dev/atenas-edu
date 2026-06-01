@@ -14,6 +14,8 @@ import Form from "@/components/ui/Form";
 import UploadBox from "@/components/public/UploadBox";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -43,7 +45,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
     }, [classroom]);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        
+            
         event.preventDefault();
 
         try {
@@ -54,15 +56,16 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
                 studentId: student.id,
                 classroomId: classroom.id,
                 activityId: activity.id,
-                /* Puxar URL de file da UploadBox */
-                /* Criar lógica para decidir entre "Entregue" e "Entregue com atraso" para status */
                 submittedAt: new Date().toISOString(),
             });
 
-        } catch(error) {
+            success("Atividade enviada com sucesso.");
 
-            console.error(error);
-            
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível enviar a atividade.");
+                
         } finally {
 
             setLoading(false);

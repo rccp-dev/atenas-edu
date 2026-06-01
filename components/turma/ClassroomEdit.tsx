@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Classroom } from "@/types/classroom";
-import { getClassroomDisplayName, updateClassroom } from "@/services/classroom.service";
+import { getClassroomDisplayName, updateClassroom, deleteClassroom } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import Form from "@/components/ui/Form";
@@ -12,6 +12,8 @@ import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
+
+import { success, error } from "@/lib/ui/toast";
 
 import { browserClient } from "@/lib/supabase/browser";
 
@@ -24,6 +26,7 @@ export default function ClassroomEdit({ classroom }: Props) {
     const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const [grade, setGrade] = useState(classroom.grade);
     const [section, setSection] = useState(classroom.section);
@@ -45,9 +48,39 @@ export default function ClassroomEdit({ classroom }: Props) {
                 description,
             });
 
+            success("Alterações salvas com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
+
         } finally {
 
             setSaving(false);
+
+        }
+
+    }
+
+    async function handleDelete() {
+
+        try {
+
+            setDeleting(true);
+
+            await deleteClassroom(supabase, classroom.id);
+
+            success("Turma excluída com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível excluir a turma.");
+
+        } finally {
+
+            setDeleting(false);
 
         }
 
@@ -87,6 +120,10 @@ export default function ClassroomEdit({ classroom }: Props) {
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}
+                    </Button>
+
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                        {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
                 </div>
             </Form>

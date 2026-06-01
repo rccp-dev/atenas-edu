@@ -13,6 +13,8 @@ import Field from "@/components/ui/Field";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -24,14 +26,8 @@ export default function LessonPlanDraft({ plan }: Props) {
     const supabase = browserClient();
 
     const [saving, setSaving] = useState(false);
-
-    const [description, setDescription] = useState(
-        plan.description
-    );
-
-    const [content, setContent] = useState(
-        plan.content
-    );
+    const [description, setDescription] = useState(plan.description);
+    const [content, setContent] = useState(plan.content);
 
     async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {
 
@@ -45,6 +41,13 @@ export default function LessonPlanDraft({ plan }: Props) {
                 description,
                 content,
             });
+
+            success("Plano salvo com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
 
         } finally {
 

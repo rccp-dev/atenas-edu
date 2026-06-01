@@ -8,7 +8,10 @@ import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
 
+import { formatDate } from "@/lib/format/formatDate";
+
 import { serverClient } from "@/lib/supabase/server";
+
 
 interface Props {
     activity: Activity;
@@ -62,7 +65,7 @@ export default async function ActivityView({ activity }: Props) {
 
                 <div>
                     <span className="text-secondary">Prazo:</span>
-                    {" "}{activity.deadline}
+                    {" "}{formatDate(activity.deadline)}
                 </div>
 
                 <div>

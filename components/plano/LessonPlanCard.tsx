@@ -1,8 +1,12 @@
-import { LessonPlan } from "@/types/lessonPlan";
-import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import Link from "next/link";
 
+import { LessonPlan } from "@/types/lessonPlan";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+
+import { formatDateTime } from "@/lib/format/formatDate";
+
 import { serverClient } from "@/lib/supabase/server";
+
 
 interface LessonPlanCardProps {
     plan: LessonPlan;
@@ -32,7 +36,7 @@ export default async function LessonPlanCard({plan,}: LessonPlanCardProps) {
                 </h2>
 
                 <span className="text-sm text-secondary">
-                    {plan.createdAt}
+                    {formatDateTime(plan.createdAt)}
                 </span>
             </div>
 

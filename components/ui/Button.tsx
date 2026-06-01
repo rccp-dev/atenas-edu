@@ -8,7 +8,12 @@ interface ButtonProps {
   onClick?: () => void;
   href?: string;
   type?: 'button' | 'submit' | 'reset'
-  variant?: 'primary' | 'secondary';
+  variant?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "danger";
   disabled?: boolean;
 }
 
@@ -23,9 +28,13 @@ export const Button = ({
   
   const baseStyle = 'px-4 py-2 rounded-lg font-semibold transition-all';
   const variants = {
-    primary: 'bg-primary text-light hover:bg-accent',
-    secondary: 'bg-secondary text-light hover:bg-accent',
-  };
+    primary: "bg-primary text-light hover:bg-accent",
+    secondary: "bg-secondary text-light hover:bg-accent",
+
+    success: "bg-success text-light",
+    warning: "bg-warning text-light",
+    danger: "bg-danger text-light",
+};
 
   const className = `${baseStyle} ${variants[variant]} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`;
 

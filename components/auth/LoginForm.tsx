@@ -8,6 +8,8 @@ import Input from "../ui/Input";
 import Form from "../ui/Form";
 import { Button } from "../ui/Button";
 
+import { success } from "@/lib/ui/toast";
+
 export default function LoginForm() {
     const router = useRouter();
 
@@ -25,6 +27,7 @@ export default function LoginForm() {
         try {
             await login(email, password);
             router.replace("/dashboard");
+            success("Bem vindo de volta!");
         } catch {
             setError("E-mail ou senha inválidos.");
         } finally {

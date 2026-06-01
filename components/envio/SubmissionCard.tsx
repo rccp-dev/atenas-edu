@@ -1,13 +1,18 @@
+import { notFound } from "next/navigation";
+
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
-import { notFound } from "next/navigation";
+
 
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
+import { formatDate } from "@/lib/format/formatDate";
+
 import { serverClient } from "@/lib/supabase/server";
+
 
 interface Props {
     submission: Submission;
@@ -41,7 +46,7 @@ export default async function SubmissionCard({ submission }: Props) {
                     </h2>
 
                     <span className="text-sm text-secondary">
-                        {submission.submittedAt}
+                        {formatDate(submission.submittedAt)}
                     </span>
                 </div>
 

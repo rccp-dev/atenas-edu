@@ -21,6 +21,9 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { formatDate } from "@/lib/format/formatDate";
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -90,8 +93,15 @@ export default function Grading({ submission }: Props) {
 
             await updateSubmission(supabase, submission.id, {
                 grade: grade ? Number(grade) : 0,
-                feedback,
+                feedback
             });
+
+            success("Alterações salvas com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
 
         } finally {
 
@@ -110,8 +120,15 @@ export default function Grading({ submission }: Props) {
             await updateSubmission(supabase, submission.id, {
                 status: "Corrigida",
                 grade: grade ? Number(grade) : 0,
-                feedback,
+                feedback
             });
+
+            success("Correção enviada com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível enviar a correção.");
 
         } finally {
 
@@ -139,7 +156,7 @@ export default function Grading({ submission }: Props) {
 
                 <div>
                     <span className="text-secondary">Enviado em:</span>
-                    {" "}{submission.submittedAt}
+                    {" "}{formatDate(submission.submittedAt)}
                 </div>
 
                 <div>

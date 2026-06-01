@@ -19,6 +19,8 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -60,9 +62,7 @@ export default function LessonPlanEdit({ plan }: Props) {
                 notFound();
             }
 
-            setClassroomName(
-                getClassroomDisplayName(classroomData)
-            );
+            setClassroomName(getClassroomDisplayName(classroomData));
 
         }
 
@@ -86,6 +86,13 @@ export default function LessonPlanEdit({ plan }: Props) {
                 content,
             });
 
+            success("Alterações salvas com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
+
         } finally {
 
             setSaving(false);
@@ -101,6 +108,13 @@ export default function LessonPlanEdit({ plan }: Props) {
             setDeleting(true);
 
             await deleteLessonPlan(supabase, plan.id);
+
+            success("Plano excluído com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível excluir o plano.");
 
         } finally {
 

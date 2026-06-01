@@ -1,13 +1,18 @@
+import { notFound } from "next/navigation";
+
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
-import { notFound } from "next/navigation";
+
 
 import View from "@/components/ui/View";
 import { Button } from "../ui/Button";
 
+import { formatDate } from "@/lib/format/formatDate";
+
 import { serverClient } from "@/lib/supabase/server";
+
 
 interface Props {
     submission: Submission;
@@ -49,7 +54,7 @@ export default async function SubmissionView({ submission }: Props) {
 
                 <div>
                     <span className="text-secondary">Enviado em:</span>
-                    {" "}{submission.submittedAt}
+                    {" "}{formatDate(submission.submittedAt)}
                 </div>
 
                 <div>

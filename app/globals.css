@@ -12,6 +12,13 @@
   /* Cores do texto */
   --foreground: #171717;
   --light: #f2f2f2;
+
+  /* Cores semânticas */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  --neutral: #6b7280;
 }
 
 @theme inline {
@@ -23,8 +30,13 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-light: var(--light);
-}
 
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-neutral: var(--neutral);
+}
 @layer base {
   body {
     background: var(--background);

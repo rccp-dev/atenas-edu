@@ -9,6 +9,9 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+import { requireValue } from "@/lib/validation/requireValue";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 export default function ClassroomForm() {
@@ -21,12 +24,20 @@ export default function ClassroomForm() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        
+            
         event.preventDefault();
 
         try {
 
             setLoading(true);
+
+            if (!requireValue(grade, "Informe o ano.")) {
+                return;
+            }
+
+            if (!requireValue(section, "Informe a série.")) {
+                return;
+            }
             
             await createClassroom(supabase, {
                 grade,
@@ -34,9 +45,12 @@ export default function ClassroomForm() {
                 description,
             });
 
-        } catch(error) {
+            success("Turma criada com sucesso.");
 
-            console.error(error);
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível criar a turma.");
 
         } finally {
 

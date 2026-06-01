@@ -5,7 +5,10 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
+import { formatDate, formatDateTime } from "@/lib/format/formatDate";
+
 import { serverClient } from "@/lib/supabase/server";
+
 
 interface ActivityCardProps {
     activity: Activity;
@@ -37,7 +40,7 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
                     </h2>
 
                     <span className="text-sm text-secondary">
-                        {activity.createdAt}
+                        {formatDateTime(activity.createdAt)}
                     </span>
 
                 </div>
@@ -54,7 +57,7 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
 
                     <div>
                         <span className="text-secondary">Prazo:</span>
-                        {" "}{activity.deadline || "Sem prazo definido"}
+                        {" "}{formatDate(activity.deadline) || "Sem prazo definido"}
                     </div>
 
                     <div>

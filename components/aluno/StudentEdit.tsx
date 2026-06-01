@@ -15,6 +15,8 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -77,8 +79,15 @@ export default function StudentEdit({ student }: Props) {
                 name,
                 enrollment,
                 classroomId,
-                content,
+                content
             });
+
+            success("Alterações salvas com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível salvar as alterações.");
 
         } finally {
 
@@ -95,6 +104,12 @@ export default function StudentEdit({ student }: Props) {
             setDeleting(true);
 
             await deleteStudent(supabase, student.id);
+            success("Aluno excluído com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível excluir o aluno.");
 
         } finally {
 

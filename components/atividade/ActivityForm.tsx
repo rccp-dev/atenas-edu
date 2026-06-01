@@ -15,7 +15,11 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Button } from "../ui/Button";
 
+import { error, success } from "@/lib/ui/toast";
+import { requireValue } from "@/lib/validation/requireValue";
+
 import { browserClient } from "@/lib/supabase/browser";
+
 
 interface Props {
     activity?: Activity;
@@ -26,24 +30,11 @@ export default function ActivityForm({ activity }: Props) {
     const supabase = browserClient();
     const router = useRouter();
 
-    const [title, setTitle] = useState(
-        activity?.title || ""
-    );
-
-    const [deadline, setDeadline] = useState(
-        activity?.deadline || ""
-    );
-
-    const [classroomId, setClassroomId] = useState(
-        activity?.classroomId || ""
-    );
-
-    const [classrooms, setClassrooms] = useState<
-        Classroom[]
-    >([]);
-
-    const [loading, setLoading] =
-        useState(false);
+    const [title, setTitle] = useState(activity?.title || "");
+    const [deadline, setDeadline] = useState(activity?.deadline || "");
+    const [classroomId, setClassroomId] = useState(activity?.classroomId || "");
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -70,6 +61,14 @@ export default function ActivityForm({ activity }: Props) {
 
             setLoading(true);
 
+            if (!requireValue(classroomId, "Selecione uma turma.")) {
+                return;
+            }
+
+            if (!requireValue(deadline, "Informe um prazo.")) {
+                return;
+            }
+
             const activity = await createActivity(supabase, {
                 title,
                 classroomId,
@@ -78,11 +77,14 @@ export default function ActivityForm({ activity }: Props) {
                 status: "Atribuída"
             });
 
+            success("Atividade criada com sucesso");
             router.push(`/atividades/${activity.id}?mode=draft`);
-
-        } catch(error) {
             
-            console.error(error);
+
+        } catch(e) {
+            
+            console.error(e);
+            error("Não foi possível criar a atividade.")
             
         } finally {
 

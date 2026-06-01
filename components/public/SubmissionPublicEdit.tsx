@@ -15,13 +15,15 @@ import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.
 
 import { updateSubmission } from "@/services/submission.service";
 
-import { uploadFile } from "@/lib/upload";
+import { uploadFile } from "@/lib/upload/upload";
 
 import Edit from "@/components/ui/Edit";
 import Form from "@/components/ui/Form";
 
 import UploadBox from "./UploadBox";
 import { Button } from "../ui/Button";
+
+import { success, error } from "@/lib/ui/toast";
 
 import { browserClient } from "@/lib/supabase/browser";
 
@@ -87,6 +89,13 @@ export default function SubmissionPublicEdit({ submission }: Props) {
             await updateSubmission(supabase, submission.id, {
                 file_url: fileUrl,
             });
+
+            success("Arquivo enviado com sucesso.");
+
+        } catch(e) {
+
+            console.error(e);
+            error("Não foi possível enviar o arquivo.");
 
         } finally {
 

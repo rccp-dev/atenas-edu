@@ -16,7 +16,10 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { Button } from "../ui/Button";
 
+import { success, error } from "@/lib/ui/toast";
+
 import { browserClient } from "@/lib/supabase/browser";
+
 
 interface Props {
     activity: Activity;
@@ -34,10 +37,8 @@ export default function ActivityEdit({ activity }: Props) {
 
     const [title, setTitle] = useState(activity.title);
     const [classroomId, setClassroomId] = useState(activity.classroomId);
-    const [deadline, setDeadline] = useState(activity.deadline || "");
-    const [attachments, setAttachments] = useState(
-        activity.attachments?.join("\n") || ""
-    );
+    const [deadline, setDeadline] = useState(activity.deadline?.split("T")[0] ?? "");
+    const [attachments, setAttachments] = useState(activity.attachments?.join("\n") || "");
     const [description, setDescription] = useState(activity.description);
     
     useEffect(() => {
@@ -59,9 +60,7 @@ export default function ActivityEdit({ activity }: Props) {
                 return;
             }
 
-            setClassroomName(
-                getClassroomDisplayName(classroomData)
-            );
+            setClassroomName(getClassroomDisplayName(classroomData));
 
         }
 
@@ -85,9 +84,16 @@ export default function ActivityEdit({ activity }: Props) {
                 description,
             });
 
+            success("Alterações salvas com sucesso.");
+
+        } catch(e) {
+            
+            console.error(e);
+            error("Não foi possível salvar as alterações.")
+            
         } finally {
 
-            setSaving(false);
+            setSaving(false);            
 
         }
 
@@ -101,6 +107,13 @@ export default function ActivityEdit({ activity }: Props) {
 
             await deleteActivity(supabase, activity.id);
 
+            success("Atividade excluída com sucesso.")
+
+        } catch(e) {
+            
+            console.error(e);
+            error("Não foi possível excluir.")
+            
         } finally {
 
             setDeleting(false);
