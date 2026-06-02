@@ -1,11 +1,13 @@
 import { Activity } from "@/types/activity";
+import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
+
 import { getActivityStatus } from "@/services/activity.service";
 import { getSubmissionsByActivityId } from "@/queries/submission.query";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 import { getStudents } from "@/services/student.service";
 
-import ActivitySubmissionList from "@/components/envio/ActivitySubmissionList"
 import View from "@/components/ui/View";
+import Status from "@/components/ui/Status";
 import { Button } from "../ui/Button";
 
 import { formatDate } from "@/lib/format/formatDate";
@@ -70,7 +72,8 @@ export default async function ActivityView({ activity }: Props) {
 
                 <div>
                     <span className="text-secondary">Status:</span>
-                    {" "}{status}
+                    {/*{" "}{status}*/}
+                    <Status status={status} />
                 </div>
 
                 <div>

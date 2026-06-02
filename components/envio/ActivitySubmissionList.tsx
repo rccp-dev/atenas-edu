@@ -4,6 +4,7 @@ import { Submission } from "@/types/submission";
 import { Student } from "@/types/student";
 
 import Card from "@/components/ui/Card";
+import Status from "@/components/ui/Status";
 
 import { formatDate } from "@/lib/format/formatDate";
 
@@ -52,7 +53,7 @@ export default function ActivitySubmissionList({
                                     </h2>
 
                                     <span className="text-sm text-secondary">
-                                        {submission.status}
+                                        <Status status={submission.status} />
                                     </span>
 
                                 </div>

@@ -19,9 +19,10 @@ import { uploadFile } from "@/lib/upload/upload";
 
 import Edit from "@/components/ui/Edit";
 import Form from "@/components/ui/Form";
-
 import UploadBox from "./UploadBox";
+import Status from "../ui/Status";
 import { Button } from "../ui/Button";
+
 
 import { success, error } from "@/lib/ui/toast";
 
@@ -118,7 +119,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
                 </p>
 
                 <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
-                    {submission.status}
+                    <Status status={submission.status} />
                 </div>
             </div>
 

@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
-import Link from "next/link";
 import Card from "@/components/ui/Card";
+import Status from "@/components/ui/Status";
 
 import { formatDate, formatDateTime } from "@/lib/format/formatDate";
 
@@ -46,9 +48,8 @@ export default async function ActivityCard({ activity }: ActivityCardProps) {
                 </div>
 
                 <div>
-                    {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
                     <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
-                        {status}
+                        <Status status={status} />
                     </div>
 
                     <p className="text-secondary">

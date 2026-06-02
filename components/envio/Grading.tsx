@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
+
 import { Submission } from "@/types/submission";
 import { Student } from "@/types/student";
 import { Activity } from "@/types/activity";
@@ -19,6 +20,7 @@ import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
+import Status from "@/components/ui/Status";
 import { Button } from "../ui/Button";
 
 import { formatDate } from "@/lib/format/formatDate";
@@ -93,7 +95,8 @@ export default function Grading({ submission }: Props) {
 
             await updateSubmission(supabase, submission.id, {
                 grade: grade ? Number(grade) : 0,
-                feedback
+                feedback,
+                status: "Corrigida",
             });
 
             success("Alterações salvas com sucesso.");
@@ -151,7 +154,7 @@ export default function Grading({ submission }: Props) {
                 </p>
 
                 <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
-                    {submission.status}
+                    <Status status={submission.status} />
                 </div>
 
                 <div>

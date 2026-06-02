@@ -6,7 +6,7 @@ import { getActivityById } from "@/services/activity.service";
 import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import View from "@/components/ui/View";
-
+import Status from "../ui/Status";
 
 import { formatDate } from "@/lib/format/formatDate";
 
@@ -46,9 +46,8 @@ export default async function SubmissionPublicView({ submission }: Props) {
                     {student?.name || "Sem nome do aluno"} - {classroomName}
                 </p>
                 
-                {/* Desenvolver design token para status com badge em components/ e variação de cor por status */}
                 <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
-                    {submission.status}
+                    <Status status={submission.status} />
                 </div>
 
                 <div>

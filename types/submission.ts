@@ -1,6 +1,7 @@
 export const status_options = [
     "Pendente",
     "Entregue",
+    "Entregue com atraso",
     "Corrigida",
 ] as const;
 

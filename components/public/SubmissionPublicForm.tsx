@@ -6,8 +6,8 @@ import { notFound } from "next/navigation";
 import { Activity } from "@/types/activity";
 import { Student } from "@/types/student";
 import { Classroom } from "@/types/classroom";
-import { getClassroomDisplayName } from "@/services/classroom.service";
 
+import { getClassroomDisplayName } from "@/services/classroom.service";
 import { createSubmission } from "@/services/submission.service";
 
 import Form from "@/components/ui/Form";
@@ -15,7 +15,6 @@ import UploadBox from "@/components/public/UploadBox";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
-
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
