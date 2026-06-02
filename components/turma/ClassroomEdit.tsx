@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Classroom } from "@/types/classroom";
 import { getClassroomDisplayName, updateClassroom, deleteClassroom } from "@/services/classroom.service";
@@ -24,6 +25,7 @@ interface Props {
 export default function ClassroomEdit({ classroom }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -72,6 +74,7 @@ export default function ClassroomEdit({ classroom }: Props) {
             await deleteClassroom(supabase, classroom.id);
 
             success("Turma excluída com sucesso.");
+            router.push(`/turmas/`);
 
         } catch(e) {
 

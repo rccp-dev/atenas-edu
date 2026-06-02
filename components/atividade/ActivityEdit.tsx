@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Activity } from "@/types/activity";
 import { Classroom } from "@/types/classroom";
-import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
-
 import { updateActivity, deleteActivity } from "@/services/activity.service";
+import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import Edit from "@/components/ui/Edit";
 import Form from "@/components/ui/Form";
@@ -28,6 +29,7 @@ interface Props {
 export default function ActivityEdit({ activity }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -89,7 +91,7 @@ export default function ActivityEdit({ activity }: Props) {
         } catch(e) {
             
             console.error(e);
-            error("Não foi possível salvar as alterações.")
+            error("Não foi possível salvar as alterações.");
             
         } finally {
 
@@ -107,12 +109,13 @@ export default function ActivityEdit({ activity }: Props) {
 
             await deleteActivity(supabase, activity.id);
 
-            success("Atividade excluída com sucesso.")
+            success("Atividade excluída com sucesso.");
+            router.push(`/atividades/`);
 
         } catch(e) {
             
             console.error(e);
-            error("Não foi possível excluir.")
+            error("Não foi possível excluir.");
             
         } finally {
 

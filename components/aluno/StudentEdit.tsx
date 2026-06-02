@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Student } from "@/types/student";
 import { Classroom } from "@/types/classroom";
 import { getClassrooms, getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
@@ -26,9 +28,11 @@ interface Props {
 export default function StudentEdit({ student }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     const [classroomName, setClassroomName] = useState("");
@@ -105,6 +109,7 @@ export default function StudentEdit({ student }: Props) {
 
             await deleteStudent(supabase, student.id);
             success("Aluno excluído com sucesso.");
+            router.push(`/alunos/`);
 
         } catch(e) {
 
@@ -114,6 +119,7 @@ export default function StudentEdit({ student }: Props) {
         } finally {
 
             setDeleting(false);
+            setOpen(false);
 
         }
 
@@ -169,9 +175,18 @@ export default function StudentEdit({ student }: Props) {
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpen(true)}>
                         {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Excluir atividade?"
+                        description="Essa ação não poderá ser desfeita."
+                        variant="danger"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={handleDelete}
+                    />
                 </div>
             </Form>
         </Edit>

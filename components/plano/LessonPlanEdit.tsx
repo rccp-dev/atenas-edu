@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { notFound } from "next/navigation";
 import { LessonPlan } from "@/types/lessonPlan";
 import { subject_options } from "@/types/lessonPlan";
@@ -30,6 +32,7 @@ interface Props {
 export default function LessonPlanEdit({ plan }: Props) {
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -110,6 +113,7 @@ export default function LessonPlanEdit({ plan }: Props) {
             await deleteLessonPlan(supabase, plan.id);
 
             success("Plano excluído com sucesso.");
+            router.push(`/planos/`);
 
         } catch(e) {
 
