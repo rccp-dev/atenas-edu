@@ -85,6 +85,7 @@ export default function ClassroomEdit({ classroom }: Props) {
         } finally {
 
             setDeleting(false);
+            setOpenDelete(false);
 
         }
 

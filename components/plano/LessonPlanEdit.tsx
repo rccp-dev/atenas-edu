@@ -125,6 +125,7 @@ export default function LessonPlanEdit({ plan }: Props) {
         } finally {
 
             setDeleting(false);
+            setOpenDelete(false);
 
         }
 

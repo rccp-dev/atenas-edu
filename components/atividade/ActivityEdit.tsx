@@ -97,7 +97,7 @@ export default function ActivityEdit({ activity }: Props) {
             
         } finally {
 
-            setSaving(false);            
+            setSaving(false);
 
         }
 
@@ -122,6 +122,7 @@ export default function ActivityEdit({ activity }: Props) {
         } finally {
 
             setDeleting(false);
+            setOpenDelete(false);
 
         }
 

@@ -120,7 +120,7 @@ export default function StudentEdit({ student }: Props) {
         } finally {
 
             setDeleting(false);
-            setOpen(false);
+            setOpenDelete(false);
 
         }
 
