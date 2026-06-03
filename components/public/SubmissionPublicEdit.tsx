@@ -21,6 +21,7 @@ import Edit from "@/components/ui/Edit";
 import Form from "@/components/ui/Form";
 import UploadBox from "./UploadBox";
 import Status from "../ui/Status";
+import Confirm from "../ui/Confirm";
 import { Button } from "../ui/Button";
 
 
