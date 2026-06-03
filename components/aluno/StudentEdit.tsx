@@ -15,10 +15,10 @@ import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
+import Confirm from "@/components/ui/Confirm";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
-
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -169,7 +169,21 @@ export default function StudentEdit({ student }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">Voltar</Button>
+                    <Button onClick={() => setOpen(true)}>
+                        Voltar
+                    </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"}
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}
@@ -181,7 +195,7 @@ export default function StudentEdit({ student }: Props) {
 
                     <Confirm
                         open={open}
-                        title="Excluir atividade?"
+                        title="Excluir aluno?"
                         description="Essa ação não poderá ser desfeita."
                         variant="danger"
                         onCancel={() => setOpen(false)}

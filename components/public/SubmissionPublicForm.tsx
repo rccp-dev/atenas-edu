@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Activity } from "@/types/activity";
 import { Student } from "@/types/student";
@@ -30,6 +31,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
     }
 
     const supabase = browserClient();
+    const router = useRouter();
 
     const [file, setFile] = useState<File | null>(null);
     const [classroomName, setClassroomName] = useState<string>("");
@@ -59,6 +61,7 @@ export default function SubmissionPublicForm({ activity, student, classroom }: P
             });
 
             success("Atividade enviada com sucesso.");
+            router.push(`atividade/${activity.id}/aluno/${student.id}`);
 
         } catch(e) {
 

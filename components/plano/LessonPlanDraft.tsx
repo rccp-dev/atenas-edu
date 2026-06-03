@@ -11,6 +11,7 @@ import Form from "@/components/ui/Form";
 
 import Field from "@/components/ui/Field";
 import Textarea from "@/components/ui/Textarea";
+import Confirm from "../ui/Confirm";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
@@ -25,6 +26,7 @@ export default function LessonPlanDraft({ plan }: Props) {
 
     const supabase = browserClient();
 
+    const [open, setOpen] = useState(false);
     const [saving, setSaving] = useState(false);
     const [description, setDescription] = useState(plan.description);
     const [content, setContent] = useState(plan.content);
@@ -44,7 +46,7 @@ export default function LessonPlanDraft({ plan }: Props) {
 
             success("Plano salvo com sucesso.");
 
-        } catch(e) {
+        } catch (e) {
 
             console.error(e);
             error("Não foi possível salvar as alterações.");
@@ -84,9 +86,22 @@ export default function LessonPlanDraft({ plan }: Props) {
                 </Field>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">
+                    <Button onClick={() => setOpen(true)}>
                         Pular por enquanto
                     </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"
+                        }
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}

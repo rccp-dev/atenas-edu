@@ -11,6 +11,7 @@ import Form from "@/components/ui/Form";
 
 import Field from "@/components/ui/Field";
 import Textarea from "@/components/ui/Textarea";
+import Confirm from "../ui/Confirm";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
@@ -28,6 +29,7 @@ export default function StudentDraft({ student }: Props) {
     const supabase = browserClient();
     const refresh = useRefresh();
 
+    const [open, setOpen] = useState(false);
     const [saving, setSaving] = useState(false);
     const [content, setContent] = useState(student.content || "");
 
@@ -82,9 +84,21 @@ export default function StudentDraft({ student }: Props) {
                 </Field>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">
+                    <Button onClick={() => setOpen(true)}>
                         Pular por enquanto
                     </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"}
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}

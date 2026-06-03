@@ -19,6 +19,7 @@ import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
+import Confirm from "@/components/ui/Confirm";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
@@ -36,7 +37,7 @@ export default function LessonPlanEdit({ plan }: Props) {
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
-
+    const [open, setOpen] = useState(false);
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     const [classroomName, setClassroomName] = useState("");
 
@@ -201,15 +202,38 @@ export default function LessonPlanEdit({ plan }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">Voltar</Button>
+                    <Button onClick={() => setOpen(true)}>
+                        Voltar
+                    </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"}
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpen(true)}>
                         {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Excluir plano de aula?"
+                        description="Essa ação não poderá ser desfeita."
+                        variant="danger"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={handleDelete}
+                    />
                 </div>
             </Form>
 

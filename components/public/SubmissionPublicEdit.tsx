@@ -129,7 +129,21 @@ export default function SubmissionPublicEdit({ submission }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">Voltar</Button>
+                    <Button onClick={() => setOpen(true)}>
+                        Voltar
+                    </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"}
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Enviando..." : "Enviar"}

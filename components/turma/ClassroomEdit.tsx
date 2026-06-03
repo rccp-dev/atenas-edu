@@ -12,10 +12,10 @@ import Form from "@/components/ui/Form";
 import Field from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
+import Confirm from "@/components/ui/Confirm";
 import { Button } from "../ui/Button";
 
 import { success, error } from "@/lib/ui/toast";
-
 import { browserClient } from "@/lib/supabase/browser";
 
 interface Props {
@@ -29,7 +29,7 @@ export default function ClassroomEdit({ classroom }: Props) {
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
-
+    const [open, setOpen] = useState(false);
     const [grade, setGrade] = useState(classroom.grade);
     const [section, setSection] = useState(classroom.section);
     const [description, setDescription] = useState(classroom.description);
@@ -119,15 +119,38 @@ export default function ClassroomEdit({ classroom }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button href="?mode=view">Voltar</Button>
+                    <Button onClick={() => setOpen(true)}>
+                        Voltar
+                    </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Deseja voltar?"
+                        description="As alterações realizadas serão perdidas se não estiverem salvas."
+                        variant="warning"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={() => {
+                            setOpen(false);
+                            window.location.href = "?mode=view"}
+                        }
+                    />
 
                     <Button type="submit" disabled={saving}>
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" variant="secondary" disabled={deleting} onClick={handleDelete}>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpen(true)}>
                         {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
+
+                    <Confirm
+                        open={open}
+                        title="Excluir turma?"
+                        description="Essa ação não poderá ser desfeita."
+                        variant="danger"
+                        onCancel={() => setOpen(false)}
+                        onConfirm={handleDelete}
+                    />
                 </div>
             </Form>
         </Edit>
