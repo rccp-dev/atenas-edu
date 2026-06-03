@@ -46,6 +46,7 @@ export default function SubmissionPublicEdit({ submission }: Props) {
     const [classroomName, setClassroomName] = useState("");
 
     const [saving, setSaving] = useState(false);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
 
