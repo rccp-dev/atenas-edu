@@ -156,7 +156,7 @@ export default function Grading({ submission }: Props) {
                     {student?.name} - {classroomName}
                 </p>
 
-                <div className="flex gap-2 my-2 py-1 px-4 font-semibold text-light text-sm bg-amber-500 max-w-max rounded-2xl">
+                <div className="flex gap-2 my-2 py-1 px-4">
                     <Status status={submission.status} />
                 </div>
 

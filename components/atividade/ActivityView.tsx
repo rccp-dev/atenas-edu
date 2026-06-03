@@ -56,6 +56,8 @@ export default async function ActivityView({ activity }: Props) {
                 <p className="mt-2 text-secondary">
                     {activity.description}
                 </p>
+
+                <Status status={status} />
             </div>
 
             <div className="space-y-4 text-sm text-foreground">
@@ -68,12 +70,6 @@ export default async function ActivityView({ activity }: Props) {
                 <div>
                     <span className="text-secondary">Prazo:</span>
                     {" "}{formatDate(activity.deadline)}
-                </div>
-
-                <div>
-                    <span className="text-secondary">Status:</span>
-                    {/*{" "}{status}*/}
-                    <Status status={status} />
                 </div>
 
                 <div>
