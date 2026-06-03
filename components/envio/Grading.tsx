@@ -37,7 +37,8 @@ export default function Grading({ submission }: Props) {
 
     const supabase = browserClient();
 
-    const [open, setOpen] = useState(false);
+    const [openBack, setOpenBack] = useState(false);
+    const [openSubmit, setOpenSubmit] = useState(false);
     const [saving, setSaving] = useState(false);
 
     const [student, setStudent] = useState<Student | null>(null);
@@ -187,18 +188,18 @@ export default function Grading({ submission }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button onClick={() => setOpen(true)}>
+                    <Button onClick={() => setOpenBack(true)}>
                         Voltar
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openBack}
                         title="Deseja voltar?"
                         description="As alterações realizadas serão perdidas se não estiverem salvas."
                         variant="warning"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenBack(false)}
                         onConfirm={() => {
-                            setOpen(false);
+                            setOpenBack(false);
                             window.location.href = "?mode=view"}
                         }
                     />
@@ -207,16 +208,16 @@ export default function Grading({ submission }: Props) {
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" disabled={saving} onClick={() => setOpen(true)}>
+                    <Button type="button" disabled={saving} onClick={() => setOpenSubmit(true)}>
                         Enviar correção
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openSubmit}
                         title="Enviar correção?"
                         description="A correção será disponibilizada ao aluno."
                         variant="default"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenSubmit(false)}
                         onConfirm={handleSubmitCorrection}
                     />
                 </div>

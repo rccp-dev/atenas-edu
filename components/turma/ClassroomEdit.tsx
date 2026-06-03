@@ -29,7 +29,8 @@ export default function ClassroomEdit({ classroom }: Props) {
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [openBack, setOpenBack] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const [grade, setGrade] = useState(classroom.grade);
     const [section, setSection] = useState(classroom.section);
     const [description, setDescription] = useState(classroom.description);
@@ -119,18 +120,18 @@ export default function ClassroomEdit({ classroom }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button onClick={() => setOpen(true)}>
+                    <Button onClick={() => setOpenBack(true)}>
                         Voltar
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openBack }
                         title="Deseja voltar?"
                         description="As alterações realizadas serão perdidas se não estiverem salvas."
                         variant="warning"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenBack(false)}
                         onConfirm={() => {
-                            setOpen(false);
+                            setOpenBack(false);
                             window.location.href = "?mode=view"}
                         }
                     />
@@ -139,16 +140,16 @@ export default function ClassroomEdit({ classroom }: Props) {
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpen(true)}>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpenDelete(true)}>
                         {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openDelete}
                         title="Excluir turma?"
                         description="Essa ação não poderá ser desfeita."
                         variant="danger"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenDelete(false)}
                         onConfirm={handleDelete}
                     />
                 </div>

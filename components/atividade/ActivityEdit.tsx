@@ -34,7 +34,8 @@ export default function ActivityEdit({ activity }: Props) {
 
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [openBack, setOpenBack] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     const [classroomName, setClassroomName] = useState("");
 
@@ -174,18 +175,18 @@ export default function ActivityEdit({ activity }: Props) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                    <Button onClick={() => setOpen(true)}>
+                    <Button onClick={() => setOpenBack(true)}>
                         Voltar
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openBack}
                         title="Deseja voltar?"
                         description="As alterações realizadas serão perdidas se não estiverem salvas."
                         variant="warning"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenBack(false)}
                         onConfirm={() => {
-                            setOpen(false);
+                            setOpenBack(false);
                             window.location.href = "?mode=view"}
                         }
                     />
@@ -194,16 +195,16 @@ export default function ActivityEdit({ activity }: Props) {
                         {saving ? "Salvando..." : "Salvar alterações"}
                     </Button>
 
-                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpen(true)}>
+                    <Button type="button" variant="secondary" disabled={deleting} onClick={() => setOpenDelete(true)}>
                         {deleting ? "Excluindo..." : "Excluir"}
                     </Button>
 
                     <Confirm
-                        open={open}
+                        open={openDelete}
                         title="Excluir atividade?"
                         description="Essa ação não poderá ser desfeita."
                         variant="danger"
-                        onCancel={() => setOpen(false)}
+                        onCancel={() => setOpenDelete(false)}
                         onConfirm={handleDelete}
                     />
                 </div>
