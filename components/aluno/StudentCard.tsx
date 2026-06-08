@@ -1,10 +1,7 @@
 import { Student } from "@/types/student";
-import { getClassroomById } from "@/services/classroom.service";
-import { getClassroomDisplayName } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
 
 import Link from "next/link";
-import Card from "@/components/ui/Card";
-
 import { serverClient } from "@/lib/supabase/server";
 
 interface StudentCardProps {
@@ -20,7 +17,6 @@ export default async function StudentCard({ student }: StudentCardProps) {
     const supabase = await serverClient();
     const classroom = await getClassroomById(supabase, student.classroomId);
 
-   
     if (!classroom) {
         return null;
     }
@@ -28,20 +24,27 @@ export default async function StudentCard({ student }: StudentCardProps) {
     const classroomName = await getClassroomDisplayName(classroom);
 
     return (
-        <Link href={`/alunos/${student.id}`}>
-            <Card>
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">
-                        {student.name || "Sem nome"}
-                    </h2>
+        <Link
+            href={`/alunos/${student.id}`}
+            className="block rounded-xl border border-border bg-surface p-5 transition hover:bg-muted"
+        >
 
-                    <span className="text-sm text-secondary">
-                        {student.enrollment || "Sem matrícula"}
-                    </span>
-                </div>
+            <div className="flex items-center justify-between">
+                
+                <h2 className="text-lg font-semibold text-foreground">
+                    {student.name || "Sem nome"}
+                </h2>
 
-                <p className="mt-3 text-secondary">{classroomName}</p>
-            </Card>
+                <span className="text-xs text-text-primary">
+                    {student.enrollment || "Sem matrícula"}
+                </span>
+                
+            </div>
+
+            <p className="mt-3 text-sm text-secondary">
+                {classroomName}
+            </p>
+            
         </Link>
     );
 }
