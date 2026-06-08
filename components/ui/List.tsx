@@ -6,7 +6,7 @@ type Props = {
 
 export default function List({ children }: Props) {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 mt-6">
       {children}
     </div>
   );
