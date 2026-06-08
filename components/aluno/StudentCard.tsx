@@ -26,25 +26,28 @@ export default async function StudentCard({ student }: StudentCardProps) {
     return (
         <Link
             href={`/alunos/${student.id}`}
-            className="block rounded-xl border border-border bg-surface p-5 transition hover:bg-muted"
+            className="rounded-xl border border-border bg-surface p-4 transition hover:bg-muted"
         >
 
-            <div className="flex items-center justify-between">
-                
-                <h2 className="text-lg font-semibold text-foreground">
-                    {student.name || "Sem nome"}
-                </h2>
+            <div className="flex items-center gap-4">
 
-                <span className="text-xs text-text-primary">
+                <div className="min-w-0 flex-1">
+
+                    <h3 className="truncate text-base font-medium text-foreground">
+                        {student.name || "Sem nome"}
+                    </h3>
+
+                    <p className="text-sm text-secondary truncate">
+                        {classroomName}
+                    </p>
+
+                </div>
+
+                <span className="text-sm text-text-primary whitespace-nowrap">
                     {student.enrollment || "Sem matrícula"}
                 </span>
-                
-            </div>
 
-            <p className="mt-3 text-sm text-secondary">
-                {classroomName}
-            </p>
-            
+            </div>
         </Link>
     );
 }
