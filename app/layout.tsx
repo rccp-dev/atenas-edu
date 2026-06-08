@@ -1,30 +1,29 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 
-import "./globals.css"
+import "./globals.css";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-primary",
+const inter = Inter({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
+    variable: "--font-primary",
 });
 
 export const metadata: Metadata = {
-  title: "Atenas",
-  description: "Plataforma acadêmica",
+    title: "Atenas Edu",
+    description: "Plataforma acadêmica",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${poppins.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
+    return (
+        <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
+            <body className="min-h-screen bg-background text-foreground">
+                {children}
+            </body>
+        </html>
+    );
 }

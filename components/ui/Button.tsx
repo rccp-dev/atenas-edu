@@ -26,7 +26,7 @@ export const Button = ({
   disabled = false,
 }: ButtonProps) => {
   
-  const baseStyle = 'px-4 py-2 rounded-lg font-semibold transition-all';
+  const baseStyle = 'px-4 py-2 rounded-lg font-semibold transition-all inline-flex items-center gap-2';
   const variants = {
     primary: "bg-primary text-light hover:bg-accent",
     secondary: "bg-secondary text-light hover:bg-accent",

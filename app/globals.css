@@ -1,50 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  /* Cores da UI */
-  --primary: #181818;
-  --secondary: #5c5c5c;
-  --accent: #a5a5a5;
-  --surface: #e4e4e4;
-  --border: #a1a1a1;
-  --background: #f1f1f1;
+  /* Tema principal */
+  --primary: #3B82F6;
+  --secondary: #1E3A8A;
+  --accent: #FCD34D;
 
-  /* Cores do texto */
-  --foreground: #171717;
-  --light: #f2f2f2;
+  /* Estrutura */
+  --background: #F8FAFB;
+  --surface: #FFFFFF;
+  --border: #E5E7EB;
+  --sidebar: #2446a3;
 
-  /* Cores semânticas */
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  --neutral: #6b7280;
+  /* Texto */
+  --foreground: #1F2937;
+  --text-primary: #6B7280;
+  --light: #FFFFFF;
+
+  /* Feedback */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+
+  /* Auxiliares */
+  --muted: #F3F4F6;
+  --input: #F9FAFB;
 }
 
 @theme inline {
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+
+  --color-background: var(--background);
   --color-surface: var(--surface);
   --color-border: var(--border);
-  --color-background: var(--background);
+  --color-sidebar: var(--sidebar);
+
   --color-foreground: var(--foreground);
+  --color-text-primary: var(--text-primary);
   --color-light: var(--light);
 
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --color-info: var(--info);
-  --color-neutral: var(--neutral);
+
+  --color-muted: var(--muted);
+  --color-input: var(--input);
 }
+
 @layer base {
   body {
     background: var(--background);
     color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-primary), sans-serif;
   }
-}
-
-@layer components {
-
 }

@@ -6,7 +6,7 @@ import { login } from "@/services/auth.service";
 
 import Input from "../ui/Input";
 import Form from "../ui/Form";
-import { Button } from "../ui/Button";
+import { Button } from "@/components/ui/Button";
 
 import { success } from "@/lib/ui/toast";
 
@@ -26,8 +26,8 @@ export default function LoginForm() {
 
         try {
             await login(email, password);
-            router.replace("/dashboard");
             success("Bem vindo de volta!");
+            router.replace("/dashboard");
         } catch {
             setError("E-mail ou senha inválidos.");
         } finally {
@@ -36,42 +36,44 @@ export default function LoginForm() {
     }
 
     return (
-            <Form onSubmit={handleLogin}>
-                <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium">
-                        E-mail
-                    </label>
+        <Form onSubmit={handleLogin} className="space-y-5">
 
-                    <Input
-                        type="email"
-                        placeholder="Digite seu e-mail..."
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
+            <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-foreground">
+                    E-mail
+                </label>
 
-                <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium">
-                        Senha
-                    </label>
+                <Input
+                    type="email"
+                    placeholder="Digite seu e-mail..."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
 
-                    <Input
-                        type="password"
-                        placeholder="Digite sua senha..."
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+            <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-foreground">
+                    Senha
+                </label>
 
-                {error && (
-                    <p className="text-sm text-red-500">
-                        {error}
-                    </p>
-                )}
+                <Input
+                    type="password"
+                    placeholder="Digite sua senha..."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
 
-                <Button type="submit" disabled={loading}>
-                    {loading ? "Entrando..." : "Entrar"}
-                </Button>
-            </Form>
+            {error && (
+                <p className="text-sm text-danger">
+                    {error}
+                </p>
+            )}
+
+            <Button type="submit" disabled={loading}>
+                {loading ? "Entrando..." : "Entrar"}
+            </Button>
+
+        </Form>
     );
 }
