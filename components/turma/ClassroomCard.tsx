@@ -24,7 +24,7 @@ export async function ClassroomCard({ classroom }: ClassroomCardProps) {
                         {classroomName}
                     </h3>
 
-                    <p className="text-sm text-secondary truncate">
+                    <p className="text-sm text-foreground truncate">
                         {classroom.description}
                     </p>
 
