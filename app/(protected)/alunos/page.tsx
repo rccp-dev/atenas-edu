@@ -12,10 +12,10 @@ export default async function StudentPage() {
   const students = await getStudents(supabase);
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <section className="mx-auto max-w-5xl rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    <main className="min-h-screen px-6 py-10 bg-background">
+      <section className="mx-auto max-w-5xl">
         <div className="mb-8 flex items-center justify-between">
-			
+
           <div>
 
             <h1 className="text-3xl font-bold text-foreground">
@@ -34,7 +34,9 @@ export default async function StudentPage() {
 
         </div>
 
-        <StudentList students={students} />
+        <div className="rounded-2xl border border-border bg-surface p-6">
+          <StudentList students={students} />
+        </div>
 
       </section>
     </main>
