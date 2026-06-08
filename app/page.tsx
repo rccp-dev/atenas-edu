@@ -6,12 +6,9 @@ import Badge from "@/components/ui/Badge";
 import { ROUTES } from "@/constants/routes";
 
 export default function HomePage() {
-
     return (
-        <main className="flex min-h-screen justify-center px-6 py-20">
-
+        <main className="h-screen flex items-center justify-center bg-background px-6">
             <section className="w-full max-w-5xl">
-
                 <Card className="rounded-3xl p-12">
 
                     <div className="max-w-3xl">
@@ -29,7 +26,6 @@ export default function HomePage() {
                             registrar envios e estruturar planos de
                             aula em um único ambiente.
                         </p>
-
                     </div>
 
                     <div className="mt-10 flex gap-3">
@@ -59,42 +55,31 @@ export default function HomePage() {
                         <div className="grid gap-4 md:grid-cols-3">
 
                             <Card className="bg-background">
-
                                 <h3 className="text-lg font-medium text-foreground">
                                     Turmas e alunos
                                 </h3>
-
                                 <p className="mt-2 text-foreground">
-                                    Organize turmas e mantenha
-                                    informações centralizadas.
+                                    Organize turmas e mantenha informações centralizadas.
                                 </p>
-
                             </Card>
 
                             <Card className="bg-background">
-
                                 <h3 className="text-lg font-medium text-foreground">
                                     Atividades e envios
                                 </h3>
-
                                 <p className="mt-2 text-foreground">
                                     Acompanhe entregas e correções.
                                 </p>
-
                             </Card>
 
                             <Card className="bg-background">
-
                                 <h3 className="text-lg font-medium text-foreground">
                                     Planos de aula
                                 </h3>
-
                                 <p className="mt-2 text-foreground">
                                     Organize o planejamento pedagógico.
                                 </p>
-
                             </Card>
-                            
                         </div>
                     </section>
                 </Card>
