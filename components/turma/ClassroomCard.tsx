@@ -11,15 +11,26 @@ export async function ClassroomCard({ classroom }: ClassroomCardProps) {
     const classroomName = getClassroomDisplayName(classroom);
 
     return (
-        <Link href={`/turmas/${classroom.id}`} className="rounded-2xl border border-border bg-surface p-5 transition hover:bg-muted">
+        <Link
+            href={`/turmas/${classroom.id}`}
+            className="rounded-xl border border-border bg-surface p-4 transition hover:bg-muted"
+        >
 
-            <h2 className="text-lg font-semibold text-foreground">
-                {classroomName}
-            </h2>
+            <div className="flex items-center gap-4">
 
-            <p className="mt-3 text-sm text-text-primary">
-                {classroom.description}
-            </p>
+                <div className="min-w-0 flex-1">
+
+                    <h3 className="truncate text-base font-medium text-foreground">
+                        {classroomName}
+                    </h3>
+
+                    <p className="text-sm text-secondary truncate">
+                        {classroom.description}
+                    </p>
+
+                </div>
+
+            </div>
 
         </Link>
     );
