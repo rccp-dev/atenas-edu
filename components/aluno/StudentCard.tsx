@@ -37,7 +37,7 @@ export default async function StudentCard({ student }: StudentCardProps) {
                         {student.name || "Sem nome"}
                     </h3>
 
-                    <p className="text-sm text-secondary truncate">
+                    <p className="text-sm text-foreground truncate">
                         {classroomName}
                     </p>
 
