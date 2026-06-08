@@ -34,9 +34,7 @@ export default async function StudentPage() {
 
         </div>
 
-        <div className="rounded-2xl border border-border bg-surface p-6">
-          <StudentList students={students} />
-        </div>
+        <StudentList students={students} />
 
       </section>
     </main>
