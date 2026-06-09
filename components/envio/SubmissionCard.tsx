@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Submission } from "@/types/submission";
 import { getStudentById } from "@/services/student.service";
 import { getActivityById } from "@/services/activity.service";
-import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName, } from "@/services/classroom.service";
 
 import Card from "@/components/ui/Card";
 import Status from "../ui/Status";
@@ -13,54 +13,62 @@ import { formatDate } from "@/lib/format/formatDate";
 
 import { serverClient } from "@/lib/supabase/server";
 
-
-
 interface Props {
-    submission: Submission;
+  submission: Submission;
 }
 
 export default async function SubmissionCard({ submission }: Props) {
 
-    if (!submission.studentId || !submission.activityId || !submission.classroomId) {
-        return null;
-    }
-    
-    const supabase = await serverClient();
-    
-    const student = await getStudentById(supabase, submission.studentId);
-    const classroom = await getClassroomById(supabase, submission.classroomId);
-    const activity = await getActivityById(supabase, submission.activityId);
+  if (!submission.studentId || !submission.activityId || !submission.classroomId) {
+    return null;
+  }
 
-    if (!classroom) {
-        notFound();
-    }
+  const supabase = await serverClient();
 
-    const classroomName = await getClassroomDisplayName(classroom);
+  const student = await getStudentById(supabase, submission.studentId);
+  const classroom = await getClassroomById(supabase, submission.classroomId);
+  const activity = await getActivityById(supabase, submission.activityId);
 
-    return (
-        <Link href={`/envios/${submission.id}`}>
-            <Card>
-                <div className="flex items-center justify-between">
+  if (!classroom) {
+    notFound();
+  }
 
-                    <h2 className="text-xl font-semibold">
-                        {student?.name || "Sem nome do aluno"} - {activity?.title || "Sem título da atividade"}
-                    </h2>
+  const classroomName = await getClassroomDisplayName(classroom);
 
-                    <span className="text-sm text-secondary">
-                        {formatDate(submission.submittedAt)}
-                    </span>
-                </div>
+  return (
+    <Link href={`/envios/${submission.id}`}>
 
-                <Status status={submission.status} />
+      <Card>
 
-                <p className="mt-3 text-secondary">
-                    {classroomName}
-                </p>
+        <div className="flex items-center justify-between gap-4">
 
-                <p className="mt-3 text-secondary">
-                    {activity?.title}
-                </p>
-            </Card>
-        </Link>
-    );
+          <div className="min-w-0 flex-1">
+
+            <h2 className="truncate text-lg font-medium text-foreground">
+              {student?.name || "Sem nome do aluno"}
+            </h2>
+
+            <p className="truncate text-sm text-foreground">
+              {activity?.title || "Sem título da atividade"}
+            </p>
+
+          </div>
+
+          <span className="whitespace-nowrap text-sm text-text-primary">
+            {formatDate(submission.submittedAt)}
+          </span>
+
+        </div>
+
+        <div className="mt-3 flex items-center gap-3">
+
+          <Status status={submission.status} />
+
+          <span className="text-sm text-text-primary">{classroomName}</span>
+
+        </div>
+
+      </Card>
+    </Link>
+  );
 }

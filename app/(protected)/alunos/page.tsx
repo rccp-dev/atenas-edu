@@ -12,7 +12,7 @@ export default async function StudentPage() {
   const students = await getStudents(supabase);
 
   return (
-    <main className="min-h-screen px-6 py-10 bg-background">
+    <main className="px-6 py-10 bg-background">
       <section className="mx-auto max-w-5xl">
         <div className="mb-8 flex items-center justify-between">
 
@@ -29,7 +29,7 @@ export default async function StudentPage() {
           </div>
 
           <Button href="/alunos/novo-aluno">
-            Novo
+            Novo aluno
           </Button>
 
         </div>

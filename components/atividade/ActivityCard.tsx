@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Activity } from "@/types/activity";
 import { getActivityStatus } from "@/services/activity.service";
-import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
+import { getClassroomById, getClassroomDisplayName, } from "@/services/classroom.service";
 
 import Card from "@/components/ui/Card";
 import Status from "@/components/ui/Status";
@@ -11,67 +11,62 @@ import { formatDate, formatDateTime } from "@/lib/format/formatDate";
 
 import { serverClient } from "@/lib/supabase/server";
 
-
 interface ActivityCardProps {
-    activity: Activity;
+  activity: Activity;
 }
 
 export default async function ActivityCard({ activity }: ActivityCardProps) {
 
-    if (!activity.classroomId) {
-        return null;
-    }
+  if (!activity.classroomId) {
+    return null;
+  }
 
-    const supabase = await serverClient();
-    const classroom = await getClassroomById(supabase, activity.classroomId);
-    const status = getActivityStatus(activity);
+  const supabase = await serverClient();
+  const classroom = await getClassroomById(supabase, activity.classroomId);
+  const status = getActivityStatus(activity, "teacher");
 
-    if (!classroom) {
-        return null;
-    }
+  if (!classroom) {
+    return null;
+  }
 
-    const classroomName = await getClassroomDisplayName(classroom);
+  const classroomName = await getClassroomDisplayName(classroom);
 
-    return (
-        <Link href={`/atividades/${activity.id}`}>
-            <Card>
-                <div className="flex items-center justify-between">
+  return (
+    <Link href={`/atividades/${activity.id}`}>
 
-                    <h2 className="text-xl font-semibold">
-                        {activity.title || "Sem título"}
-                    </h2>
+      <Card>
 
-                    <span className="text-sm text-secondary">
-                        {formatDateTime(activity.createdAt)}
-                    </span>
+          <div className="flex items-center justify-between gap-4">
 
-                </div>
+              <div className="min-w-0 flex-1">
 
-                <div>
-                    <div className="flex gap-2 my-2 py-1 px-4">
-                        <Status status={status} />
-                    </div>
+                  <h2 className="truncate text-lg font-medium text-foreground">
+                      {activity.title || "Sem título"}
+                  </h2>
 
-                    <p className="text-secondary">
-                        {classroomName}
-                    </p>
+                  <p className="truncate text-sm text-foreground">
+                      {classroomName}
+                  </p>
 
-                    <div>
-                        <span className="text-secondary">Prazo:</span>
-                        {" "}{formatDate(activity.deadline) || "Sem prazo definido"}
-                    </div>
+              </div>
 
-                    <div>
-                        <span className="text-secondary">Link de entrega:</span>
-                        {" "}
-                        {activity.token ? (
-                            `atividade/${activity.token}`
-                        ) : (
-                            "Sem link de entrega"
-                        )}
-                    </div>
-                </div>
-            </Card>
-        </Link>
-    );
+              <Status status={status} />
+
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-4">
+
+              <span className="text-sm text-text-primary">
+                  Prazo: {formatDate(activity.deadline) || "Sem prazo definido"}
+              </span>
+
+              <span className="whitespace-nowrap text-sm text-text-primary">
+                  {formatDateTime(activity.createdAt)}
+              </span>
+
+          </div>
+
+      </Card>
+    </Link>
+  );
 }

@@ -1,53 +1,56 @@
-import { Student } from "@/types/student";
-import { getClassroomById, getClassroomDisplayName } from "@/services/classroom.service";
-
 import Link from "next/link";
+
+import { Student } from "@/types/student";
+import { getClassroomById, getClassroomDisplayName, } from "@/services/classroom.service";
+
+import Card from "../ui/Card";
+
 import { serverClient } from "@/lib/supabase/server";
 
 interface StudentCardProps {
-    student: Student;
+  student: Student;
 }
 
 export default async function StudentCard({ student }: StudentCardProps) {
+  if (!student.classroomId) {
+    return null;
+  }
 
-    if (!student.classroomId) {
-        return null;
-    }
+  const supabase = await serverClient();
+  const classroom = await getClassroomById(supabase, student.classroomId);
 
-    const supabase = await serverClient();
-    const classroom = await getClassroomById(supabase, student.classroomId);
+  if (!classroom) {
+    return null;
+  }
 
-    if (!classroom) {
-        return null;
-    }
+  const classroomName = await getClassroomDisplayName(classroom);
 
-    const classroomName = await getClassroomDisplayName(classroom);
+  return (
+    <Link href={`/alunos/${student.id}`}>
 
-    return (
-        <Link
-            href={`/alunos/${student.id}`}
-            className="rounded-xl border border-border bg-surface p-4 transition hover:bg-muted"
-        >
+      <Card>
 
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between gap-4">
 
-                <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1">
 
-                    <h3 className="truncate text-base font-medium text-foreground">
-                        {student.name || "Sem nome"}
-                    </h3>
+                  <h2 className="truncate text-lg font-medium text-foreground">
+                      {student.name || "Sem nome"}
+                  </h2>
 
-                    <p className="text-sm text-foreground truncate">
-                        {classroomName}
-                    </p>
+                  <p className="truncate text-sm text-foreground">
+                      {classroomName}
+                  </p>
 
-                </div>
+              </div>
 
-                <span className="text-sm text-text-primary whitespace-nowrap">
-                    {student.enrollment || "Sem matrícula"}
-                </span>
+              <span className="whitespace-nowrap text-sm text-text-primary">
+                  {student.enrollment || "Sem matrícula"}
+              </span>
 
-            </div>
-        </Link>
-    );
+          </div>
+
+      </Card>
+    </Link>
+  );
 }

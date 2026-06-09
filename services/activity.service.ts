@@ -30,7 +30,7 @@ export async function getActivityById(supabase: SupabaseClient, id: string) {
     return data ? mapActivity(data) : null;
 }
 
-export function getActivityStatus(activity: Activity) {
+export function getActivityStatus(activity: Activity, context: "teacher" | "student" = "teacher") {
 
     if (activity.status === "Corrigida") {
         return "Corrigida";
@@ -39,16 +39,13 @@ export function getActivityStatus(activity: Activity) {
     if (activity.deadline) {
 
         const now = new Date();
-
-        const deadline = new Date(
-            activity.deadline
-        );
+        const deadline = new Date(activity.deadline);
 
         if (
             !isNaN(deadline.getTime()) &&
             now > deadline
         ) {
-            return "Em atraso";
+            return context === "teacher" ? "Prazo encerrado" : "Em atraso";
         }
 
     }

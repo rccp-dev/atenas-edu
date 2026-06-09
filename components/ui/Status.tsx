@@ -5,10 +5,11 @@ interface Props {
 }
 
 export default function Status({ status }: Props) {
-    const color = status ? statusMap[status] ?? "bg-neutral" : "bg-neutral";
+
+    const classes = status ? statusMap[status] ?? statusMap["Pendente"] : statusMap["Pendente"];
 
     return (
-        <span className={`inline-flex items-center gap-2 px-4 py-1 rounded-2xl text-sm font-semibold text-light ${color}`}>
+        <span className={`inline-flex items-center rounded-full border px-4 py-2 text-sm ${classes}`}>
             {status || "—"}
         </span>
     );

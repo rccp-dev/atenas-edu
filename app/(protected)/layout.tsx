@@ -5,36 +5,40 @@ import { getUser } from "@/lib/auth/auth";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 
+import { Toaster } from "sonner";
+
 export default async function ProtectedLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
 
-    const user = await getUser();
+  const user = await getUser();
 
-    if (!user) {
-        redirect("/login");
-    }
+  if (!user) {
+    redirect("/login");
+  }
 
-    return (
-        <div className="h-screen bg-background">
+  return (
+    <div className="h-screen bg-background">
 
-            <div className="flex h-full">
+      <div className="flex h-full">
 
-                <Sidebar user={user} />
+        <Sidebar user={user} />
 
-                <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col overflow-y-auto">
 
-                    <main className="flex-1 overflow-y-auto">
-                        {children}
+          <main className="flex flex-1 flex-col">
 
-                        <Footer />
+            <div className="flex-1">{children}</div>
 
-                    </main>
+            <Toaster richColors position="top-right"/>
 
-                </div>
-            </div>
+            <Footer />
+            
+          </main>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
