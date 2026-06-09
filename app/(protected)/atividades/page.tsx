@@ -30,7 +30,7 @@ export default async function ActivityPage() {
           </div>
 
           <Button href="/atividades/nova-atividade">
-            Novo
+            Nova atividade
           </Button>
 
         </div>
